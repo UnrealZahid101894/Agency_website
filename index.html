@@ -1967,9 +1967,12 @@ section.svc:has(.vid-vis) .wrap {
 /* ── THREE.JS PARTICLE HERO ── */
 (function(){
   var mount=document.getElementById('hero3dMount');
-  if(!mount||typeof THREE==='undefined')return;
+  if(!mount)return;
   /* Skip entirely on touch/mobile devices */
   if('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+
+  function initThree(){
+    if(!mount)return;
  
   var W=mount.clientWidth||480;
   var H=mount.clientHeight||480;
@@ -2111,10 +2114,27 @@ section.svc:has(.vid-vis) .wrap {
     renderer.domElement.style.height='100%';
   },{passive:true});
  
-  document.addEventListener('visibilitychange',function(){
-    if(document.hidden)clock.stop();else clock.start();
-  });
-})();
+ document.addEventListener('visibilitychange',function(){
+      if(document.hidden)clock.stop();else clock.start();
+    });
+  }
+
+  /* If THREE already loaded, init now. Otherwise wait for script to load. */
+  if(typeof THREE !== 'undefined'){
+    initThree();
+  } else {
+    var s=document.querySelector('script[src*="three.min.js"]');
+    if(s){
+      s.addEventListener('load', initThree);
+    } else {
+      /* Fallback: poll until THREE is available */
+      var poll=setInterval(function(){
+        if(typeof THREE!=='undefined'){clearInterval(poll);initThree();}
+      },50);
+      setTimeout(function(){clearInterval(poll);},5000);
+    }
+  }
+})(); 
 </script>
 
 
