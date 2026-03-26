@@ -276,6 +276,7 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 }
 .svc-tab:last-child { border-right: none; }
 .svc-tab:hover { background: var(--bg3); }
+.svc-tab.active { background: var(--bg3); }
 
 .svc-tab-num {
   font-family: var(--fb);
@@ -461,6 +462,8 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
   .svc-panel .svc-inner { grid-template-columns: 1fr; gap: 0; padding: 56px 0 48px; }
   .svc-panel .svc-vis { display: none; }
 }
+
+
 @media(max-width:600px) {
   .svc-tabs-wrap { padding: 16px 20px 0; }
   .svc-tabs {
@@ -469,8 +472,8 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
     width: 100%;
   }
   .svc-tab {
-    padding: 20px 14px 18px;
-    gap: 5px;
+    padding: 16px 12px 14px;
+    gap: 4px;
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
@@ -480,13 +483,13 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
     letter-spacing: .1em;
   }
   .svc-tab-label {
-    font-size: 15px;
-    letter-spacing: -.02em;
-    line-height: 1.15;
+    font-size: 13px;
+    letter-spacing: -.01em;
+    line-height: 1.2;
   }
   .svc-tab-arrow { display: none; }
-  .svc-panel .svc-inner { padding: 44px 0 40px; gap: 0; }
-  .svc-panel .svc-title { font-size: clamp(28px, 8vw, 38px); }
+  .svc-panel .svc-inner { padding: 40px 0 36px; gap: 0; }
+  .svc-panel .svc-title { font-size: clamp(26px, 7vw, 36px); }
 }
 
 
@@ -1175,6 +1178,44 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 .proc-connector::before{content:'›';font-size:14px;color:var(--text3);position:absolute;right:-7px;top:50%;transform:translateY(-50%);opacity:.35;transition:opacity .3s,color .5s}
 .proc-step:hover .proc-connector::before{opacity:.7}
 .proc-step:last-child .proc-connector{display:none}
+
+/* ── MOBILE PERFORMANCE ── */
+@media (hover: none) {
+  /* stop the particle canvas from eating scroll frames */
+  .hero-3d-mount { display: none !important; }
+  .h3d-card { display: none !important; }
+  .hero-3d-hint { display: none !important; }
+
+  /* flatten heavy transitions on touch devices */
+  .svc-panel,
+  .svc-tab,
+  .tcard,
+  .proj-card,
+  .tm-card,
+  .stat,
+  .proc-step {
+    transition: none !important;
+    transform: none !important;
+    will-change: unset !important;
+  }
+
+  /* keep only opacity fade on panels */
+  .svc-panel {
+    transition: opacity .3s ease !important;
+  }
+
+  /* prevent momentum scroll stutter */
+  .svc-tabs-wrap,
+  .tc-wrap {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+
+  /* reduce testimonial column animation cost */
+  .tci {
+    animation-duration: 30s !important;
+  }
+}
 
 /* ── TESTIMONIALS ── */
 .testi{padding:120px 0;border-top:1px solid var(--border);background:var(--bg2);transition:background .5s,border-color .5s}
