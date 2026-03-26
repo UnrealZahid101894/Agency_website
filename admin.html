@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html data-theme="dark" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rendrx Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0a;--bg2:#111;--bg3:#181818;--card:#141414;
+  --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.16);
+  --text:#f0f0f0;--text2:#c0c0c0;--text3:#707070;
+  --inv:#f5f5f5;--inv2:#0a0a0a;
+  --green:#4ade80;--orange:#fb923c;--blue:#60a5fa;--red:#f87171;
+  --fd:'Arvo',serif;--fb:'JetBrains Mono',monospace;
+  --sp:cubic-bezier(.16,1,.3,1);
+  --s1:0 2px 10px rgba(0,0,0,.6);--s2:0 8px 36px rgba(0,0,0,.7);--s3:0 24px 80px rgba(0,0,0,.85);
+}
+[data-theme="light"]{
+  --bg:#f0f0f0;--bg2:#fafafa;--bg3:#e8e8e8;--card:#fff;
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.15);
+  --text:#0a0a0a;--text2:#333;--text3:#888;
+  --inv:#0a0a0a;--inv2:#f5f5f5;
+  --s1:0 2px 10px rgba(0,0,0,.08);--s2:0 8px 36px rgba(0,0,0,.12);--s3:0 24px 80px rgba(0,0,0,.16);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+::selection{background:var(--inv);color:var(--inv2)}
+
+/* ─────────────────────────────────────────
+   SCREENS — only one visible at a time
+───────────────────────────────────────── */
+.screen{display:none;height:100vh}
+.screen.active{display:flex}
+
+/* ─────────────────────────────────────────
+   LOGIN SCREEN
+───────────────────────────────────────── */
+#screen-login{flex-direction:row;overflow:hidden}
+
+/* grain */
+#screen-login::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:300px}
+
+.login-left{flex:1;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;padding:48px;position:relative;overflow:hidden}
+.login-left::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;opacity:.5}
+#deco-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.5}
+.ll-content{position:relative;z-index:1}
+.ll-brand{display:flex;align-items:center;gap:10px;margin-bottom:64px}
+.ll-brandname{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:.1em;color:var(--text)}
+.ll-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:glow 2.2s ease-in-out infinite}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(74,222,128,.4)}70%{box-shadow:0 0 0 8px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.ll-h{font-family:var(--fd);font-size:clamp(36px,4.5vw,58px);font-weight:700;line-height:.96;letter-spacing:-.03em;color:var(--text);margin-bottom:20px}
+.ll-h em{font-style:italic;color:var(--text3)}
+.ll-sub{font-size:13px;color:var(--text2);line-height:1.85;max-width:300px}
+.ll-stats{display:flex;gap:28px;margin-top:40px}
+.lls-n{font-family:var(--fd);font-size:28px;font-weight:700;color:var(--text);line-height:1}
+.lls-l{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:3px}
+.ll-foot{position:relative;z-index:1;font-size:10px;color:var(--text3);letter-spacing:.04em}
+.ll-foot a{color:var(--text2);text-decoration:none;transition:color .15s}
+.ll-foot a:hover{color:var(--text)}
+
+.login-right{flex:1;display:flex;align-items:center;justify-content:center;padding:48px;position:relative;background:var(--bg)}
+.ln-tbtn{position:absolute;top:28px;right:28px;width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:transform .25s var(--sp)}
+.ln-tbtn:hover{transform:rotate(25deg) scale(1.08)}
+.ln-tbtn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
+
+.login-card{width:min(400px,100%);animation:cardIn .7s var(--sp) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.lc-eyebrow{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:8px;margin-bottom:24px}
+.lc-eyebrow::before{content:'//';opacity:.4}
+.lc-title{font-family:var(--fd);font-size:30px;font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:6px}
+.lc-sub{font-size:12px;color:var(--text3);margin-bottom:36px;line-height:1.7}
+
+.fg{margin-bottom:18px}
+label{display:block;font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.iw{position:relative}
+.iw>svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:13px;height:13px;stroke:var(--text3);fill:none;stroke-width:1.8;stroke-linecap:round;pointer-events:none;transition:stroke .2s}
+input{width:100%;font-family:var(--fb);font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:13px 13px 13px 38px;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none}
+input:focus{border-color:var(--inv);box-shadow:0 0 0 3px rgba(245,245,245,.07)}
+[data-theme="light"] input:focus{box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+input::placeholder{color:var(--text3)}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);cursor:pointer;padding:4px;color:var(--text3);background:none;border:none;transition:color .15s}
+.eye-btn:hover{color:var(--text2)}
+.eye-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;display:block}
+
+.err-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.22);border-radius:8px;padding:10px 14px;font-size:11px;color:#f87171;display:flex;align-items:center;gap:8px;margin-bottom:18px;opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .25s;pointer-events:none}
+.err-box.show{opacity:1;transform:none;pointer-events:auto}
+.err-box svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;flex-shrink:0}
+
+.sub-btn{width:100%;font-family:var(--fb);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:15px;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(180deg,#ffffff 0%,#e8e2db 100%);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,var(--s1);transition:transform .2s var(--sp),box-shadow .2s,opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:24px;position:relative;overflow:hidden}
+.sub-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 24px rgba(255,255,255,.18),0 10px 28px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.5) inset}
+.sub-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+[data-theme="light"] .sub-btn{background:linear-gradient(180deg,#111 0%,#222 100%);color:#f5f5f5}
+[data-theme="light"] .sub-btn:hover:not(:disabled){box-shadow:0 0 20px rgba(0,0,0,.12),0 10px 24px rgba(0,0,0,.15)}
+.sub-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.spinner{width:14px;height:14px;border:2px solid rgba(10,10,10,.2);border-top-color:#0a0a0a;border-radius:50%;animation:spin .65s linear infinite}
+[data-theme="light"] .spinner{border-color:rgba(255,255,255,.2);border-top-color:#f5f5f5}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hint-card{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px;font-size:11px;color:var(--text3);line-height:1.7;margin-top:16px}
+.hint-card svg{width:13px;height:13px;stroke:var(--text3);fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0;margin-top:1px}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:var(--text3);text-decoration:none;margin-top:20px;transition:color .15s;border:none;background:none;cursor:pointer}
+.back-link:hover{color:var(--text2)}
+.back-link svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ── SUCCESS ── */
+.success-panel{display:none;text-align:center;animation:cardIn .5s var(--sp)}
+.si-icon{width:56px;height:56px;border-radius:50%;border:1.5px solid rgba(74,222,128,.35);background:rgba(74,222,128,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.si-icon svg{width:22px;height:22px;stroke:#4ade80;fill:none;stroke-width:2;stroke-linecap:round}
+.si-title{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:8px}
+.si-sub{font-size:12px;color:var(--text3);line-height:1.7;margin-bottom:28px}
+.rbar{height:2px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:8px}
+.rbar-fill{height:100%;background:var(--green);border-radius:99px;width:0;animation:rfill 1.6s ease-in-out forwards}
+@keyframes rfill{to{width:100%}}
+.rbar-note{font-size:9px;color:var(--text3);letter-spacing:.07em;text-transform:uppercase}
+
+@media(max-width:768px){.login-left{display:none}.login-right{width:100%}}
+
+/* ─────────────────────────────────────────
+   DASHBOARD SCREEN
+───────────────────────────────────────── */
+#screen-dash{flex-direction:row;overflow:hidden}
+.shell{display:grid;grid-template-columns:220px 1fr;height:100vh;width:100%}
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.main{display:flex;flex-direction:column;overflow:hidden}
+
+.sb-head{padding:20px 18px 16px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;align-items:flex-start}
+.sb-logo{font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:.1em;color:var(--text)}
+.sb-badge{font-size:9px;font-weight:700;letter-spacing:.1em;padding:2px 7px;background:var(--bg3);border:1px solid var(--border2);border-radius:99px;color:var(--text3);text-transform:uppercase;margin-top:4px;display:inline-block}
+.sb-nav{padding:12px 0;flex:1;overflow-y:auto}
+.sb-section{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);padding:8px 18px 4px}
+.sb-item{display:flex;align-items:center;gap:10px;padding:9px 18px;color:var(--text2);cursor:pointer;transition:all .15s;border-left:2px solid transparent;font-size:11px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:none;background:none;width:100%;text-align:left;border-left:2px solid transparent}
+.sb-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
+[data-theme="light"] .sb-item:hover{background:rgba(0,0,0,.04)}
+.sb-item.active{color:var(--text);background:rgba(255,255,255,.04);border-left-color:var(--inv)}
+[data-theme="light"] .sb-item.active{background:rgba(0,0,0,.04)}
+.sb-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+.sb-item.danger{color:var(--red);opacity:.7}
+.sb-item.danger:hover{background:rgba(248,113,113,.06);opacity:1}
+.sb-item.go-site{color:var(--green);opacity:.8}
+.sb-item.go-site:hover{background:rgba(74,222,128,.06);opacity:1}
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sb-user-name{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text2)}
+.sb-online{display:flex;align-items:center;gap:6px;font-size:9px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text3);margin-top:3px}
+.sb-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:glow 2s ease-in-out infinite}
+.tbtn{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .25s;color:var(--text2);flex-shrink:0}
+.tbtn:hover{transform:rotate(25deg) scale(1.08)}
+.tbtn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+
+.topbar{padding:14px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--bg);flex-shrink:0}
+.topbar-left h1{font-family:var(--fd);font-size:20px;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+.topbar-left p{font-size:10px;color:var(--text3);letter-spacing:.04em;margin-top:1px}
+.topbar-right{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:7px;font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:9px 18px;border:none;border-radius:8px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.btn-fill{background:linear-gradient(180deg,#fff 0%,#e8e2db 100%);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,var(--s1)}
+.btn-fill:hover{transform:translateY(-1px);box-shadow:0 0 20px rgba(255,255,255,.15),0 8px 20px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.5) inset}
+[data-theme="light"] .btn-fill{background:linear-gradient(180deg,#111 0%,#222 100%);color:#f5f5f5}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border2)}
+.btn-ghost:hover{border-color:var(--text);color:var(--text)}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+
+.content{flex:1;overflow-y:auto;padding:24px 28px}
+.view{display:none}
+.view.active{display:block}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.scard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:border-color .2s}
+.scard:hover{border-color:var(--border2)}
+.scard-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.scard-label svg{width:13px;height:13px;stroke:var(--text3);fill:none;stroke-width:1.8}
+.scard-n{font-family:var(--fd);font-size:32px;font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1}
+.scard-sub{font-size:10px;color:var(--text3);margin-top:6px}
+.scard-bar{height:2px;background:var(--border);border-radius:99px;margin-top:14px;overflow:hidden}
+.scard-bar-fill{height:100%;background:var(--inv);border-radius:99px;transition:width 1s}
+.scard-trend{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:99px;margin-top:8px}
+.trend-up{background:rgba(74,222,128,.12);color:var(--green)}
+
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-title{font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+.sec-eye{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);display:flex;align-items:center;gap:6px}
+.sec-eye::before{content:'//';opacity:.4}
+
+.ptable{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.ptable-head{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:10px 18px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.ptable-head span{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.ptable-row{display:grid;grid-template-columns:2fr 1fr 1fr 1fr 80px;padding:13px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s}
+.ptable-row:last-child{border-bottom:none}
+.ptable-row:hover{background:var(--bg3)}
+.ptable-empty{padding:48px;text-align:center;color:var(--text3);font-size:12px}
+.ptable-empty strong{display:block;font-family:var(--fd);font-size:18px;color:var(--text2);margin-bottom:6px}
+.prow-name{font-weight:700;color:var(--text);font-size:12px}
+.prow-sub{font-size:10px;color:var(--text3);margin-top:2px}
+.tag{display:inline-flex;align-items:center;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px}
+.tag-video{border:1px solid rgba(96,165,250,.3);color:#60a5fa;background:rgba(96,165,250,.08)}
+.tag-motion{border:1px solid rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.08)}
+.tag-web{border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.08)}
+.sdwrap{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text2)}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sdot-done{background:#4ade80}
+.sdot-prog{background:#fb923c;animation:glow 2s infinite}
+.sdot-hold{background:#707070}
+.row-acts{display:flex;gap:6px;justify-content:flex-end}
+.iBtn{width:26px;height:26px;border-radius:6px;border:1px solid var(--border2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:all .15s}
+.iBtn:hover{border-color:var(--text);color:var(--text);background:var(--bg3)}
+.iBtn.del:hover{border-color:#f87171;color:#f87171;background:rgba(248,113,113,.08)}
+.iBtn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.fpill{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border:1px solid var(--border2);border-radius:99px;background:transparent;color:var(--text3);cursor:pointer;transition:all .15s;font-family:var(--fb)}
+.fpill:hover{color:var(--text);border-color:var(--text)}
+.fpill.on{background:var(--inv);color:var(--inv2);border-color:var(--inv)}
+
+.chart-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px 14px;margin-bottom:24px}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chart-title{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text2)}
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:70px}
+.chart-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.chart-bar{width:100%;border-radius:4px 4px 0 0;transition:height .8s;cursor:pointer;min-height:4px}
+.chart-bar:hover{filter:brightness(1.3)}
+.chart-bar-lbl{font-size:8px;color:var(--text3);letter-spacing:.04em}
+
+.alog{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.alog-row{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);transition:background .15s}
+.alog-row:last-child{border-bottom:none}
+.alog-row:hover{background:var(--bg3)}
+.alog-icon{width:28px;height:28px;border-radius:7px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.alog-icon svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
+.alog-msg{flex:1;font-size:11px;color:var(--text2);line-height:1.6}
+.alog-msg strong{color:var(--text);font-weight:700}
+.alog-time{font-size:9px;color:var(--text3);margin-top:2px;letter-spacing:.04em}
+
+.snippet-box{background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:16px 18px;font-size:11px;color:var(--text2);line-height:1.8;white-space:pre-wrap;word-break:break-all;overflow:auto;max-height:340px;margin-bottom:16px}
+.copy-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.copy-info{font-size:10px;color:var(--text3)}
+
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.settings-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px}
+.settings-card h3{font-family:var(--fd);font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px}
+.settings-card p{font-size:11px;color:var(--text3);margin-bottom:18px;line-height:1.7}
+.sf{margin-bottom:14px}
+.pass-ok{display:inline-flex;align-items:center;gap:6px;font-size:10px;color:var(--green);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:10px;opacity:0;transition:opacity .3s}
+.pass-ok.show{opacity:1}
+
+/* ── MODAL ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .25s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:min(580px,92vw);max-height:88vh;overflow-y:auto;box-shadow:0 32px 80px rgba(0,0,0,.8);transform:translateY(20px) scale(.97);transition:transform .3s}
+.overlay.open .modal{transform:none}
+.modal-head{padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--text)}
+.modal-close{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text3);transition:all .15s}
+.modal-close:hover{color:var(--text);border-color:var(--text)}
+.modal-close svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.modal-body{padding:22px 26px}
+.frow{margin-bottom:18px}
+.frow-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
+select,textarea{width:100%;font-family:var(--fb);font-size:12px;color:var(--text);background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;outline:none;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+select:focus,textarea:focus{border-color:var(--inv)}
+select option{background:var(--bg2)}
+textarea{resize:vertical;min-height:72px;line-height:1.6;padding-left:13px}
+.frow input,.frow-2 input{padding:10px 13px}
+.modal-foot{padding:14px 26px 22px;display:flex;gap:10px;justify-content:flex-end;border-top:1px solid var(--border);margin-top:4px}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--bg3);border:1px solid var(--border2);color:var(--text);font-size:10px;font-weight:700;letter-spacing:.07em;padding:10px 20px;border-radius:10px;box-shadow:var(--s2);z-index:9999;opacity:0;pointer-events:none;transition:all .3s;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.toast::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 1 — LOGIN
+════════════════════════════════════════════ -->
+<div class="screen" id="screen-login">
+
+  <div class="login-left">
+    <canvas id="deco-canvas" aria-hidden="true"></canvas>
+    <div class="ll-content">
+      <div class="ll-brand">
+        <span class="ll-brandname">Rendrx</span>
+        <span class="ll-dot"></span>
+      </div>
+      <h1 class="ll-h">Studio<br>command<br><em>centre.</em></h1>
+      <p class="ll-sub">Manage your portfolio, add projects, and keep your public site up to date — all from one place.</p>
+      <div class="ll-stats">
+        <div><div class="lls-n" id="ls-proj">—</div><div class="lls-l">Projects</div></div>
+        <div><div class="lls-n" id="ls-done">—</div><div class="lls-l">Completed</div></div>
+        <div><div class="lls-n">Live</div><div class="lls-l">Site Status</div></div>
+      </div>
+    </div>
+    <div class="ll-foot">
+      © <span id="yr"></span> Rendrx Studio &nbsp;·&nbsp; <a href="index.html">View live site →</a>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <button class="ln-tbtn" onclick="toggleTheme()" aria-label="Toggle theme">
+      <svg id="ln-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="ln-sun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+    </button>
+
+    <div style="width:min(400px,100%)">
+
+      <div id="login-form-panel">
+        <div class="lc-eyebrow">Admin Access</div>
+        <h2 class="lc-title">Welcome back</h2>
+        <p class="lc-sub">Sign in to manage your studio dashboard.</p>
+
+        <div class="err-box" id="err-box">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="err-msg">Incorrect username or password</span>
+        </div>
+
+        <div class="fg">
+          <label for="inp-user">Username</label>
+          <div class="iw">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="inp-user" placeholder="admin" autocomplete="username" spellcheck="false">
+          </div>
+        </div>
+
+        <div class="fg">
+          <label for="inp-pass">Password</label>
+          <div class="iw" style="position:relative">
+            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password" style="padding-right:40px">
+            <button class="eye-btn" type="button" onclick="togglePass()" aria-label="Show password">
+              <svg id="eye-open" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg id="eye-closed" viewBox="0 0 24 24" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="sub-btn" id="login-btn" onclick="tryLogin()">
+          <span id="btn-label">Sign in to dashboard</span>
+          <svg id="btn-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+
+        <div class="hint-card">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Default: <strong style="color:var(--text2);margin:0 3px">admin</strong> / <strong style="color:var(--text2);margin-left:3px">rendrx2025</strong>. Change in Settings after first login.
+        </div>
+
+        <button class="back-link" onclick="goToSite()">
+          <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to live site
+        </button>
+      </div>
+
+      <div class="success-panel" id="success-panel">
+        <div class="si-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="si-title">Access granted</div>
+        <p class="si-sub">Welcome back. Loading your dashboard…</p>
+        <div class="rbar"><div class="rbar-fill"></div></div>
+        <div class="rbar-note">Just a moment</div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 2 — DASHBOARD
+════════════════════════════════════════════ -->
+<div class="screen" id="screen-dash">
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="sb-head">
+      <div class="sb-logo">Rendrx</div>
+      <span class="sb-badge">Admin Panel</span>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Workspace</div>
+      <button class="sb-item active" onclick="switchView('overview')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Overview
+      </button>
+      <button class="sb-item" onclick="switchView('projects')">
+        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Projects
+      </button>
+      <button class="sb-item" onclick="switchView('activity')">
+        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        Activity Log
+      </button>
+      <div class="sb-section" style="margin-top:10px">Developer</div>
+      <button class="sb-item" onclick="switchView('snippet')">
+        <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Embed Code
+      </button>
+      <button class="sb-item" onclick="switchView('settings')">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+      <div class="sb-section" style="margin-top:10px">Navigation</div>
+      <button class="sb-item go-site" onclick="goToSite()">
+        <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Live Site
+      </button>
+      <button class="sb-item danger" onclick="doLogout()">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </nav>
+    <div class="sb-foot">
+      <div>
+        <div class="sb-user-name" id="sb-uname">admin</div>
+        <div class="sb-online"><span class="sb-dot"></span>Live</div>
+      </div>
+      <button class="tbtn" onclick="toggleTheme()">
+        <svg id="dash-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="dash-sun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+      </button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1 id="view-title">Overview</h1>
+        <p id="view-sub">Your studio at a glance</p>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-ghost" onclick="exportData()">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export JSON
+        </button>
+        <button class="btn btn-fill" onclick="openModal()">
+          <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Project
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="view active" id="view-overview">
+        <div class="stat-row" id="stat-row"></div>
+        <div class="chart-wrap">
+          <div class="chart-head"><span class="chart-title">Projects by type</span><span class="sec-eye">breakdown</span></div>
+          <div class="chart-bars" id="chart-bars"></div>
+        </div>
+        <div class="sec-head"><span class="sec-title">Recent Projects</span><span class="sec-eye">latest 5</span></div>
+        <div class="ptable" id="recent-table"></div>
+      </div>
+
+      <div class="view" id="view-projects">
+        <div class="filter-row">
+          <button class="fpill on" data-f="all" onclick="setFilter('all')">All</button>
+          <button class="fpill" data-f="video" onclick="setFilter('video')">Video</button>
+          <button class="fpill" data-f="motion" onclick="setFilter('motion')">Motion</button>
+          <button class="fpill" data-f="web" onclick="setFilter('web')">Web</button>
+        </div>
+        <div class="ptable" id="proj-table"></div>
+      </div>
+
+      <div class="view" id="view-activity">
+        <div class="sec-head"><span class="sec-title">Activity Log</span><span class="sec-eye">all time</span></div>
+        <div class="alog" id="alog"></div>
+      </div>
+
+      <div class="view" id="view-snippet">
+        <div class="sec-head"><span class="sec-title">Embed Code</span><span class="sec-eye">paste into your main HTML</span></div>
+        <p style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:16px;max-width:560px">Replace the <code style="background:var(--bg3);padding:1px 6px;border-radius:4px;font-size:11px">#projects</code> section in <strong>rendrx.html</strong> with this. It reads from localStorage automatically.</p>
+        <div class="snippet-box" id="snippet-box"></div>
+        <div class="copy-row">
+          <button class="btn btn-fill" onclick="copySnippet()">
+            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy Code
+          </button>
+          <span class="copy-info">Replaces the empty #projects section in rendrx.html</span>
+        </div>
+      </div>
+
+      <div class="view" id="view-settings">
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3>Change Password</h3>
+            <p>Update your admin credentials. You'll use the new password on next login.</p>
+            <div class="sf"><label>Current Password</label><input type="password" id="s-cur" placeholder="Current password"></div>
+            <div class="sf"><label>New Password</label><input type="password" id="s-new" placeholder="Min 8 characters"></div>
+            <div class="sf"><label>Confirm New Password</label><input type="password" id="s-conf" placeholder="Confirm"></div>
+            <button class="btn btn-fill" onclick="changePassword()" style="margin-top:4px">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Update Password
+            </button>
+            <div class="pass-ok" id="pass-ok">
+              <svg style="width:11px;height:11px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+              Password updated
+            </div>
+          </div>
+          <div class="settings-card">
+            <h3>Data Management</h3>
+            <p>Import a previously exported JSON backup, or wipe all project data.</p>
+            <div class="sf"><label>Import JSON</label><input type="file" id="import-file" accept=".json" onchange="importData(this)" style="padding:8px 10px;cursor:pointer"></div>
+            <button class="btn btn-ghost" onclick="clearAllProjects()" style="margin-top:8px;border-color:rgba(248,113,113,.3);color:#f87171">
+              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              Clear All Projects
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="modal-title">Add Project</span>
+      <button class="modal-close" onclick="closeModal()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="frow"><label>Project Title *</label><input type="text" id="f-title" placeholder="e.g. NovaCo Brand Film"></div>
+      <div class="frow-2">
+        <div><label>Category *</label><select id="f-type"><option value="">Select…</option><option value="video">Video</option><option value="motion">Motion</option><option value="web">Web</option></select></div>
+        <div><label>Status</label><select id="f-status"><option value="done">Done</option><option value="in-progress">In Progress</option><option value="on-hold">On Hold</option></select></div>
+      </div>
+      <div class="frow"><label>Client Name</label><input type="text" id="f-client" placeholder="e.g. NovaCo"></div>
+      <div class="frow-2">
+        <div><label>Year</label><input type="text" id="f-year" placeholder="2025"></div>
+        <div><label>Tags (comma separated)</label><input type="text" id="f-tags" placeholder="Brand Film, 4K"></div>
+      </div>
+      <div class="frow"><label>Short Description</label><textarea id="f-desc" placeholder="One or two sentences…"></textarea></div>
+      <div class="frow"><label>Preview Image URL</label><input type="text" id="f-img" placeholder="https://…"></div>
+      <div class="frow"><label>Project URL</label><input type="text" id="f-url" placeholder="https://…"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-fill" onclick="saveProject()"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Save Project</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+
+/* ── Keys ── */
+const PKEY = 'rendrx_projects';
+const AKEY = 'rendrx_activity';
+const TKEY = 'rendrx-theme';
+const SKEY = 'rendrx_session';
+const CKEY = 'rendrx_credentials';
+
+/* ── Default credentials ── */
+function getCreds() {
+  try { const c = JSON.parse(localStorage.getItem(CKEY)); if (c?.user && c?.pass) return c; } catch {}
+  return { user: 'admin', pass: 'rendrx2025' };
+}
+
+/* ── Theme ── */
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  ['ln-moon','dash-moon'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display = t==='dark'?'block':'none'; });
+  ['ln-sun','dash-sun'].forEach(id => { const el=document.getElementById(id); if(el) el.style.display = t==='dark'?'none':'block'; });
+}
+function toggleTheme() {
+  const n = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(n); localStorage.setItem(TKEY, n);
+  showToast(n === 'dark' ? 'Dark mode' : 'Light mode');
+}
+applyTheme(localStorage.getItem(TKEY) || 'dark');
+
+/* ── Screen switching ── */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ── Boot: decide which screen to show ── */
+function boot() {
+  document.getElementById('yr').textContent = new Date().getFullYear();
+  loadLeftStats();
+  if (localStorage.getItem(SKEY) === '1') {
+    showScreen('screen-dash');
+    syncUsername();
+    renderOverview();
+  } else {
+    showScreen('screen-login');
+  }
+}
+
+/* ── Go to live site ── */
+function goToSite() {
+  // Try common filenames — works for both local files and hosted sites
+  const candidates = ['index.html', 'rendrx.html', '/'];
+  window.open(candidates[0], '_blank');
+}
+
+/* ── Left panel live stats ── */
+function loadLeftStats() {
+  try {
+    const p = JSON.parse(localStorage.getItem(PKEY) || '[]');
+    document.getElementById('ls-proj').textContent = p.length;
+    document.getElementById('ls-done').textContent = p.filter(x => x.status === 'done').length;
+  } catch {}
+}
+
+/* ── Login ── */
+let loggingIn = false;
+
+document.getElementById('inp-user').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+
+function tryLogin() {
+  if (loggingIn) return;
+  const user = document.getElementById('inp-user').value.trim();
+  const pass = document.getElementById('inp-pass').value;
+  if (!user || !pass) { showErr('Please enter username and password'); return; }
+
+  loggingIn = true;
+  const btn = document.getElementById('login-btn');
+  document.getElementById('btn-label').textContent = 'Verifying…';
+  const iconEl = document.getElementById('btn-icon');
+  if (iconEl) iconEl.outerHTML = '<div class="spinner" id="btn-icon"></div>';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    const creds = getCreds();
+    if (user === creds.user && pass === creds.pass) {
+      localStorage.setItem(SKEY, '1');
+      document.getElementById('login-form-panel').style.display = 'none';
+      document.getElementById('success-panel').style.display = 'block';
+      setTimeout(() => {
+        showScreen('screen-dash');
+        syncUsername();
+        renderOverview();
+        // Restore login form for next time
+        document.getElementById('login-form-panel').style.display = 'block';
+        document.getElementById('success-panel').style.display = 'none';
+        document.getElementById('btn-label').textContent = 'Sign in to dashboard';
+        const sp = document.getElementById('btn-icon');
+        if (sp && sp.className === 'spinner') sp.outerHTML = '<svg id="btn-icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+        btn.disabled = false;
+        document.getElementById('inp-user').value = '';
+        document.getElementById('inp-pass').value = '';
+        loggingIn = false;
+      }, 1500);
+    } else {
+      loggingIn = false;
+      btn.disabled = false;
+      document.getElementById('btn-label').textContent = 'Sign in to dashboard';
+      const sp = document.getElementById('btn-icon');
+      if (sp && sp.className === 'spinner') sp.outerHTML = '<svg id="btn-icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+      showErr('Incorrect username or password');
+      document.getElementById('inp-pass').value = '';
+      document.getElementById('inp-pass').focus();
+    }
+  }, 900);
+}
+
+function showErr(msg) {
+  const box = document.getElementById('err-box');
+  document.getElementById('err-msg').textContent = msg;
+  box.classList.add('show');
+  setTimeout(() => box.classList.remove('show'), 4000);
+}
+
+/* ── Logout ── */
+function doLogout() {
+  if (!confirm('Sign out of the admin panel?')) return;
+  localStorage.removeItem(SKEY);
+  showScreen('screen-login');
+  loadLeftStats();
+  showToast('Signed out');
+}
+
+/* ── Sync username display ── */
+function syncUsername() {
+  const el = document.getElementById('sb-uname');
+  if (el) el.textContent = getCreds().user;
+}
+
+/* ── Toggle password visibility ── */
+function togglePass() {
+  const inp = document.getElementById('inp-pass');
+  const isPass = inp.type === 'password';
+  inp.type = isPass ? 'text' : 'password';
+  document.getElementById('eye-open').style.display   = isPass ? 'none' : 'block';
+  document.getElementById('eye-closed').style.display = isPass ? 'block' : 'none';
+}
+
+/* ── Storage helpers ── */
+function loadProjects() { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch { return []; } }
+function saveProjects(arr) { localStorage.setItem(PKEY, JSON.stringify(arr)); }
+function loadActivity() { try { return JSON.parse(localStorage.getItem(AKEY) || '[]'); } catch { return []; } }
+function addActivity(msg, icon = 'plus') {
+  let log = loadActivity();
+  log.unshift({ msg, icon, time: new Date().toISOString() });
+  if (log.length > 60) log = log.slice(0, 60);
+  localStorage.setItem(AKEY, JSON.stringify(log));
+}
+
+/* ── Views ── */
+const VIEWS = {
+  overview: ['Overview',     'Your studio at a glance'],
+  projects: ['Projects',     'Manage your portfolio'],
+  activity: ['Activity Log', 'Recent changes'],
+  snippet:  ['Embed Code',   'Paste into your live site'],
+  settings: ['Settings',     'Credentials and data'],
+};
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  const match = document.querySelector(`.sb-item[onclick="switchView('${v}')"]`);
+  if (match) match.classList.add('active');
+  document.getElementById('view-title').textContent = VIEWS[v][0];
+  document.getElementById('view-sub').textContent   = VIEWS[v][1];
+  if (v === 'overview') renderOverview();
+  if (v === 'projects') renderProjectsTable();
+  if (v === 'activity') renderActivity();
+  if (v === 'snippet')  renderSnippet();
+}
+
+/* ── Filter ── */
+let currentFilter = 'all';
+function setFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('.fpill').forEach(b => b.classList.toggle('on', b.dataset.f === f));
+  renderProjectsTable();
+}
+
+/* ── Modal ── */
+let editingId = null;
+function openModal(project = null) {
+  editingId = project ? project.id : null;
+  document.getElementById('modal-title').textContent = project ? 'Edit Project' : 'Add Project';
+  document.getElementById('f-title').value  = project?.title  || '';
+  document.getElementById('f-type').value   = project?.type   || '';
+  document.getElementById('f-status').value = project?.status || 'done';
+  document.getElementById('f-client').value = project?.client || '';
+  document.getElementById('f-year').value   = project?.year   || new Date().getFullYear();
+  document.getElementById('f-tags').value   = project?.tags?.join(', ') || '';
+  document.getElementById('f-desc').value   = project?.desc   || '';
+  document.getElementById('f-img').value    = project?.img    || '';
+  document.getElementById('f-url').value    = project?.url    || '';
+  document.getElementById('overlay').classList.add('open');
+  setTimeout(() => document.getElementById('f-title').focus(), 300);
+}
+function closeModal() { document.getElementById('overlay').classList.remove('open'); editingId = null; }
+function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
+
+/* ── Save project ── */
+function saveProject() {
+  const title  = document.getElementById('f-title').value.trim();
+  const type   = document.getElementById('f-type').value;
+  if (!title) { showToast('Please enter a project title'); return; }
+  if (!type)  { showToast('Please select a category'); return; }
+  const tags = document.getElementById('f-tags').value.split(',').map(t => t.trim()).filter(Boolean);
+  const project = {
+    id: editingId || 'p_' + Date.now(), title, type,
+    status: document.getElementById('f-status').value,
+    tags, client: document.getElementById('f-client').value.trim(),
+    year:   document.getElementById('f-year').value.trim() || String(new Date().getFullYear()),
+    desc:   document.getElementById('f-desc').value.trim(),
+    img:    document.getElementById('f-img').value.trim(),
+    url:    document.getElementById('f-url').value.trim(),
+    updatedAt: new Date().toISOString(),
+  };
+  let projects = loadProjects();
+  if (editingId) {
+    const idx = projects.findIndex(p => p.id === editingId);
+    if (idx !== -1) { project.createdAt = projects[idx].createdAt; projects[idx] = project; }
+    addActivity(`Updated <strong>${title}</strong>`, 'edit');
+    showToast('Updated ✓ — live on site');
+  } else {
+    project.createdAt = new Date().toISOString();
+    projects.unshift(project);
+    addActivity(`Added <strong>${title}</strong> (${type})`, 'plus');
+    showToast('Added ✓ — live on site');
+  }
+  saveProjects(projects);
+  closeModal();
+  renderOverview();
+  if (document.getElementById('view-projects').classList.contains('active')) renderProjectsTable();
+}
+
+/* ── Delete ── */
+function deleteProject(id) {
+  const projects = loadProjects();
+  const p = projects.find(x => x.id === id);
+  if (!p || !confirm(`Delete "${p.title}"?`)) return;
+  saveProjects(projects.filter(x => x.id !== id));
+  addActivity(`Deleted <strong>${p.title}</strong>`, 'trash');
+  showToast('Deleted');
+  renderOverview();
+  renderProjectsTable();
+}
+
+/* ── Overview ── */
+function renderOverview() {
+  const P = loadProjects();
+  const total=P.length, done=P.filter(p=>p.status==='done').length,
+    inProg=P.filter(p=>p.status==='in-progress').length,
+    onHold=P.filter(p=>p.status==='on-hold').length,
+    video=P.filter(p=>p.type==='video').length,
+    motion=P.filter(p=>p.type==='motion').length,
+    web=P.filter(p=>p.type==='web').length;
+  document.getElementById('stat-row').innerHTML=`
+    <div class="scard"><div class="scard-label">Total Projects <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="scard-n">${total}</div><div class="scard-sub">in portfolio</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${Math.min(total/20*100,100)}%"></div></div></div>
+    <div class="scard"><div class="scard-label">Completed <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="scard-n">${done}</div><div class="scard-sub">${inProg} in progress</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${total?Math.round(done/total*100):0}%"></div></div><div class="scard-trend trend-up">↑ ${total?Math.round(done/total*100):0}% rate</div></div>
+    <div class="scard"><div class="scard-label">By Category</div><div class="scard-n" style="font-size:22px;line-height:1.3">${video} <span style="color:var(--text3);font-size:14px">/</span> ${motion} <span style="color:var(--text3);font-size:14px">/</span> ${web}</div><div class="scard-sub">video / motion / web</div></div>
+    <div class="scard"><div class="scard-label">On Hold</div><div class="scard-n">${onHold}</div><div class="scard-sub">paused projects</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${total?Math.round(onHold/total*100):0}%"></div></div></div>`;
+  const mx=Math.max(video,motion,web,1);
+  document.getElementById('chart-bars').innerHTML=[
+    {l:'Video',n:video,c:'rgba(96,165,250,.6)'},{l:'Motion',n:motion,c:'rgba(251,146,60,.6)'},{l:'Web',n:web,c:'rgba(74,222,128,.6)'}
+  ].map(b=>`<div class="chart-bar-wrap"><div style="font-size:9px;color:var(--text2);margin-bottom:4px">${b.n}</div><div class="chart-bar" style="height:${Math.max(4,Math.round(b.n/mx*52))}px;background:${b.c}"></div><div class="chart-bar-lbl">${b.l}</div></div>`).join('');
+  renderTable(P.slice(0,5),'recent-table');
+}
+
+/* ── Projects table ── */
+function renderProjectsTable(){
+  const all=loadProjects();
+  renderTable(currentFilter==='all'?all:all.filter(p=>p.type===currentFilter),'proj-table');
+}
+function typeTag(t){const m={video:'tag-video',motion:'tag-motion',web:'tag-web'};return`<span class="tag ${m[t]||''}">${t}</span>`;}
+function statusBadge(s){const m={'done':['sdot-done','Done'],'in-progress':['sdot-prog','In Progress'],'on-hold':['sdot-hold','On Hold']};const[c,l]=m[s]||['sdot-hold',s];return`<div class="sdwrap"><span class="sdot ${c}"></span>${l}</div>`;}
+function relTime(iso){if(!iso)return'—';const d=(Date.now()-new Date(iso))/1000;if(d<60)return'just now';if(d<3600)return Math.floor(d/60)+'m ago';if(d<86400)return Math.floor(d/3600)+'h ago';return Math.floor(d/86400)+'d ago';}
+function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderTable(projects,elId){
+  const el=document.getElementById(elId);if(!el)return;
+  if(!projects.length){el.innerHTML=`<div class="ptable-empty"><strong>No projects yet</strong>Click "Add Project" to get started.</div>`;return;}
+  el.innerHTML=`<div class="ptable-head"><span>Project</span><span>Type</span><span>Status</span><span>Added</span><span style="text-align:right">Actions</span></div>`
+    +projects.map(p=>`<div class="ptable-row"><div><div class="prow-name">${esc(p.title)}</div><div class="prow-sub">${p.client?esc(p.client)+' · ':''}${p.year||''}</div></div><div>${typeTag(p.type)}</div><div>${statusBadge(p.status)}</div><div style="font-size:10px;color:var(--text3)">${relTime(p.createdAt)}</div><div class="row-acts"><button class="iBtn" onclick='openModal(${JSON.stringify(p).replace(/'/g,"&#39;")})' title="Edit"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="iBtn del" onclick="deleteProject('${p.id}')" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div></div>`).join('');
+}
+
+/* ── Activity ── */
+function renderActivity(){
+  const log=loadActivity(),el=document.getElementById('alog');
+  if(!log.length){el.innerHTML=`<div class="ptable-empty" style="padding:40px"><strong>No activity yet</strong>Your actions will appear here.</div>`;return;}
+  const im={plus:`<svg viewBox="0 0 24 24" style="stroke:#4ade80"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,edit:`<svg viewBox="0 0 24 24" style="stroke:#60a5fa"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,trash:`<svg viewBox="0 0 24 24" style="stroke:#f87171"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>`};
+  el.innerHTML=log.map(e=>`<div class="alog-row"><div class="alog-icon">${im[e.icon]||im.plus}</div><div><div class="alog-msg">${e.msg}</div><div class="alog-time">${new Date(e.time).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})}</div></div></div>`).join('');
+}
+
+/* ── Snippet ── */
+function renderSnippet(){
+  document.getElementById('snippet-box').textContent=`<!-- PROJECTS SECTION -->
+<section id="projects" class="proj-section" aria-labelledby="proj-heading">
+  <div class="wrap">
+    <div class="proj-hd">
+      <div>
+        <div class="eyebrow reveal" style="margin-bottom:12px">selected work</div>
+        <h2 class="reveal d1" style="font-family:var(--fd);font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.03em" id="proj-heading">What we've made</h2>
+      </div>
+      <div class="proj-filters reveal d2" role="group" aria-label="Filter by type">
+        <button class="pf on" data-f="all" aria-pressed="true">All</button>
+        <button class="pf" data-f="video" aria-pressed="false">Video</button>
+        <button class="pf" data-f="motion" aria-pressed="false">Motion</button>
+        <button class="pf" data-f="web" aria-pressed="false">Web</button>
+      </div>
+    </div>
+    <div class="proj-grid" id="pgrid">
+      <div class="proj-empty reveal">Loading projects...</div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var PKEY='rendrx_projects';var allProjects=[];
+  function load(){try{return JSON.parse(localStorage.getItem(PKEY)||'[]');}catch{return[];}}
+  function buildCards(projects){
+    var grid=document.getElementById('pgrid');if(!grid)return;
+    if(!projects.length){grid.innerHTML='<div class="proj-empty reveal in">No projects yet.</div>';return;}
+    grid.innerHTML=projects.map(function(p){
+      return '<div class="reveal in" style="background:var(--card);border:1px solid var(--border2);border-radius:12px;overflow:hidden;cursor:default;transition:transform .3s,box-shadow .3s" onmouseenter="this.style.transform=\'translateY(-6px)\';this.style.boxShadow=\'0 20px 60px rgba(0,0,0,.5)\'" onmouseleave="this.style.transform=\'\';this.style.boxShadow=\'\'">'
+        +'<div style="aspect-ratio:16/9;background:'+(p.img?'url('+p.img+') center/cover no-repeat':'var(--bg3)')+';position:relative;overflow:hidden">'
+        +(p.img?'':'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:48px;font-weight:700;color:var(--border2)">'+p.title[0]+'</div>')
+        +'<div style="position:absolute;top:12px;left:12px"><span style="font-family:var(--fb);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.6);backdrop-filter:blur(8px);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.12)">'+p.type+'</span></div></div>'
+        +'<div style="padding:18px 20px 20px"><div style="font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:8px">'+p.title+'</div>'
+        +(p.desc?'<div style="font-size:12px;color:var(--text2);line-height:1.8;margin-bottom:14px">'+p.desc+'</div>':'')
+        +'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap"><div style="display:flex;gap:6px;flex-wrap:wrap">'
+        +(p.tags||[]).slice(0,3).map(function(t){return '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid var(--border2);color:var(--text3)">'+t+'</span>';}).join('')
+        +'</div>'+(p.url?'<a href="'+p.url+'" target="_blank" rel="noopener" style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);text-decoration:none;border:1px solid var(--border2);border-radius:99px;padding:5px 12px">View →</a>':'')
+        +'</div>'+(p.client?'<div style="font-size:10px;color:var(--text3);margin-top:12px;letter-spacing:.04em">'+p.client+(p.year?' · '+p.year:'')+'</div>':'')+'</div></div>';
+    }).join('');
+  }
+  allProjects=load();buildCards(allProjects);
+  document.querySelectorAll('.pf').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.pf').forEach(function(b){b.classList.remove('on');b.setAttribute('aria-pressed','false');});
+      btn.classList.add('on');btn.setAttribute('aria-pressed','true');
+      var f=btn.dataset.f;buildCards(f==='all'?allProjects:allProjects.filter(function(p){return p.type===f;}));
+    });
+  });
+})();
+<\/script>`;
+}
+
+/* ── Export ── */
+function exportData(){
+  const blob=new Blob([JSON.stringify({projects:loadProjects(),activity:loadActivity(),exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rendrx-projects.json';a.click();
+  showToast('Exported as JSON');
+}
+function copySnippet(){
+  navigator.clipboard.writeText(document.getElementById('snippet-box').textContent)
+    .then(()=>showToast('Code copied!'))
+    .catch(()=>showToast('Select and copy manually'));
+}
+
+/* ── Import ── */
+function importData(input){
+  const file=input.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{const d=JSON.parse(e.target.result);
+      if(d.projects&&Array.isArray(d.projects)){saveProjects(d.projects);if(d.activity)localStorage.setItem(AKEY,JSON.stringify(d.activity));addActivity('Imported JSON backup','plus');showToast(`Imported ${d.projects.length} project(s)`);renderOverview();}
+      else showToast('Invalid JSON format');
+    }catch{showToast('Could not parse file');}
+  };
+  r.readAsText(file);
+}
+
+/* ── Clear all ── */
+function clearAllProjects(){
+  if(!confirm('Delete ALL projects? This cannot be undone.'))return;
+  saveProjects([]);addActivity('Cleared all projects','trash');
+  showToast('All projects cleared');renderOverview();renderProjectsTable();
+}
+
+/* ── Change password ── */
+function changePassword(){
+  const cur=document.getElementById('s-cur').value,nw=document.getElementById('s-new').value,conf=document.getElementById('s-conf').value;
+  const creds=getCreds();
+  if(cur!==creds.pass){showToast('Current password is incorrect');return;}
+  if(nw.length<8){showToast('New password must be at least 8 characters');return;}
+  if(nw!==conf){showToast('Passwords do not match');return;}
+  creds.pass=nw;localStorage.setItem(CKEY,JSON.stringify(creds));
+  addActivity('Password changed','edit');
+  ['s-cur','s-new','s-conf'].forEach(id=>document.getElementById(id).value='');
+  const ok=document.getElementById('pass-ok');ok.classList.add('show');setTimeout(()=>ok.classList.remove('show'),3000);
+  showToast('Password updated');
+}
+
+/* ── Toast ── */
+let _tt;
+function showToast(msg){
+  const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');
+  clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2800);
+}
+
+/* ── Decorative canvas (login left panel) ── */
+(function(){
+  const cv=document.getElementById('deco-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');let W=0,H=0;
+  function resize(){const r=cv.getBoundingClientRect();if(!r.width)return;const dpr=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+  window.addEventListener('resize',resize,{passive:true});
+  const nodes=Array.from({length:22},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.0004,vy:(Math.random()-.5)*.0004}));
+  function isDark(){return document.documentElement.dataset.theme!=='light';}
+  function ln(a){return isDark()?`rgba(255,255,255,${a})`:`rgba(0,0,0,${a})`;}
+  function frame(){
+    if(!W||!H){requestAnimationFrame(frame);return;}
+    ctx.clearRect(0,0,W,H);
+    nodes.forEach(n=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>1)n.vx*=-1;if(n.y<0||n.y>1)n.vy*=-1;});
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const dx=(nodes[i].x-nodes[j].x)*W,dy=(nodes[i].y-nodes[j].y)*H,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<160){ctx.strokeStyle=ln((1-d/160)*.12);ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(nodes[i].x*W,nodes[i].y*H);ctx.lineTo(nodes[j].x*W,nodes[j].y*H);ctx.stroke();}
+    }
+    nodes.forEach(n=>{ctx.beginPath();ctx.arc(n.x*W,n.y*H,1.8,0,Math.PI*2);ctx.fillStyle=ln(.18);ctx.fill();});
+    requestAnimationFrame(frame);
+  }
+  resize();frame();
+})();
+
+/* ── Boot ── */
+boot();
+</script>
+</body>
+</html>
