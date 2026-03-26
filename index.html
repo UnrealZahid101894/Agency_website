@@ -164,6 +164,58 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 /* .hero-scroll span{font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text3)} */
 @keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 
+/* ── TECH STACK MARQUEE ── */
+.tech-mq {
+  padding: 18px 0;
+  overflow: hidden;
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transition: background .5s, border-color .5s;
+}
+.tech-mq-t {
+  display: flex;
+  animation: mqAnim 32s linear infinite reverse;
+  width: max-content;
+  align-items: center;
+  gap: 0;
+}
+.tech-mq-t:hover { animation-play-state: paused; }
+.tech-mq-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 0 36px;
+  border-right: 1px solid var(--border);
+  cursor: default;
+  transition: border-color .5s;
+}
+.tech-mq-item:last-child { border-right: none; }
+.tech-mq-icon {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .45;
+  transition: opacity .25s;
+  flex-shrink: 0;
+}
+.tech-mq-item:hover .tech-mq-icon { opacity: .9; }
+.tech-mq-icon svg { width: 28px; height: 28px; display: block; }
+.tech-mq-label {
+  font-family: var(--fb);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  white-space: nowrap;
+  transition: color .25s;
+}
+.tech-mq-item:hover .tech-mq-label { color: var(--text2); }
+
 /* ── MARQUEE ── */
 .mq{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;background:var(--bg2);transition:background .5s,border-color .5s}
 .mq-t{display:flex;animation:mqAnim 28s linear infinite;width:max-content}
@@ -173,6 +225,270 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 .mq-i:hover{color:var(--text2)}
 .mq-i:hover .mq-dot{background:var(--text2)}
 .mq-dot{width:4px;height:4px;border-radius:50%;background:var(--text3);flex-shrink:0;transition:background .2s}
+
+/* ── SERVICES SWITCHER ── */
+.svc-switcher {
+  background: var(--bg);
+  transition: background .5s, border-color .5s;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── TAB ROW ── */
+.svc-tabs-wrap {
+  background: var(--bg);
+  transition: background .5s, border-color .5s;
+  position: relative;
+  z-index: 2;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 24px 40px 0;
+}
+.svc-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.svc-tabs {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  min-width: 480px;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  background: var(--bg2);
+}
+
+.svc-tab {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 32px 28px 28px;
+  background: none;
+  border: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: background .3s;
+}
+.svc-tab:last-child { border-right: none; }
+.svc-tab:hover { background: var(--bg3); }
+
+.svc-tab-num {
+  font-family: var(--fb);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  color: var(--text3);
+  transition: color .3s;
+  line-height: 1;
+}
+
+.svc-tab-label {
+  font-family: var(--fd);
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+  color: var(--text2);
+  transition: color .3s;
+}
+
+/* arrow becomes a small inline chip on hover/active */
+.svc-tab-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 13px;
+  color: var(--text3);
+  border: 1px solid var(--border);
+  margin-top: 10px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .3s, transform .3s var(--sp), background .2s, border-color .2s, color .2s;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+.svc-tab:hover .svc-tab-arrow,
+.svc-tab.active .svc-tab-arrow {
+  opacity: 1;
+  transform: none;
+}
+.svc-tab.active .svc-tab-arrow {
+  background: var(--inv);
+  border-color: var(--inv);
+  color: var(--inv2);
+}
+
+.svc-tab.active .svc-tab-num { color: var(--text2); }
+.svc-tab.active .svc-tab-label { color: var(--text); }
+
+/* animated bottom bar */
+.svc-tab-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--inv);
+  transition: width .5s cubic-bezier(.16,1,.3,1), background .5s;
+}
+.svc-tab.active .svc-tab-bar { width: 100%; }
+
+/* ── PANELS ── */
+.svc-panels {
+  position: relative;
+  overflow: hidden;
+}
+.svc-panel {
+  display: none;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);
+}
+.svc-panel.active { display: block; }
+.svc-panel.visible { opacity: 1; transform: none; }
+
+/* ── PANEL INNER LAYOUT ── */
+.svc-panel .svc-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px;
+  align-items: center;
+  padding: 96px 0 96px;
+}
+.svc-panel .svc-title {
+  font-family: var(--fd);
+  font-size: clamp(32px, 4.5vw, 60px);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  line-height: 1.05;
+  color: var(--text);
+  margin-bottom: 16px;
+  transition: color .5s;
+}
+.svc-panel .svc-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.95;
+  max-width: 400px;
+  margin-bottom: 28px;
+  transition: color .5s;
+}
+.svc-panel .svc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 34px;
+}
+.svc-panel .svc-list li {
+  font-size: 13px;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: color .5s;
+}
+.svc-panel .svc-list li::before {
+  content: '→';
+  color: var(--text3);
+  font-size: 11px;
+  transition: color .5s;
+  flex-shrink: 0;
+}
+.svc-panel .svc-eyebrow { margin-bottom: 16px; }
+
+/* ── PANEL BACKGROUNDS ── */
+.svc-panel[data-panel="video"] {
+  position: relative;
+}
+.svc-panel[data-panel="video"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--svc-dot) 1px, transparent 1px);
+  background-size: 32px 32px;
+  z-index: 0;
+}
+[data-theme="dark"]  .svc-panel[data-panel="video"] { --svc-dot: rgba(255,255,255,.1); background: var(--bg); }
+[data-theme="light"] .svc-panel[data-panel="video"] { --svc-dot: rgba(0,0,0,.08);       background: var(--bg); }
+.svc-panel[data-panel="video"] .wrap { position: relative; z-index: 2; }
+
+.svc-panel[data-panel="motion"] {
+  position: relative;
+}
+.svc-panel[data-panel="motion"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--svc-dot-m) 1px, transparent 1px);
+  background-size: 32px 32px;
+  z-index: 0;
+}
+[data-theme="dark"]  .svc-panel[data-panel="motion"] { --svc-dot-m: rgba(255,255,255,.1); background: var(--bg); }
+[data-theme="light"] .svc-panel[data-panel="motion"] { --svc-dot-m: rgba(0,0,0,.08);       background: var(--bg); }
+.svc-panel[data-panel="motion"] .wrap { position: relative; z-index: 2; }
+
+.svc-panel[data-panel="web"] {
+  position: relative;
+}
+.svc-panel[data-panel="web"]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--svc-dot-w) 1px, transparent 1px);
+  background-size: 32px 32px;
+  z-index: 0;
+}
+[data-theme="dark"]  .svc-panel[data-panel="web"] { --svc-dot-w: rgba(255,255,255,.1); background: var(--bg); }
+[data-theme="light"] .svc-panel[data-panel="web"] { --svc-dot-w: rgba(0,0,0,.08);       background: var(--bg); }
+.svc-panel[data-panel="web"] .wrap { position: relative; z-index: 2; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px) {
+  .svc-tabs { padding: 0 20px; min-width: 360px; }
+  .svc-tab { padding: 24px 18px 20px; }
+  .svc-panel .svc-inner { grid-template-columns: 1fr; gap: 0; padding: 56px 0 48px; }
+  .svc-panel .svc-vis { display: none; }
+}
+@media(max-width:600px) {
+  .svc-tabs-wrap { padding: 16px 20px 0; }
+  .svc-tabs {
+    grid-template-columns: repeat(3,1fr);
+    min-width: unset;
+    width: 100%;
+  }
+  .svc-tab {
+    padding: 20px 14px 18px;
+    gap: 5px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .svc-tab:last-child { border-right: none; }
+  .svc-tab-num {
+    font-size: 9px;
+    letter-spacing: .1em;
+  }
+  .svc-tab-label {
+    font-size: 15px;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+  }
+  .svc-tab-arrow { display: none; }
+  .svc-panel .svc-inner { padding: 44px 0 40px; gap: 0; }
+  .svc-panel .svc-title { font-size: clamp(28px, 8vw, 38px); }
+}
+
 
 /* ── SERVICE SECTIONS ── */
 .svc{padding:120px 0;position:relative;overflow:hidden;border-top:1px solid var(--border);transition:background .5s,border-color .5s}
@@ -1167,45 +1483,7 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 
 
 
-/* ── PRICING ── */
-.pricing-section{padding:140px 0;border-top:1px solid var(--border);background:var(--bg2);transition:background .5s,border-color .5s}
-.pr-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:64px}
-.pr-title{font-family:var(--fd);font-size:clamp(36px,5.5vw,72px);font-weight:700;letter-spacing:-.035em;line-height:1;color:var(--text);margin-top:14px;transition:color .5s}
-.pr-sub{font-size:14px;color:var(--text2);line-height:1.9;transition:color .5s}
-.pr-list{border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .5s}
-.pr-row{display:grid;grid-template-columns:2fr 2fr 1.2fr;gap:0;border-bottom:1px solid var(--border);padding:32px 36px;align-items:center;transition:background .25s,border-color .5s;cursor:default;position:relative;overflow:hidden}
-.pr-row:last-child{border-bottom:none}
-.pr-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:background .25s}
-.pr-row:hover{background:var(--bg3)}
-.pr-row:hover::before{background:var(--text)}
-.pr-row:hover .pr-row-name{color:var(--text)}
-.pr-row-left{display:flex;align-items:flex-start;gap:22px}
-.pr-row-index{font-family:var(--fd);font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.1em;flex-shrink:0;padding-top:3px;min-width:28px;transition:color .5s}
-.pr-row-name{font-family:var(--fd);font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--text2);margin-bottom:7px;transition:color .25s}
-.pr-row-desc{font-size:13px;color:var(--text3);line-height:1.75;max-width:280px;transition:color .5s}
-.pr-row-mid{padding:0 24px}
-.pr-feat-list{display:flex;flex-direction:column;gap:5px}
-.pr-feat-list span{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:8px;letter-spacing:.02em;line-height:1.6;transition:color .5s}
-.pr-feat-list span::before{content:'—';opacity:.35;font-size:10px;flex-shrink:0}
-.pr-row-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
-.pr-price{display:flex;align-items:baseline;gap:6px;flex-direction:column;text-align:right}
-.pr-from{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;line-height:1;transition:color .5s}
-.pr-amt{font-family:var(--fd);font-size:36px;font-weight:700;letter-spacing:-.04em;color:var(--text);line-height:1;transition:color .5s}
-.pr-cta{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border2);border-radius:99px;transition:transform .22s var(--sp),border-color .2s,color .2s,background .2s;white-space:nowrap}
-.pr-cta:hover{color:var(--inv2);border-color:var(--inv);transform:translateX(-3px);background:var(--inv)}
-.pr-arrow{transition:transform .22s var(--sp);display:inline-block}
-.pr-cta:hover .pr-arrow{transform:translateX(4px)}
-.pr-row-bundle{background:var(--bg3)}
-.pr-row-bundle::before{background:var(--text);opacity:.2}
-.pr-row-bundle:hover::before{opacity:1}
-.pr-bundle-tag{color:var(--text);font-size:14px}
-.pr-badge{display:inline-flex;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;background:var(--inv);color:var(--inv2);border-radius:99px;margin-left:10px;vertical-align:middle;transition:background .5s,color .5s}
-.pr-cta-bundle{background:var(--inv);color:var(--inv2);border-color:var(--inv);border-radius:99px}
-.pr-cta-bundle:hover{background:transparent;color:var(--text);border-color:var(--text);transform:translateX(-3px)}
-.pr-footer{display:flex;align-items:center;justify-content:space-between;margin-top:24px;padding:0 4px;flex-wrap:wrap;gap:12px}
-.pr-footer>span{font-size:11px;color:var(--text3);letter-spacing:.03em;transition:color .5s}
-.pr-custom-link{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text2);text-decoration:none;transition:color .15s}
-.pr-custom-link:hover{color:var(--text)}
+
 
 /* ── FOOTER ── */
 footer{border-top:1px solid var(--border);background:var(--bg2);transition:background .5s,border-color .5s;overflow:hidden;position:relative}
@@ -1395,7 +1673,6 @@ section.svc:has(.vid-vis) .wrap {
   <a href="#services" onclick="cmn()">Services</a>
   <a href="#projects" onclick="cmn()">Projects</a>
   <a href="#team" onclick="cmn()">Team</a>
-  <a href="#pricing" onclick="cmn()">Pricing</a>
   <a href="#contact" onclick="cmn()">Contact</a>
 </div>
 
@@ -1406,7 +1683,6 @@ section.svc:has(.vid-vis) .wrap {
       <li><a href="#services">Services</a></li>
       <li><a href="#projects">Work</a></li>
       <li><a href="#team">Team</a></li>
-      <li><a href="#pricing">Pricing</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-r">
@@ -1766,345 +2042,442 @@ section.svc:has(.vid-vis) .wrap {
 })();
 </script>
 
-<!-- MARQUEE -->
-<div class="mq" aria-label="Services we offer">
-  <div class="mq-t">
-    <div class="mq-i"><span class="mq-dot"></span>Video Editing</div>
-    <div class="mq-i"><span class="mq-dot"></span>Motion Graphics</div>
-    <div class="mq-i"><span class="mq-dot"></span>Web Design</div>
-    <div class="mq-i"><span class="mq-dot"></span>Colour Grading</div>
-    <div class="mq-i"><span class="mq-dot"></span>Brand Films</div>
-    <div class="mq-i"><span class="mq-dot"></span>UI Animation</div>
-    <div class="mq-i"><span class="mq-dot"></span>Reels &amp; Shorts</div>
-    <div class="mq-i"><span class="mq-dot"></span>E-Commerce</div>
-    <div class="mq-i"><span class="mq-dot"></span>Sound Design</div>
-    <div class="mq-i"><span class="mq-dot"></span>3D Motion</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Video Editing</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Motion Graphics</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Web Design</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Colour Grading</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Brand Films</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>UI Animation</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Reels &amp; Shorts</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>E-Commerce</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Sound Design</div>
-    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>3D Motion</div>
+
+<!-- TECH STACK MARQUEE -->
+<div class="tech-mq" aria-label="Tools and technologies we use">
+  <div class="tech-mq-t">
+
+    <!-- SET 1 -->
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Premiere Pro -->
+          <rect width="28" height="28" rx="5" fill="var(--text)"/>
+          <text x="5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Pr</text>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Premiere</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- After Effects -->
+          <rect width="28" height="28" rx="5" fill="var(--text)"/>
+          <text x="4" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Ae</text>
+        </svg>
+      </div>
+      <span class="tech-mq-label">After Effects</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- DaVinci Resolve — stylised D -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="5" fill="var(--text)"/>
+          <path d="M8 7h5.5C17.09 7 20 9.91 20 14s-2.91 7-6.5 7H8V7z" fill="var(--bg)" stroke="none"/>
+          <path d="M11 10.5v7h2.2c2.1 0 3.8-1.57 3.8-3.5s-1.7-3.5-3.8-3.5H11z" fill="var(--text)" stroke="none"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">DaVinci</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Cinema 4D — C ring -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="5" fill="var(--text)"/>
+          <path d="M19.5 10.2A7 7 0 1 0 19.5 17.8" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Cinema 4D</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Audition — Au -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="5" fill="var(--text)"/>
+          <text x="3.5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Au</text>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Audition</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Figma — circles -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="2" width="8" height="8" rx="4" fill="var(--text)" opacity=".9"/>
+          <rect x="10" y="10" width="8" height="8" rx="0" fill="var(--text)" opacity=".65"/>
+          <rect x="10" y="18" width="8" height="8" rx="4" fill="var(--text)" opacity=".45"/>
+          <circle cx="22" cy="14" r="4" fill="var(--text)" opacity=".75"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Figma</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- React — atom -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--text)" stroke-width="1.5" fill="none"/>
+          <ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--text)" stroke-width="1.5" fill="none" transform="rotate(60 14 14)"/>
+          <ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--text)" stroke-width="1.5" fill="none" transform="rotate(120 14 14)"/>
+          <circle cx="14" cy="14" r="2" fill="var(--text)"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">React</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Next.js — N -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="14" cy="14" r="12" fill="var(--text)"/>
+          <path d="M9 19V9l12 13.5" stroke="var(--bg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 9h10" stroke="var(--bg)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Next.js</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Tailwind — swoosh -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 14c1-4 3.5-6 7-6-1 4-3.5 6-7 6zm7-6c1-4 3.5-6 7-6-1 4-3.5 6-7 6zm-7 6c1-4 3.5-6 7-6-1 4-3.5 6-7 6zm7 0c1-4 3.5-6 7-6-1 4-3.5 6-7 6z" fill="var(--text)" fill-rule="evenodd"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Tailwind</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Vercel — triangle -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 4L26 24H2L14 4z" fill="var(--text)"/>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Vercel</span>
+    </div>
+
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <!-- Node.js — hexagon -->
+        <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 2l11 6.5v11L14 26 3 19.5v-11L14 2z" stroke="var(--text)" stroke-width="1.6" fill="none"/>
+          <text x="9.5" y="19" font-family="sans-serif" font-size="9" font-weight="700" fill="var(--text)">JS</text>
+        </svg>
+      </div>
+      <span class="tech-mq-label">Node.js</span>
+    </div>
+
+    <!-- SET 2 — duplicate for seamless loop -->
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Pr</text></svg>
+      </div>
+      <span class="tech-mq-label">Premiere</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Ae</text></svg>
+      </div>
+      <span class="tech-mq-label">After Effects</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><path d="M8 7h5.5C17.09 7 20 9.91 20 14s-2.91 7-6.5 7H8V7z" fill="var(--bg)"/><path d="M11 10.5v7h2.2c2.1 0 3.8-1.57 3.8-3.5s-1.7-3.5-3.8-3.5H11z" fill="var(--text)"/></svg>
+      </div>
+      <span class="tech-mq-label">DaVinci</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><path d="M19.5 10.2A7 7 0 1 0 19.5 17.8" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+      </div>
+      <span class="tech-mq-label">Cinema 4D</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="3.5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Au</text></svg>
+      </div>
+      <span class="tech-mq-label">Audition</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><rect x="10" y="2" width="8" height="8" rx="4" fill="var(--text)" opacity=".9"/><rect x="10" y="10" width="8" height="8" rx="0" fill="var(--text)" opacity=".65"/><rect x="10" y="18" width="8" height="8" rx="4" fill="var(--text)" opacity=".45"/><circle cx="22" cy="14" r="4" fill="var(--text)" opacity=".75"/></svg>
+      </div>
+      <span class="tech-mq-label">Figma</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--text)" stroke-width="1.5" fill="none"/><ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--text)" stroke-width="1.5" fill="none" transform="rotate(60 14 14)"/><ellipse cx="14" cy="14" rx="11" ry="4.5" stroke="var(--text)" stroke-width="1.5" fill="none" transform="rotate(120 14 14)"/><circle cx="14" cy="14" r="2" fill="var(--text)"/></svg>
+      </div>
+      <span class="tech-mq-label">React</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" fill="var(--text)"/><path d="M9 19V9l12 13.5" stroke="var(--bg)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 9h10" stroke="var(--bg)" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <span class="tech-mq-label">Next.js</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M4 14c1-4 3.5-6 7-6-1 4-3.5 6-7 6zm7-6c1-4 3.5-6 7-6-1 4-3.5 6-7 6zm-7 6c1-4 3.5-6 7-6-1 4-3.5 6-7 6zm7 0c1-4 3.5-6 7-6-1 4-3.5 6-7 6z" fill="var(--text)" fill-rule="evenodd"/></svg>
+      </div>
+      <span class="tech-mq-label">Tailwind</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M14 4L26 24H2L14 4z" fill="var(--text)"/></svg>
+      </div>
+      <span class="tech-mq-label">Vercel</span>
+    </div>
+    <div class="tech-mq-item">
+      <div class="tech-mq-icon">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M14 2l11 6.5v11L14 26 3 19.5v-11L14 2z" stroke="var(--text)" stroke-width="1.6" fill="none"/><text x="9.5" y="19" font-family="sans-serif" font-size="9" font-weight="700" fill="var(--text)">JS</text></svg>
+      </div>
+      <span class="tech-mq-label">Node.js</span>
+    </div>
+
   </div>
 </div>
 
-<!-- SERVICE: VIDEO -->
-<section id="services" class="svc svc-v" aria-labelledby="svc-v-heading">
-  <div class="wrap">
-    <div class="svc-inner">
-      <div class="svc-text" style="position:relative;z-index:2">
-        <div class="svc-eyebrow"><span class="eyebrow reveal">01 — video editing</span></div>
-        <h2 class="svc-title reveal d1" id="svc-v-heading">Your footage,<br>done right.</h2>
-        <p class="svc-desc reveal d2">Whether it's a product demo, a brand film, or phone recordings — we turn it into something you're proud to share. Professional, polished, and ready for any platform.</p>
-        <ul class="svc-list reveal d3" aria-label="Video editing services">
-          <li>Brand and company profile films</li>
-          <li>Colour correction and grading</li>
-          <li>Sound design and audio cleanup</li>
-          <li>Instagram and YouTube Reels / Shorts</li>
-          <li>Interview and documentary editing</li>
-        </ul>
-        <a href="#projects" class="btn btn-ghost reveal d4">Demo →</a>
-      </div>
-      <!-- STATIC VIDEO MOCKUP -->
-      <!-- STATIC VIDEO MOCKUP -->
-<div class="svc-vis vid-vis reveal d1" aria-hidden="true">
-  <div class="vs-wrap">
+<!-- SERVICES SWITCHER -->
+<section id="services" class="svc-switcher" aria-labelledby="svc-switch-heading">
 
-    <!-- Preview window -->
-    <div class="vs-preview">
-      <div class="vs-tc">00:00:02:14</div>
-      <div class="vs-rec">REC</div>
+  <!-- TAB SELECTOR -->
+  <div class="svc-tabs-wrap">
+    <div class="svc-tabs" role="tablist" aria-label="Service categories">
 
-      <!-- Fake film frame -->
-      <div class="vs-frame">
-        <div class="vs-frame-inner">
-          <div class="vs-scene-bg"></div>
-          <div class="vs-scene-bars">
-            <div class="vs-bar vs-bar1"></div>
-            <div class="vs-bar vs-bar2"></div>
-            <div class="vs-bar vs-bar3"></div>
-          </div>
-          <div class="vs-overlay-text">BRAND FILM</div>
-          <div class="vs-safe-outer"></div>
-          <div class="vs-safe-inner"></div>
-        </div>
-      </div>
+      <button class="svc-tab active" data-svc="video" role="tab" aria-selected="true" aria-controls="svc-panel-video">
+        <span class="svc-tab-num">01</span>
+        <span class="svc-tab-label">Video<br>Editing</span>
+        <span class="svc-tab-arrow">↗</span>
+        <div class="svc-tab-bar"></div>
+      </button>
 
-      <!-- Scopes row -->
-      <div class="vs-scopes">
-        <div class="vs-scope">
-          <div class="vs-scope-label">LUM</div>
-          <div class="vs-scope-graph vs-scope-lum">
-            <span style="height:30%"></span><span style="height:55%"></span><span style="height:72%"></span><span style="height:88%"></span><span style="height:95%"></span><span style="height:82%"></span><span style="height:68%"></span><span style="height:50%"></span><span style="height:38%"></span><span style="height:24%"></span>
-          </div>
-        </div>
-        <div class="vs-scope">
-          <div class="vs-scope-label">RGB</div>
-          <div class="vs-scope-graph vs-scope-rgb">
-            <span class="vs-rgb-r" style="height:60%"></span><span class="vs-rgb-g" style="height:45%"></span><span class="vs-rgb-b" style="height:78%"></span><span class="vs-rgb-r" style="height:50%"></span><span class="vs-rgb-g" style="height:65%"></span><span class="vs-rgb-b" style="height:40%"></span><span class="vs-rgb-r" style="height:72%"></span><span class="vs-rgb-g" style="height:55%"></span><span class="vs-rgb-b" style="height:48%"></span><span class="vs-rgb-r" style="height:38%"></span>
-          </div>
-        </div>
-        <div class="vs-preview-meta">
-          <span>4K</span>
-          <span>24fps</span>
-          <span>H.264</span>
-        </div>
-      </div>
+      <button class="svc-tab" data-svc="motion" role="tab" aria-selected="false" aria-controls="svc-panel-motion">
+        <span class="svc-tab-num">02</span>
+        <span class="svc-tab-label">Motion<br>Graphics</span>
+        <span class="svc-tab-arrow">↗</span>
+        <div class="svc-tab-bar"></div>
+      </button>
+
+      <button class="svc-tab" data-svc="web" role="tab" aria-selected="false" aria-controls="svc-panel-web">
+        <span class="svc-tab-num">03</span>
+        <span class="svc-tab-label">Web<br>Design</span>
+        <span class="svc-tab-arrow">↗</span>
+        <div class="svc-tab-bar"></div>
+      </button>
+
     </div>
+  </div>
 
-    <!-- Timeline -->
-    <div class="vs-timeline">
+  <!-- PANELS -->
+  <div class="svc-panels">
 
-      <!-- Ruler -->
-      <div class="vs-ruler-row">
-        <div class="vs-tl-label-col"></div>
-        <div class="vs-ruler">
-          <span>1s</span><span>2s</span><span>3s</span><span>4s</span><span>5s</span><span>6s</span><span>7s</span>
-        </div>
-      </div>
-
-      <!-- V2 -->
-      <div class="vs-track-row">
-        <div class="vs-tl-label"><span class="vs-tl-eye">●</span>V2</div>
-        <div class="vs-tl-track">
-          <div class="vs-clip vs-clip-v" style="left:14%;width:38%">
-            <span class="vs-clip-name">B-roll 02</span>
-            <div class="vs-clip-thumb"></div>
+    <!-- VIDEO PANEL -->
+    <div class="svc-panel active" id="svc-panel-video" role="tabpanel" data-panel="video">
+      <div class="wrap">
+        <div class="svc-inner">
+          <div class="svc-text">
+            <div class="svc-eyebrow"><span class="eyebrow">01 — video editing</span></div>
+            <h2 class="svc-title" id="svc-v-heading">Your footage,<br>done right.</h2>
+            <p class="svc-desc">Whether it's a product demo, a brand film, or phone recordings — we turn it into something you're proud to share. Professional, polished, and ready for any platform.</p>
+            <ul class="svc-list" aria-label="Video editing services">
+              <li>Brand and company profile films</li>
+              <li>Colour correction and grading</li>
+              <li>Sound design and audio cleanup</li>
+              <li>Instagram and YouTube Reels / Shorts</li>
+              <li>Interview and documentary editing</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost">Get a quote →</a>
           </div>
-        </div>
-      </div>
-
-      <!-- V1 -->
-      <div class="vs-track-row vs-track-primary">
-        <div class="vs-tl-label"><span class="vs-tl-eye">●</span>V1</div>
-        <div class="vs-tl-track">
-          <div class="vs-clip vs-clip-v" style="left:0%;width:54%">
-            <span class="vs-clip-name">Main cam A</span>
-            <div class="vs-clip-thumb"></div>
-          </div>
-          <div class="vs-clip vs-clip-v" style="left:56%;width:38%">
-            <span class="vs-clip-name">Main cam B</span>
-            <div class="vs-clip-thumb"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- A1 -->
-      <div class="vs-track-row">
-        <div class="vs-tl-label"><span class="vs-tl-eye vs-tl-eye-a">●</span>A1</div>
-        <div class="vs-tl-track">
-          <div class="vs-clip vs-clip-a" style="left:0%;width:92%">
-            <div class="vs-waveform">
-              <span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:90%"></span><span style="height:60%"></span><span style="height:80%"></span><span style="height:45%"></span><span style="height:85%"></span><span style="height:55%"></span><span style="height:72%"></span><span style="height:48%"></span><span style="height:78%"></span><span style="height:62%"></span><span style="height:44%"></span><span style="height:75%"></span><span style="height:58%"></span><span style="height:88%"></span><span style="height:42%"></span><span style="height:65%"></span><span style="height:77%"></span>
+          <div class="svc-vis vid-vis" aria-hidden="true">
+            <div class="vs-preview">
+              <div class="vs-tc">00:00:02:14</div>
+              <div class="vs-rec">REC</div>
+              <div class="vs-frame">
+                <div class="vs-frame-inner">
+                  <div class="vs-scene-bg"></div>
+                  <div class="vs-scene-bars">
+                    <div class="vs-bar vs-bar1"></div>
+                    <div class="vs-bar vs-bar2"></div>
+                    <div class="vs-bar vs-bar3"></div>
+                  </div>
+                  <div class="vs-overlay-text">BRAND FILM</div>
+                  <div class="vs-safe-outer"></div>
+                  <div class="vs-safe-inner"></div>
+                </div>
+              </div>
+              <div class="vs-scopes">
+                <div class="vs-scope">
+                  <div class="vs-scope-label">LUM</div>
+                  <div class="vs-scope-graph vs-scope-lum">
+                    <span style="height:30%"></span><span style="height:55%"></span><span style="height:72%"></span><span style="height:88%"></span><span style="height:95%"></span><span style="height:82%"></span><span style="height:68%"></span><span style="height:50%"></span><span style="height:38%"></span><span style="height:24%"></span>
+                  </div>
+                </div>
+                <div class="vs-scope">
+                  <div class="vs-scope-label">RGB</div>
+                  <div class="vs-scope-graph vs-scope-rgb">
+                    <span class="vs-rgb-r" style="height:60%"></span><span class="vs-rgb-g" style="height:45%"></span><span class="vs-rgb-b" style="height:78%"></span><span class="vs-rgb-r" style="height:50%"></span><span class="vs-rgb-g" style="height:65%"></span><span class="vs-rgb-b" style="height:40%"></span><span class="vs-rgb-r" style="height:72%"></span><span class="vs-rgb-g" style="height:55%"></span><span class="vs-rgb-b" style="height:48%"></span><span class="vs-rgb-r" style="height:38%"></span>
+                  </div>
+                </div>
+                <div class="vs-preview-meta"><span>4K</span><span>24fps</span><span>H.264</span></div>
+              </div>
+            </div>
+            <div class="vs-timeline">
+              <div class="vs-ruler-row">
+                <div class="vs-tl-label-col"></div>
+                <div class="vs-ruler"><span>1s</span><span>2s</span><span>3s</span><span>4s</span><span>5s</span><span>6s</span><span>7s</span></div>
+              </div>
+              <div class="vs-track-row">
+                <div class="vs-tl-label"><span class="vs-tl-eye">●</span>V2</div>
+                <div class="vs-tl-track"><div class="vs-clip vs-clip-v" style="left:14%;width:38%"><span class="vs-clip-name">B-roll 02</span><div class="vs-clip-thumb"></div></div></div>
+              </div>
+              <div class="vs-track-row vs-track-primary">
+                <div class="vs-tl-label"><span class="vs-tl-eye">●</span>V1</div>
+                <div class="vs-tl-track">
+                  <div class="vs-clip vs-clip-v" style="left:0%;width:54%"><span class="vs-clip-name">Main cam A</span><div class="vs-clip-thumb"></div></div>
+                  <div class="vs-clip vs-clip-v" style="left:56%;width:38%"><span class="vs-clip-name">Main cam B</span><div class="vs-clip-thumb"></div></div>
+                </div>
+              </div>
+              <div class="vs-track-row">
+                <div class="vs-tl-label"><span class="vs-tl-eye vs-tl-eye-a">●</span>A1</div>
+                <div class="vs-tl-track"><div class="vs-clip vs-clip-a" style="left:0%;width:92%"><div class="vs-waveform"><span style="height:40%"></span><span style="height:70%"></span><span style="height:55%"></span><span style="height:90%"></span><span style="height:60%"></span><span style="height:80%"></span><span style="height:45%"></span><span style="height:85%"></span><span style="height:55%"></span><span style="height:72%"></span><span style="height:48%"></span><span style="height:78%"></span><span style="height:62%"></span><span style="height:44%"></span><span style="height:75%"></span><span style="height:58%"></span><span style="height:88%"></span><span style="height:42%"></span><span style="height:65%"></span><span style="height:77%"></span></div></div></div>
+              </div>
+              <div class="vs-track-row">
+                <div class="vs-tl-label"><span class="vs-tl-eye vs-tl-eye-a">●</span>A2</div>
+                <div class="vs-tl-track"><div class="vs-clip vs-clip-a vs-clip-a-dim" style="left:18%;width:55%"><div class="vs-waveform"><span style="height:28%"></span><span style="height:44%"></span><span style="height:60%"></span><span style="height:38%"></span><span style="height:52%"></span><span style="height:70%"></span><span style="height:34%"></span><span style="height:56%"></span><span style="height:42%"></span><span style="height:66%"></span><span style="height:30%"></span><span style="height:48%"></span><span style="height:62%"></span></div></div></div>
+              </div>
+              <div class="vs-playhead"></div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- A2 -->
-      <div class="vs-track-row">
-        <div class="vs-tl-label"><span class="vs-tl-eye vs-tl-eye-a">●</span>A2</div>
-        <div class="vs-tl-track">
-          <div class="vs-clip vs-clip-a vs-clip-a-dim" style="left:18%;width:55%">
-            <div class="vs-waveform">
-              <span style="height:28%"></span><span style="height:44%"></span><span style="height:60%"></span><span style="height:38%"></span><span style="height:52%"></span><span style="height:70%"></span><span style="height:34%"></span><span style="height:56%"></span><span style="height:42%"></span><span style="height:66%"></span><span style="height:30%"></span><span style="height:48%"></span><span style="height:62%"></span>
+    <!-- MOTION PANEL -->
+    <div class="svc-panel" id="svc-panel-motion" role="tabpanel" data-panel="motion">
+      <div class="wrap">
+        <div class="svc-inner">
+          <div class="svc-text">
+            <div class="svc-eyebrow"><span class="eyebrow">02 — motion graphics</span></div>
+            <h2 class="svc-title" id="svc-m-heading">Animations that<br>make you stand out.</h2>
+            <p class="svc-desc">A great logo animation or a clear explainer video makes your brand look established and worth trusting. Small details that make a big difference to how clients see you.</p>
+            <ul class="svc-list" aria-label="Motion graphics services">
+              <li>Logo and brand animations</li>
+              <li>Explainer and product videos</li>
+              <li>App and website UI animations</li>
+              <li>Text and typography animations</li>
+              <li>3D animations and visual effects</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost">Get a quote →</a>
+          </div>
+          <div class="svc-vis ae-vis" aria-hidden="true">
+            <div class="ae-bar">
+              <div class="ae-bar-dots"><span></span><span></span><span></span></div>
+              <div class="ae-bar-title">rendrx_logo_reveal.aep</div>
+              <div class="ae-bar-fps">24 fps</div>
+            </div>
+            <div class="ae-preview">
+              <div class="ae-comp">
+                <div class="ae-shape ae-s1"></div>
+                <div class="ae-shape ae-s2"></div>
+                <div class="ae-shape ae-s3"></div>
+                <div class="ae-text-reveal">
+                  <span class="ae-word ae-w1">RENDRX</span>
+                  <span class="ae-word ae-w2">STUDIO</span>
+                </div>
+                <div class="ae-line ae-l1"></div>
+                <div class="ae-line ae-l2"></div>
+              </div>
+              <div class="ae-preview-overlay">
+                <span class="ae-tc">00:00:02:14</span>
+                <span class="ae-res">1920×1080</span>
+              </div>
+            </div>
+            <div class="ae-timeline">
+              <div class="ae-tl-head-row">
+                <div class="ae-tl-label-col"></div>
+                <div class="ae-tl-ruler"><span>0s</span><span>1s</span><span>2s</span><span>3s</span><span>4s</span><span>5s</span></div>
+              </div>
+              <div class="ae-tl-row"><div class="ae-tl-label"><span class="ae-layer-icon">◆</span>Shape 01</div><div class="ae-tl-track"><div class="ae-tl-bar" style="left:0%;width:65%"></div></div></div>
+              <div class="ae-tl-row"><div class="ae-tl-label"><span class="ae-layer-icon">◆</span>Shape 02</div><div class="ae-tl-track"><div class="ae-tl-bar" style="left:8%;width:70%"></div></div></div>
+              <div class="ae-tl-row"><div class="ae-tl-label"><span class="ae-layer-icon ae-layer-t">T</span>Text 01</div><div class="ae-tl-track"><div class="ae-tl-bar ae-bar-text" style="left:18%;width:62%"></div></div></div>
+              <div class="ae-tl-row"><div class="ae-tl-label"><span class="ae-layer-icon ae-layer-t">T</span>Text 02</div><div class="ae-tl-track"><div class="ae-tl-bar ae-bar-text" style="left:24%;width:55%"></div></div></div>
+              <div class="ae-tl-row"><div class="ae-tl-label"><span class="ae-layer-icon ae-layer-a">♪</span>Audio</div><div class="ae-tl-track"><div class="ae-tl-bar ae-bar-audio" style="left:0%;width:90%"></div></div></div>
+              <div class="ae-playhead"></div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- Playhead -->
-      <div class="vs-playhead"></div>
     </div>
 
-  </div>
-</div>
-</section>
-
-<!-- SERVICE: MOTION -->
-<section class="svc svc-m" aria-labelledby="svc-m-heading">
-  <div class="wrap">
-    <div class="svc-inner flip">
-      <div class="svc-text" style="position:relative;z-index:2">
-        <div class="svc-eyebrow"><span class="eyebrow reveal">02 — motion graphics</span></div>
-        <h2 class="svc-title reveal d1" id="svc-m-heading">Animations that<br>make you stand out.</h2>
-        <p class="svc-desc reveal d2">A great logo animation or a clear explainer video makes your brand look established and worth trusting. Small details that make a big difference to how clients see you.</p>
-        <ul class="svc-list reveal d3" aria-label="Motion graphics services">
-          <li>Logo and brand animations</li>
-          <li>Explainer and product videos</li>
-          <li>App and website UI animations</li>
-          <li>Text and typography animations</li>
-          <li>3D animations and visual effects</li>
-        </ul>
-        <a href="#projects" class="btn btn-ghost reveal d4">Demo →</a>
-      </div>
-
-      <!-- STATIC MOTION MOCKUP -->
-      <!-- MOTION MOCKUP: AE-style comp window -->
-<div class="svc-vis ae-vis reveal" aria-hidden="true">
-
-  <!-- Title bar -->
-  <div class="ae-bar">
-    <div class="ae-bar-dots"><span></span><span></span><span></span></div>
-    <div class="ae-bar-title">rendrx_logo_reveal.aep</div>
-    <div class="ae-bar-fps">24 fps</div>
-  </div>
-
-  <!-- Composition preview -->
-  <div class="ae-preview">
-    <div class="ae-comp">
-      <!-- Animated geometric logo reveal -->
-      <div class="ae-shape ae-s1"></div>
-      <div class="ae-shape ae-s2"></div>
-      <div class="ae-shape ae-s3"></div>
-      <div class="ae-text-reveal">
-        <span class="ae-word ae-w1">RENDRX</span>
-        <span class="ae-word ae-w2">STUDIO</span>
-      </div>
-      <div class="ae-line ae-l1"></div>
-      <div class="ae-line ae-l2"></div>
-    </div>
-    <div class="ae-preview-overlay">
-      <span class="ae-tc">00:00:02:14</span>
-      <span class="ae-res">1920×1080</span>
-    </div>
-  </div>
-
-  <!-- Timeline -->
-  <div class="ae-timeline">
-    <div class="ae-tl-head-row">
-      <div class="ae-tl-label-col"></div>
-      <div class="ae-tl-ruler">
-        <span>0s</span><span>1s</span><span>2s</span><span>3s</span><span>4s</span><span>5s</span>
-      </div>
-    </div>
-    <div class="ae-tl-row">
-      <div class="ae-tl-label"><span class="ae-layer-icon">◆</span>Shape 01</div>
-      <div class="ae-tl-track"><div class="ae-tl-bar" style="left:0%;width:65%"></div></div>
-    </div>
-    <div class="ae-tl-row">
-      <div class="ae-tl-label"><span class="ae-layer-icon">◆</span>Shape 02</div>
-      <div class="ae-tl-track"><div class="ae-tl-bar" style="left:8%;width:70%"></div></div>
-    </div>
-    <div class="ae-tl-row">
-      <div class="ae-tl-label"><span class="ae-layer-icon ae-layer-t">T</span>Text 01</div>
-      <div class="ae-tl-track"><div class="ae-tl-bar ae-bar-text" style="left:18%;width:62%"></div></div>
-    </div>
-    <div class="ae-tl-row">
-      <div class="ae-tl-label"><span class="ae-layer-icon ae-layer-t">T</span>Text 02</div>
-      <div class="ae-tl-track"><div class="ae-tl-bar ae-bar-text" style="left:24%;width:55%"></div></div>
-    </div>
-    <div class="ae-tl-row">
-      <div class="ae-tl-label"><span class="ae-layer-icon ae-layer-a">♪</span>Audio</div>
-      <div class="ae-tl-track"><div class="ae-tl-bar ae-bar-audio" style="left:0%;width:90%"></div></div>
-    </div>
-    <!-- Playhead -->
-    <div class="ae-playhead"></div>
-  </div>
-
-</div>
-</section>
-
-<!-- SERVICE: WEB -->
-<section class="svc svc-w" aria-labelledby="svc-w-heading">
-  <div class="wrap">
-    <div class="svc-inner">
-      <div class="svc-text" style="position:relative;z-index:2">
-        <div class="svc-eyebrow"><span class="eyebrow reveal">03 — web design</span></div>
-        <h2 class="svc-title reveal d1" id="svc-w-heading">A website that<br>brings in clients.</h2>
-        <p class="svc-desc reveal d2">Most business websites look fine but don't do anything. We build sites that are fast, easy to use, and designed to turn visitors into paying customers — without the technical headache.</p>
-        <ul class="svc-list reveal d3" aria-label="Web design services">
-          <li>Business and portfolio websites</li>
-          <li>Online shops and Shopify stores</li>
-          <li>Product and service landing pages</li>
-          <li>Design mockups and prototypes</li>
-          <li>Custom-built — no page-builder limits</li>
-        </ul>
-        <a href="#projects" class="btn btn-ghost reveal d4">Demo →</a>
-      </div>
-      <!-- STATIC WEB MOCKUP -->
-     <!-- STATIC WEB MOCKUP -->
-<div class="svc-vis web-vis reveal d1" aria-hidden="true">
-  <div class="wb-bar">
-    <div class="wb-dots"><span></span><span></span><span></span></div>
-    <div class="wb-url">rendrx-client.vercel.app</div>
-    <div class="wb-bar-actions">
-      <div class="wb-action"><div class="wb-action-icon"></div></div>
-    </div>
-    <div class="wb-progress"></div>
-  </div>
-  <div class="wb-body">
-    <div class="ws-wrap">
-      <div class="ws-hero-section">
-        <div class="ws-nav-bar">
-          <div class="ws-logo-block">
-            <div class="ws-logo-sq"></div>
-            <div class="ws-logo-text"></div>
+    <!-- WEB PANEL -->
+    <div class="svc-panel" id="svc-panel-web" role="tabpanel" data-panel="web">
+      <div class="wrap">
+        <div class="svc-inner">
+          <div class="svc-text">
+            <div class="svc-eyebrow"><span class="eyebrow">03 — web design</span></div>
+            <h2 class="svc-title" id="svc-w-heading">A website that<br>brings in clients.</h2>
+            <p class="svc-desc">Most business websites look fine but don't do anything. We build sites that are fast, easy to use, and designed to turn visitors into paying customers — without the technical headache.</p>
+            <ul class="svc-list" aria-label="Web design services">
+              <li>Business and portfolio websites</li>
+              <li>Online shops and Shopify stores</li>
+              <li>Product and service landing pages</li>
+              <li>Design mockups and prototypes</li>
+              <li>Custom-built — no page-builder limits</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost">Get a quote →</a>
           </div>
-          <div class="ws-nav-links">
-            <div class="ws-nav-link" style="width:26px"></div>
-            <div class="ws-nav-link" style="width:30px"></div>
-            <div class="ws-nav-link" style="width:22px"></div>
+          <div class="svc-vis web-vis" aria-hidden="true">
+            <div class="wb-bar">
+              <div class="wb-dots"><span></span><span></span><span></span></div>
+              <div class="wb-url">rendrx-client.vercel.app</div>
+              <div class="wb-bar-actions"><div class="wb-action"><div class="wb-action-icon"></div></div></div>
+              <div class="wb-progress"></div>
+            </div>
+            <div class="wb-body">
+              <div class="ws-wrap">
+                <div class="ws-hero-section">
+                  <div class="ws-nav-bar">
+                    <div class="ws-logo-block"><div class="ws-logo-sq"></div><div class="ws-logo-text"></div></div>
+                    <div class="ws-nav-links"><div class="ws-nav-link" style="width:26px"></div><div class="ws-nav-link" style="width:30px"></div><div class="ws-nav-link" style="width:22px"></div></div>
+                    <div class="ws-nav-cta"></div>
+                  </div>
+                  <div class="ws-headline"><div class="ws-h-line lg"></div><div class="ws-h-line md ws-typed"></div></div>
+                  <div class="ws-sub"><div class="ws-s-line full"></div><div class="ws-s-line wide"></div><div class="ws-s-line mid"></div></div>
+                  <div class="ws-ctas"><div class="ws-cta-primary ws-cta-glow"></div><div class="ws-cta-secondary"></div></div>
+                </div>
+                <div class="ws-cards-section">
+                  <div class="ws-card"><div class="ws-card-icon"></div><div class="ws-card-title"></div><div class="ws-card-body"></div><div class="ws-card-body2"></div></div>
+                  <div class="ws-card ws-card-selected"><div class="ws-card-icon"></div><div class="ws-card-title"></div><div class="ws-card-body"></div><div class="ws-card-body2"></div><div class="ws-card-sel-ring"></div></div>
+                  <div class="ws-card"><div class="ws-card-icon"></div><div class="ws-card-title"></div><div class="ws-card-body"></div><div class="ws-card-body2"></div></div>
+                </div>
+                <div class="ws-lighthouse">
+                  <div class="ws-lh-score ws-lh-green"><span>98</span><small>Perf</small></div>
+                  <div class="ws-lh-score ws-lh-green"><span>100</span><small>SEO</small></div>
+                  <div class="ws-lh-score ws-lh-green"><span>95</span><small>A11y</small></div>
+                  <div class="ws-lh-score ws-lh-amber"><span>87</span><small>BP</small></div>
+                  <div class="ws-lh-bar-wrap"><div class="ws-lh-bar"></div></div>
+                </div>
+              </div>
+              <div class="ws-cursor"></div>
+              <div class="ws-inspect"><span class="ws-inspect-tag">div.ws-card</span><span class="ws-inspect-dim">280×96</span></div>
+            </div>
           </div>
-          <div class="ws-nav-cta"></div>
-        </div>
-        <div class="ws-headline">
-          <div class="ws-h-line lg"></div>
-          <div class="ws-h-line md ws-typed"></div>
-        </div>
-        <div class="ws-sub">
-          <div class="ws-s-line full"></div>
-          <div class="ws-s-line wide"></div>
-          <div class="ws-s-line mid"></div>
-        </div>
-        <div class="ws-ctas">
-          <div class="ws-cta-primary ws-cta-glow"></div>
-          <div class="ws-cta-secondary"></div>
-        </div>
-      </div>
-      <div class="ws-cards-section">
-        <div class="ws-card">
-          <div class="ws-card-icon"></div>
-          <div class="ws-card-title"></div>
-          <div class="ws-card-body"></div>
-          <div class="ws-card-body2"></div>
-        </div>
-        <div class="ws-card ws-card-selected">
-          <div class="ws-card-icon"></div>
-          <div class="ws-card-title"></div>
-          <div class="ws-card-body"></div>
-          <div class="ws-card-body2"></div>
-          <div class="ws-card-sel-ring"></div>
-        </div>
-        <div class="ws-card">
-          <div class="ws-card-icon"></div>
-          <div class="ws-card-title"></div>
-          <div class="ws-card-body"></div>
-          <div class="ws-card-body2"></div>
-        </div>
-      </div>
-      <!-- Lighthouse scores -->
-      <div class="ws-lighthouse">
-        <div class="ws-lh-score ws-lh-green"><span>98</span><small>Perf</small></div>
-        <div class="ws-lh-score ws-lh-green"><span>100</span><small>SEO</small></div>
-        <div class="ws-lh-score ws-lh-green"><span>95</span><small>A11y</small></div>
-        <div class="ws-lh-score ws-lh-amber"><span>87</span><small>BP</small></div>
-        <div class="ws-lh-bar-wrap">
-          <div class="ws-lh-bar"></div>
         </div>
       </div>
     </div>
-    <!-- Fake cursor -->
-    <div class="ws-cursor"></div>
-    <!-- Inspect badge -->
-    <div class="ws-inspect"><span class="ws-inspect-tag">div.ws-card</span><span class="ws-inspect-dim">280×96</span></div>
-  </div>
-</div>
+
+  </div><!-- /svc-panels -->
 </section>
+
+
+
 
 <section id="projects" class="proj-section" aria-labelledby="proj-heading">
   <div class="wrap">
@@ -2190,19 +2563,6 @@ section.svc:has(.vid-vis) .wrap {
 })();
 </script>
 
-<!-- STATS -->
-<section id="stats" class="stats" aria-labelledby="stats-heading">
-  <div class="stats-shimmer" aria-hidden="true"></div>
-  <h2 id="stats-heading" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Studio statistics</h2>
-  <div class="wrap" style="padding:0">
-    <div class="stats-grid">
-      <div class="stat reveal"><div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div><div class="stat-n"><span class="cnt" data-n="80">0</span><sup>+</sup></div><div class="stat-l">Projects Delivered</div></div>
-      <div class="stat reveal d1"><div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="stat-n"><span class="cnt" data-n="4">0</span><sup>yr</sup></div><div class="stat-l">Years in Business</div></div>
-      <div class="stat reveal d2"><div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="stat-n"><span class="cnt" data-n="50">0</span><sup>+</sup></div><div class="stat-l">Happy Clients</div></div>
-      <div class="stat reveal d3"><div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="stat-n"><span class="cnt" data-n="100">0</span><sup>%</sup></div><div class="stat-l">On-Time Delivery</div></div>
-    </div>
-  </div>
-</section>
 
 <!-- PROCESS -->
 <section id="process" class="proc" aria-labelledby="proc-heading">
@@ -2292,22 +2652,6 @@ section.svc:has(.vid-vis) .wrap {
   </div>
 </section>
 
-<!-- PRICING -->
-<section id="pricing" class="pricing-section" aria-labelledby="pricing-heading">
-  <div class="wrap">
-    <div class="pr-head">
-      <div><span class="eyebrow reveal">what it costs</span><h2 class="pr-title reveal d1" id="pricing-heading">Straightforward<br>pricing.</h2></div>
-      <p class="pr-sub reveal d2">Flat rates with nothing hidden. No hourly billing, no surprise charges for revisions. You pay once and own everything.</p>
-    </div>
-    <div class="pr-list" role="list">
-      <div class="pr-row reveal" role="listitem" tabindex="0"><div class="pr-row-left"><div class="pr-row-index" aria-hidden="true">01</div><div><div class="pr-row-name">Video Editing</div><div class="pr-row-desc">Your footage, professionally edited and ready to post — colour corrected, sound cleaned up, delivered on time.</div></div></div><div class="pr-row-mid"><div class="pr-feat-list"><span>Brand and company films</span><span>Social reels and short videos</span><span>Colour correction and grading</span><span>Sound cleanup and music</span><span>2 rounds of revisions</span></div></div><div class="pr-row-right"><div class="pr-price"><span class="pr-from">from</span><span class="pr-amt">$299</span></div><a href="#contact" class="pr-cta">Get started <span class="pr-arrow">→</span></a></div></div>
-      <div class="pr-row reveal d1" role="listitem" tabindex="0"><div class="pr-row-left"><div class="pr-row-index" aria-hidden="true">02</div><div><div class="pr-row-name">Motion Graphics</div><div class="pr-row-desc">Animations that make your brand look polished — whether it's a logo reveal or a full explainer video.</div></div></div><div class="pr-row-mid"><div class="pr-feat-list"><span>Logo and brand animations</span><span>Explainer videos</span><span>App and website animations</span><span>Text animations</span><span>3D animations</span></div></div><div class="pr-row-right"><div class="pr-price"><span class="pr-from">from</span><span class="pr-amt">$399</span></div><a href="#contact" class="pr-cta">Get started <span class="pr-arrow">→</span></a></div></div>
-      <div class="pr-row reveal d2" role="listitem" tabindex="0"><div class="pr-row-left"><div class="pr-row-index" aria-hidden="true">03</div><div><div class="pr-row-name">Web Design</div><div class="pr-row-desc">A website that loads fast, looks great on mobile, and is built to bring you enquiries — not just look nice.</div></div></div><div class="pr-row-mid"><div class="pr-feat-list"><span>Business and portfolio sites</span><span>Multi-page websites</span><span>Online shops</span><span>Domain and hosting setup</span><span>Video walkthrough on handover</span></div></div><div class="pr-row-right"><div class="pr-price"><span class="pr-from">from</span><span class="pr-amt">$499</span></div><a href="#contact" class="pr-cta">Get started <span class="pr-arrow">→</span></a></div></div>
-      <div class="pr-row pr-row-bundle reveal d3" role="listitem" tabindex="0"><div class="pr-row-left"><div class="pr-row-index pr-bundle-tag" aria-hidden="true">★</div><div><div class="pr-row-name">Full Bundle <span class="pr-badge">Best value</span></div><div class="pr-row-desc">All three services together. One brief, one team, everything built to work as a package.</div></div></div><div class="pr-row-mid"><div class="pr-feat-list"><span>Brand film + full edit</span><span>Logo animation</span><span>Complete website</span><span>Priority delivery</span><span>Free 1-month support</span></div></div><div class="pr-row-right"><div class="pr-price"><span class="pr-from">from</span><span class="pr-amt">$999</span></div><a href="#contact" class="pr-cta pr-cta-bundle">Get started <span class="pr-arrow">→</span></a></div></div>
-    </div>
-    <div class="pr-footer reveal"><span>All prices in USD &nbsp;·&nbsp; BDT/Taka accepted &nbsp;·&nbsp; 50% upfront &nbsp;·&nbsp; cancel anytime</span><a href="#contact" class="pr-custom-link">Need something different? Let's talk →</a></div>
-  </div>
-</section>
 
 <!-- CTA -->
 <section id="contact" class="cta" aria-labelledby="cta-heading">
@@ -2321,7 +2665,33 @@ section.svc:has(.vid-vis) .wrap {
     <div class="cta-acts reveal d2"><a href="mailto:hello@rendrx.com" class="btn btn-fill btn-lg">Send a Brief</a><a href="https://wa.me/8801613699448" class="btn btn-ghost btn-lg">Book a Free Call →</a></div>
     <a href="mailto:hello@rendrx.com" class="cta-mail reveal d3">hello@rendrx.com</a>
   </div>
-</section>
+</section><!-- end #contact CTA -->
+
+<!-- MARQUEE -->
+<div class="mq" aria-label="Our capabilities">
+  <div class="mq-t">
+    <div class="mq-i"><span class="mq-dot"></span>Video Editing</div>
+    <div class="mq-i"><span class="mq-dot"></span>Motion Graphics</div>
+    <div class="mq-i"><span class="mq-dot"></span>Web Design</div>
+    <div class="mq-i"><span class="mq-dot"></span>Colour Grading</div>
+    <div class="mq-i"><span class="mq-dot"></span>Brand Films</div>
+    <div class="mq-i"><span class="mq-dot"></span>UI Animation</div>
+    <div class="mq-i"><span class="mq-dot"></span>Reels &amp; Shorts</div>
+    <div class="mq-i"><span class="mq-dot"></span>E-Commerce</div>
+    <div class="mq-i"><span class="mq-dot"></span>Sound Design</div>
+    <div class="mq-i"><span class="mq-dot"></span>3D Motion</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Video Editing</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Motion Graphics</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Web Design</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Colour Grading</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Brand Films</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>UI Animation</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Reels &amp; Shorts</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>E-Commerce</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>Sound Design</div>
+    <div class="mq-i" aria-hidden="true"><span class="mq-dot"></span>3D Motion</div>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
@@ -2345,7 +2715,8 @@ section.svc:has(.vid-vis) .wrap {
     </div>
     <div class="fg">
       <div><div class="fct">Services</div><ul class="fl" role="list"><li><a href="#services">Video Editing</a></li><li><a href="#services">Motion Graphics</a></li><li><a href="#services">Web Design</a></li><li><a href="#services">Brand Films</a></li></ul></div>
-      <div><div class="fct">Studio</div><ul class="fl" role="list"><li><a href="#projects">Our Work</a></li><li><a href="#team">Meet the Team</a></li><li><a href="#pricing">Pricing</a></li><li><a href="tel:+8801712345678">Get in Touch</a></li></ul></div>
+      <div><div class="fct">Studio</div><ul class="fl" role="list"><li><a href="#projects">Our 
+        Work</a></li><li><a href="#team">Meet the Team</a></li><li><a href="#pricing">Pricing</a></li><li><a href="tel:+8801712345678">Get in Touch</a></li></ul></div>
       <div><div class="fct">Legal</div><ul class="fl" role="list"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
       <div><div class="fct">Contact</div><ul class="fl" role="list"><li><a href="mailto:hello@rendrx.com">hello@rendrx.com</a></li><li><a href="https://wa.me/8801613699448" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="tel:+8801712345678">Book a free call</a></li></ul></div>
     </div>
@@ -2443,19 +2814,58 @@ setInterval(()=>{wIdx=(wIdx+1)%WORDS.length;scramble(WORDS[wIdx]);},3200);*/
   const obs=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting||done)return;done=true;const t0=performance.now(),dur=1400;(function tick(now){const p=Math.min((now-t0)/dur,1),ease=1-Math.pow(1-p,3);hfc.textContent=Math.round(ease*80)+'+';if(p<1)requestAnimationFrame(tick);})(performance.now());},{threshold:.5});
   obs.observe(hfc);
 })();
-
-// ── COUNTERS ─────────────────────────────────────────────
+// ── SERVICES SWITCHER ─────────────────────────────────
 (()=>{
-  const statsEl=document.getElementById('stats');if(!statsEl)return;let fired=false;
-  new IntersectionObserver(entries=>{if(!entries[0].isIntersecting||fired)return;fired=true;document.querySelectorAll('.cnt').forEach(el=>{const target=+el.dataset.n,dur=1800,t0=performance.now();const spring=t=>{const p=Math.min(t/dur,1);return 1-Math.pow(2,-10*p)*Math.cos(p*Math.PI*3.5);};(function tick(now){const v=Math.min(Math.max(spring(now-t0),0),1);el.textContent=Math.round(v*target);if(now-t0<dur+100)requestAnimationFrame(tick);else el.textContent=target;})(performance.now());});},{threshold:.3}).observe(statsEl);
+  const tabs = document.querySelectorAll('.svc-tab');
+  const panels = document.querySelectorAll('.svc-panel');
+  let current = 'video';
+
+  function switchTo(id) {
+    if (id === current) return;
+    // hide current
+    const old = document.querySelector('.svc-panel.active');
+    const oldTab = document.querySelector('.svc-tab.active');
+    if (old) { old.classList.remove('visible'); setTimeout(()=>{ old.classList.remove('active'); }, 80); }
+    if (oldTab) { oldTab.classList.remove('active'); oldTab.setAttribute('aria-selected','false'); }
+    // show new
+    const next = document.getElementById('svc-panel-'+id);
+    const nextTab = document.querySelector('[data-svc="'+id+'"]');
+    if (next) {
+      setTimeout(()=>{
+        next.classList.add('active');
+        // trigger reflow then animate in
+        requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ next.classList.add('visible'); }); });
+      }, 90);
+    }
+    if (nextTab) { nextTab.classList.add('active'); nextTab.setAttribute('aria-selected','true'); }
+    // re-run list item stagger
+    if (next) {
+      next.querySelectorAll('.svc-list li').forEach((li,i)=>{
+        li.style.opacity='0';li.style.transform='translateX(-8px)';
+        setTimeout(()=>{ li.style.transition='opacity .4s, transform .4s var(--sp)'; li.style.opacity='1'; li.style.transform='none'; }, 200 + i*60);
+      });
+    }
+    current = id;
+  }
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>switchTo(tab.dataset.svc));
+  });
+
+  // init first panel visible
+  const first = document.querySelector('.svc-panel.active');
+  if (first) requestAnimationFrame(()=>requestAnimationFrame(()=>first.classList.add('visible')));
+  // init first list items
+  if (first) first.querySelectorAll('.svc-list li').forEach((li,i)=>{
+    li.style.transitionDelay=(i*60)+'ms';
+    li.style.opacity='1'; li.style.transform='none';
+  });
 })();
 
 // ── SVC NUM PARALLAX ─────────────────────────────────────
 const svcNums=Array.from(document.querySelectorAll('.svc-num'));
 if(svcNums.length){let _pTick=false;window.addEventListener('scroll',()=>{if(_pTick)return;_pTick=true;requestAnimationFrame(()=>{svcNums.forEach(num=>{const rect=num.parentElement.getBoundingClientRect();const p=Math.max(0,Math.min(1,(innerHeight-rect.top)/(innerHeight+rect.height)));num.style.transform=`translateY(${(p-.5)*42}px)`;});_pTick=false;});},{passive:true});}
 
-// ── PRICING KEYBOARD ─────────────────────────────────────
-document.querySelectorAll('.pr-row').forEach(row=>{row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){const c=row.querySelector('.pr-cta');if(c)c.click();}});});
 
 // ── TESTIMONIAL PERF ─────────────────────────────────────
 const tcWrap=document.querySelector('.tc-wrap');
