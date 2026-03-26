@@ -19,6 +19,7 @@
 {"@context":"https://schema.org","@type":"LocalBusiness","name":"Rendrx Studio","description":"Creative studio offering video editing, motion graphics, and web design in Dhaka.","url":"https://rendrx.com","foundingDate":"2022","address":{"@type":"PostalAddress","addressLocality":"Dhaka","addressCountry":"BD"},"priceRange":"$299–$999","knowsAbout":["Video Editing","Motion Graphics","Web Design","Brand Films","Logo Animation"]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── VARIABLES ── */
@@ -1343,7 +1344,11 @@ section.svc:has(.vid-vis) .wrap {
 (function() {
   var PKEY = 'rendrx_projects';
   var allProjects = [];
-  function load() { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch(e) { return []; } }
+  const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ');
+  async function load() {
+    const { data } = await sb.from('projects').select('*').order('created_at', { ascending: false });
+    return (data || []).map(p => ({ ...p, desc: p.description }));
+  }
   function buildCards(projects) {
     var grid = document.getElementById('pgrid');
     if (!grid) return;
@@ -1386,7 +1391,7 @@ section.svc:has(.vid-vis) .wrap {
       card.appendChild(body); grid.appendChild(card);
     });
   }
-  allProjects = load(); buildCards(allProjects);
+  load().then(function(data) { allProjects = data; buildCards(allProjects); });
   window.addEventListener('storage', function(e) {
     if (e.key === PKEY) { allProjects = load(); var af = document.querySelector('.pf.on'); var f = af ? af.dataset.f : 'all'; buildCards(f === 'all' ? allProjects : allProjects.filter(function(p) { return p.type === f; })); }
   });

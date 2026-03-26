@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Rendrx Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -547,6 +548,7 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;padding-left:13px}
 
 <script>
 'use strict';
+const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ');
 
 /* ── Keys ── */
 const PKEY = 'rendrx_projects';
@@ -694,8 +696,12 @@ function togglePass() {
 }
 
 /* ── Storage helpers ── */
-function loadProjects() { try { return JSON.parse(localStorage.getItem(PKEY) || '[]'); } catch { return []; } }
-function saveProjects(arr) { localStorage.setItem(PKEY, JSON.stringify(arr)); }
+async function loadProjects() {
+  const { data } = await sb.from('projects').select('*').order('created_at', { ascending: false });
+  return (data || []).map(p => ({ ...p, desc: p.description }));
+}
+function saveProjects(arr) {}
+
 function loadActivity() { try { return JSON.parse(localStorage.getItem(AKEY) || '[]'); } catch { return []; } }
 function addActivity(msg, icon = 'plus') {
   let log = loadActivity();
@@ -755,7 +761,7 @@ function closeModal() { document.getElementById('overlay').classList.remove('ope
 function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeModal(); }
 
 /* ── Save project ── */
-function saveProject() {
+async function saveProject() {
   const title  = document.getElementById('f-title').value.trim();
   const type   = document.getElementById('f-type').value;
   if (!title) { showToast('Please enter a project title'); return; }
@@ -766,35 +772,26 @@ function saveProject() {
     status: document.getElementById('f-status').value,
     tags, client: document.getElementById('f-client').value.trim(),
     year:   document.getElementById('f-year').value.trim() || String(new Date().getFullYear()),
-    desc:   document.getElementById('f-desc').value.trim(),
+    description: document.getElementById('f-desc').value.trim(),
     img:    document.getElementById('f-img').value.trim(),
     url:    document.getElementById('f-url').value.trim(),
-    updatedAt: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
   };
-  let projects = loadProjects();
-  if (editingId) {
-    const idx = projects.findIndex(p => p.id === editingId);
-    if (idx !== -1) { project.createdAt = projects[idx].createdAt; projects[idx] = project; }
-    addActivity(`Updated <strong>${title}</strong>`, 'edit');
-    showToast('Updated ✓ — live on site');
-  } else {
-    project.createdAt = new Date().toISOString();
-    projects.unshift(project);
-    addActivity(`Added <strong>${title}</strong> (${type})`, 'plus');
-    showToast('Added ✓ — live on site');
-  }
-  saveProjects(projects);
+  if (!editingId) project.created_at = new Date().toISOString();
+  await sb.from('projects').upsert(project);
+  addActivity(editingId ? `Updated <strong>${title}</strong>` : `Added <strong>${title}</strong> (${type})`, editingId ? 'edit' : 'plus');
+  showToast(editingId ? 'Updated ✓' : 'Added ✓');
   closeModal();
   renderOverview();
   if (document.getElementById('view-projects').classList.contains('active')) renderProjectsTable();
 }
 
 /* ── Delete ── */
-function deleteProject(id) {
-  const projects = loadProjects();
+async function deleteProject(id) {
+  const projects = await loadProjects();
   const p = projects.find(x => x.id === id);
   if (!p || !confirm(`Delete "${p.title}"?`)) return;
-  saveProjects(projects.filter(x => x.id !== id));
+  await sb.from('projects').delete().eq('id', id);
   addActivity(`Deleted <strong>${p.title}</strong>`, 'trash');
   showToast('Deleted');
   renderOverview();
@@ -802,8 +799,8 @@ function deleteProject(id) {
 }
 
 /* ── Overview ── */
-function renderOverview() {
-  const P = loadProjects();
+async function renderOverview() {
+  const P = await loadProjects();
   const total=P.length, done=P.filter(p=>p.status==='done').length,
     inProg=P.filter(p=>p.status==='in-progress').length,
     onHold=P.filter(p=>p.status==='on-hold').length,
@@ -823,8 +820,8 @@ function renderOverview() {
 }
 
 /* ── Projects table ── */
-function renderProjectsTable(){
-  const all=loadProjects();
+async function renderProjectsTable(){
+  const all=await loadProjects();
   renderTable(currentFilter==='all'?all:all.filter(p=>p.type===currentFilter),'proj-table');
 }
 function typeTag(t){const m={video:'tag-video',motion:'tag-motion',web:'tag-web'};return`<span class="tag ${m[t]||''}">${t}</span>`;}
@@ -835,7 +832,7 @@ function renderTable(projects,elId){
   const el=document.getElementById(elId);if(!el)return;
   if(!projects.length){el.innerHTML=`<div class="ptable-empty"><strong>No projects yet</strong>Click "Add Project" to get started.</div>`;return;}
   el.innerHTML=`<div class="ptable-head"><span>Project</span><span>Type</span><span>Status</span><span>Added</span><span style="text-align:right">Actions</span></div>`
-    +projects.map(p=>`<div class="ptable-row"><div><div class="prow-name">${esc(p.title)}</div><div class="prow-sub">${p.client?esc(p.client)+' · ':''}${p.year||''}</div></div><div>${typeTag(p.type)}</div><div>${statusBadge(p.status)}</div><div style="font-size:10px;color:var(--text3)">${relTime(p.createdAt)}</div><div class="row-acts"><button class="iBtn" onclick='openModal(${JSON.stringify(p).replace(/'/g,"&#39;")})' title="Edit"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="iBtn del" onclick="deleteProject('${p.id}')" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div></div>`).join('');
+    +projects.map(p=>`<div class="ptable-row"><div><div class="prow-name">${esc(p.title)}</div><div class="prow-sub">${p.client?esc(p.client)+' · ':''}${p.year||''}</div></div><div>${typeTag(p.type)}</div><div>${statusBadge(p.status)}</div><div style="font-size:10px;color:var(--text3)">${relTime(p.created_at)}</div><div class="row-acts"><button class="iBtn" onclick='openModal(${JSON.stringify(p).replace(/'/g,"&#39;")})' title="Edit"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="iBtn del" onclick="deleteProject('${p.id}')" title="Delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button></div></div>`).join('');
 }
 
 /* ── Activity ── */
@@ -870,8 +867,13 @@ function renderSnippet(){
 </section>
 <script>
 (function(){
-  var PKEY='rendrx_projects';var allProjects=[];
-  function load(){try{return JSON.parse(localStorage.getItem(PKEY)||'[]');}catch{return[];}}
+  var PKEY = 'rendrx_projects';
+  var allProjects = [];
+  const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ');
+  async function load() {
+    const { data } = await sb.from('projects').select('*').order('created_at', { ascending: false });
+    return (data || []).map(p => ({ ...p, desc: p.description }));
+  }
   function buildCards(projects){
     var grid=document.getElementById('pgrid');if(!grid)return;
     if(!projects.length){grid.innerHTML='<div class="proj-empty reveal in">No projects yet.</div>';return;}
@@ -888,7 +890,7 @@ function renderSnippet(){
         +'</div>'+(p.client?'<div style="font-size:10px;color:var(--text3);margin-top:12px;letter-spacing:.04em">'+p.client+(p.year?' · '+p.year:'')+'</div>':'')+'</div></div>';
     }).join('');
   }
-  allProjects=load();buildCards(allProjects);
+  load().then(function(data) { allProjects = data; buildCards(allProjects); });
   document.querySelectorAll('.pf').forEach(function(btn){
     btn.addEventListener('click',function(){
       document.querySelectorAll('.pf').forEach(function(b){b.classList.remove('on');b.setAttribute('aria-pressed','false');});
@@ -901,8 +903,9 @@ function renderSnippet(){
 }
 
 /* ── Export ── */
-function exportData(){
-  const blob=new Blob([JSON.stringify({projects:loadProjects(),activity:loadActivity(),exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+async function exportData(){
+  const projects = await loadProjects();
+  const blob=new Blob([JSON.stringify({projects,activity:loadActivity(),exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='rendrx-projects.json';a.click();
   showToast('Exported as JSON');
 }
@@ -926,14 +929,15 @@ function importData(input){
 }
 
 /* ── Clear all ── */
-function clearAllProjects(){
+async function clearAllProjects(){
   if(!confirm('Delete ALL projects? This cannot be undone.'))return;
-  saveProjects([]);addActivity('Cleared all projects','trash');
+  await sb.from('projects').delete().neq('id','');
+  addActivity('Cleared all projects','trash');
   showToast('All projects cleared');renderOverview();renderProjectsTable();
 }
 
 /* ── Change password ── */
-function changePassword(){
+async function changePassword(){
   const cur=document.getElementById('s-cur').value,nw=document.getElementById('s-new').value,conf=document.getElementById('s-conf').value;
   const creds=getCreds();
   if(cur!==creds.pass){showToast('Current password is incorrect');return;}
