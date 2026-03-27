@@ -172,10 +172,9 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 
 /* ── TECH STACK MARQUEE ── */
 .tech-mq {
-  padding: 18px 0;
+  padding: 24px 0;
   overflow: hidden;
   background: var(--bg);
-  border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   transition: background .5s, border-color .5s;
 }
@@ -189,13 +188,10 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 .tech-mq-t:hover { animation-play-state: paused; }
 .tech-mq-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 7px;
-  padding: 0 36px;
-  border-right: 1px solid var(--border);
+  padding: 0 40px;
+  border-right: none;
   cursor: default;
-  transition: border-color .5s;
 }
 .tech-mq-item:last-child { border-right: none; }
 .tech-mq-icon {
@@ -204,23 +200,13 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: .45;
+  opacity: .35;
   transition: opacity .25s;
   flex-shrink: 0;
 }
-.tech-mq-item:hover .tech-mq-icon { opacity: .9; }
+.tech-mq-item:hover .tech-mq-icon { opacity: .75; }
 .tech-mq-icon svg { width: 28px; height: 28px; display: block; }
-.tech-mq-label {
-  font-family: var(--fb);
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--text3);
-  white-space: nowrap;
-  transition: color .25s;
-}
-.tech-mq-item:hover .tech-mq-label { color: var(--text2); }
+.tech-mq-label { display: none; }
 
 /* ── MARQUEE ── */
 .mq{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:16px 0;overflow:hidden;background:var(--bg2);transition:background .5s,border-color .5s}
@@ -1224,6 +1210,70 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 .tc2,.tc3{display:none}
 @media(min-width:768px){.tc2{display:flex}}
 @media(min-width:1100px){.tc3{display:flex}}
+
+/* ── FAQ ── */
+.faq-section{padding:120px 0;border-top:1px solid var(--border);transition:background .5s,border-color .5s}
+.faq-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:56px;flex-wrap:wrap;gap:20px}
+.faq-head h2{font-family:var(--fd);font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1.05;transition:color .5s}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .5s}
+.faq-item{border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:border-color .5s,background .25s}
+.faq-item:nth-child(even){border-right:none}
+.faq-item:nth-last-child(-n+2){border-bottom:none}
+.faq-item:hover{background:var(--bg3)}
+.faq-q{width:100%;background:none;border:none;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;cursor:pointer;text-align:left}
+.faq-q span{font-family:var(--fd);font-size:clamp(15px,1.4vw,18px);font-weight:700;letter-spacing:-.02em;color:var(--text);line-height:1.3;transition:color .5s}
+.faq-icon{width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .25s,border-color .25s,transform .4s var(--sp)}
+.faq-icon svg{width:12px;height:12px;transition:transform .4s var(--sp)}
+.faq-item.open .faq-icon{background:var(--inv);border-color:var(--inv)}
+.faq-item.open .faq-icon svg{stroke:var(--inv2);transform:rotate(45deg)}
+.faq-a{display:grid;grid-template-rows:0fr;transition:grid-template-rows .4s var(--sp)}
+.faq-item.open .faq-a{grid-template-rows:1fr}
+.faq-a-inner{overflow:hidden;font-size:13px;color:var(--text2);line-height:1.9;padding:0 32px;transition:padding .4s var(--sp),color .5s}
+.faq-item.open .faq-a-inner{padding:0 32px 28px}
+@media(max-width:768px){
+  .faq-grid{grid-template-columns:1fr}
+  .faq-item{border-right:none}
+  .faq-item:nth-last-child(-n+2){border-bottom:1px solid var(--border)}
+  .faq-item:last-child{border-bottom:none}
+}
+@media(max-width:600px){
+  .faq-q{padding:22px 20px}
+  .faq-a-inner{padding:0 20px}
+  .faq-item.open .faq-a-inner{padding:0 20px 22px}
+}
+
+/* ── CONTACT FORM ── */
+.cta-form-wrap{width:min(560px,100%);margin:0 auto;text-align:left}
+.cta-form{display:flex;flex-direction:column;gap:14px;margin-top:36px}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.cf-row{grid-template-columns:1fr}}
+.cf-field{display:flex;flex-direction:column;gap:7px}
+.cf-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.cf-input,.cf-select,.cf-textarea{width:100%;font-family:var(--fb);font-size:12px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none}
+.cf-input::placeholder,.cf-textarea::placeholder{color:rgba(255,255,255,.22)}
+.cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.09)}
+.cf-select{cursor:pointer}
+.cf-select option{background:#111;color:#f0f0f0}
+.cf-textarea{resize:vertical;min-height:100px;line-height:1.7}
+.cf-submit{width:100%;font-family:var(--fb);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:16px;border:none;border-radius:12px;cursor:pointer;background:linear-gradient(180deg,#ffffff 0%,#e8e2db 100%);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 8px 24px rgba(0,0,0,.4);transition:transform .2s var(--sp),box-shadow .2s,opacity .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px}
+.cf-submit:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 0 28px rgba(255,255,255,.22),0 12px 32px rgba(0,0,0,.5),0 1px 0 rgba(255,255,255,.5) inset}
+.cf-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.cf-submit svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.cf-spinner{width:13px;height:13px;border:2px solid rgba(10,10,10,.2);border-top-color:#0a0a0a;border-radius:50%;animation:cfSpin .6s linear infinite;flex-shrink:0}
+@keyframes cfSpin{to{transform:rotate(360deg)}}
+.cf-success{display:none;text-align:center;padding:36px 20px;animation:cfFadeIn .5s var(--sp)}
+@keyframes cfFadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.cf-success-icon{width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(74,222,128,.4);background:rgba(74,222,128,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.cf-success-icon svg{width:20px;height:20px;stroke:#4ade80;fill:none;stroke-width:2.5;stroke-linecap:round}
+.cf-success h3{font-family:var(--fd);font-size:22px;font-weight:700;color:#f5f5f5;margin-bottom:8px}
+.cf-success p{font-size:13px;color:rgba(255,255,255,.45);line-height:1.8}
+.cta-divider{display:flex;align-items:center;gap:14px;margin-top:28px}
+.cta-divider-line{flex:1;height:1px;background:rgba(255,255,255,.08)}
+.cta-divider span{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.2)}
+.cta-alt-links{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.cta-alt-link{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.35);text-decoration:none;padding:10px 18px;border:1px solid rgba(255,255,255,.1);border-radius:99px;transition:color .2s,border-color .2s}
+.cta-alt-link:hover{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.25)}
+.cta-alt-link svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
 
 /* ── CTA ── */
 .cta{padding:160px 0;text-align:center;border-top:1px solid var(--border);position:relative;overflow:hidden;background:#0a0a0a !important;color-scheme:dark;isolation:isolate;z-index:9001}
@@ -2388,7 +2438,7 @@ section.svc:has(.vid-vis) .wrap {
               <li>Instagram and YouTube Reels / Shorts</li>
               <li>Interview and documentary editing</li>
             </ul>
-            <a href="#projects" class="btn btn-ghost">Demo →</a>
+            <a href="#projects" class="btn btn-ghost">Get a quote →</a>
           </div>
           <div class="svc-vis vid-vis" aria-hidden="true">
             <div class="vs-preview">
@@ -2469,7 +2519,7 @@ section.svc:has(.vid-vis) .wrap {
               <li>Text and typography animations</li>
               <li>3D animations and visual effects</li>
             </ul>
-            <a href="#projects" class="btn btn-ghost">Demo →</a>
+            <a href="#projects" class="btn btn-ghost">Get a quote →</a>
           </div>
           <div class="svc-vis ae-vis" aria-hidden="true">
             <div class="ae-bar">
@@ -2526,7 +2576,7 @@ section.svc:has(.vid-vis) .wrap {
               <li>Design mockups and prototypes</li>
               <li>Custom-built — no page-builder limits</li>
             </ul>
-            <a href="#projects" class="btn btn-ghost">Demo →</a>
+            <a href="#projects" class="btn btn-ghost">Get a quote →</a>
           </div>
           <div class="svc-vis web-vis" aria-hidden="true">
             <div class="wb-bar">
@@ -2586,9 +2636,24 @@ section.svc:has(.vid-vis) .wrap {
         <button class="pf" data-f="video" aria-pressed="false">Video</button>
         <button class="pf" data-f="motion" aria-pressed="false">Motion</button>
         <button class="pf" data-f="web" aria-pressed="false">Web</button>
+        <button class="pf" data-f="reels" aria-pressed="false">Reels</button>
+        <button class="pf" data-f="app" aria-pressed="false">App</button>
       </div>
     </div>
     <div class="proj-grid" id="pgrid"></div>
+
+    <!-- See All Work footer — only visible when >6 projects exist -->
+    <div id="proj-footer" style="display:none;align-items:center;justify-content:space-between;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);gap:20px;flex-wrap:wrap;">
+      <div>
+        <p style="font-family:var(--fd);font-size:clamp(18px,2.5vw,26px);font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:4px;">There's more where that came from.</p>
+        <p style="font-size:12px;color:var(--text3);letter-spacing:.04em;"><span id="proj-remaining">0</span> more projects in the full archive</p>
+      </div>
+      <a href="projects.html" class="btn btn-fill" style="white-space:nowrap;">
+        See All Work
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
   </div>
 </section>
 
@@ -2596,57 +2661,89 @@ section.svc:has(.vid-vis) .wrap {
 (function() {
   var PKEY = 'rendrx_projects';
   var allProjects = [];
+  var PAGE_LIMIT = 3; // ← change this number to show more/fewer on homepage
   const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ');
+
   async function load() {
     const { data } = await sb.from('projects').select('*').order('created_at', { ascending: false });
     return (data || []).map(p => ({ ...p, desc: p.description }));
   }
+
+  function buildCard(p) {
+    var card = document.createElement('div');
+    card.className = 'proj-card reveal in';
+    var thumb = document.createElement('div');
+    thumb.className = 'proj-card-thumb';
+    if (p.img) {
+      var img = document.createElement('img');
+      img.src = p.img; img.alt = p.title || ''; img.className = 'proj-card-thumb-img'; img.loading = 'lazy';
+      thumb.appendChild(img);
+    } else {
+      var letter = document.createElement('div');
+      letter.className = 'proj-card-letter';
+      letter.textContent = (p.title || '?')[0].toUpperCase();
+      thumb.appendChild(letter);
+    }
+    var badge = document.createElement('div'); badge.className = 'proj-card-badge';
+    var badgeSpan = document.createElement('span'); badgeSpan.textContent = p.type || '';
+    badge.appendChild(badgeSpan); thumb.appendChild(badge); card.appendChild(thumb);
+    var body = document.createElement('div'); body.className = 'proj-card-body';
+    var title = document.createElement('div'); title.className = 'proj-card-title'; title.textContent = p.title || ''; body.appendChild(title);
+    if (p.desc) { var desc = document.createElement('div'); desc.className = 'proj-card-desc'; desc.textContent = p.desc; body.appendChild(desc); }
+    var foot = document.createElement('div'); foot.className = 'proj-card-foot';
+    var tags = document.createElement('div'); tags.className = 'proj-card-tags';
+    (p.tags || []).slice(0, 3).forEach(function(t) { var tag = document.createElement('span'); tag.className = 'proj-card-tag'; tag.textContent = t; tags.appendChild(tag); });
+    foot.appendChild(tags);
+    var link = document.createElement('a'); link.href = 'project.html?id=' + p.id; link.className = 'proj-card-link'; link.textContent = 'View Project →'; foot.appendChild(link);
+    if (p.client) { var client = document.createElement('div'); client.className = 'proj-card-client'; client.textContent = p.client + (p.year ? ' · ' + p.year : ''); body.appendChild(client); }
+    card.appendChild(body);
+    return card;
+  }
+
   function buildCards(projects) {
     var grid = document.getElementById('pgrid');
+    var footer = document.getElementById('proj-footer');
     if (!grid) return;
     while (grid.firstChild) grid.removeChild(grid.firstChild);
+
     if (!projects.length) {
       var empty = document.createElement('div');
       empty.className = 'proj-empty reveal in';
       empty.textContent = 'No projects yet. Check back soon.';
       grid.appendChild(empty);
+      if (footer) footer.style.display = 'none';
       return;
     }
-    projects.forEach(function(p) {
-      var card = document.createElement('div');
-      card.className = 'proj-card reveal in';
-      var thumb = document.createElement('div');
-      thumb.className = 'proj-card-thumb';
-      if (p.img) {
-        var img = document.createElement('img');
-        img.src = p.img; img.alt = p.title || ''; img.className = 'proj-card-thumb-img'; img.loading = 'lazy';
-        thumb.appendChild(img);
+
+    // Only show up to PAGE_LIMIT cards
+    var visible = projects.slice(0, PAGE_LIMIT);
+    visible.forEach(function(p) { grid.appendChild(buildCard(p)); });
+
+    // Show or hide the "See All Work" footer row
+    if (footer) {
+      if (projects.length > PAGE_LIMIT) {
+        footer.style.display = 'flex';
+        var countEl = document.getElementById('proj-remaining');
+        if (countEl) countEl.textContent = projects.length - PAGE_LIMIT;
       } else {
-        var letter = document.createElement('div');
-        letter.className = 'proj-card-letter';
-        letter.textContent = (p.title || '?')[0].toUpperCase();
-        thumb.appendChild(letter);
+        footer.style.display = 'none';
       }
-      var badge = document.createElement('div'); badge.className = 'proj-card-badge';
-      var badgeSpan = document.createElement('span'); badgeSpan.textContent = p.type || '';
-      badge.appendChild(badgeSpan); thumb.appendChild(badge); card.appendChild(thumb);
-      var body = document.createElement('div'); body.className = 'proj-card-body';
-      var title = document.createElement('div'); title.className = 'proj-card-title'; title.textContent = p.title || ''; body.appendChild(title);
-      if (p.desc) { var desc = document.createElement('div'); desc.className = 'proj-card-desc'; desc.textContent = p.desc; body.appendChild(desc); }
-      var foot = document.createElement('div'); foot.className = 'proj-card-foot';
-      var tags = document.createElement('div'); tags.className = 'proj-card-tags';
-      (p.tags || []).slice(0, 3).forEach(function(t) { var tag = document.createElement('span'); tag.className = 'proj-card-tag'; tag.textContent = t; tags.appendChild(tag); });
-      foot.appendChild(tags);
-      if (p.url) { var link = document.createElement('a'); link.href = p.url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.className = 'proj-card-link'; link.textContent = 'View →'; foot.appendChild(link); }
-      body.appendChild(foot);
-      if (p.client) { var client = document.createElement('div'); client.className = 'proj-card-client'; client.textContent = p.client + (p.year ? ' · ' + p.year : ''); body.appendChild(client); }
-      card.appendChild(body); grid.appendChild(card);
-    });
+    }
   }
+
   load().then(function(data) { allProjects = data; buildCards(allProjects); });
+
   window.addEventListener('storage', function(e) {
-    if (e.key === PKEY) { allProjects = load(); var af = document.querySelector('.pf.on'); var f = af ? af.dataset.f : 'all'; buildCards(f === 'all' ? allProjects : allProjects.filter(function(p) { return p.type === f; })); }
+    if (e.key === PKEY) {
+      load().then(function(data) {
+        allProjects = data;
+        var af = document.querySelector('.pf.on');
+        var f = af ? af.dataset.f : 'all';
+        buildCards(f === 'all' ? allProjects : allProjects.filter(function(p) { return p.type === f; }));
+      });
+    }
   });
+
   document.querySelectorAll('.pf').forEach(function(btn) {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.pf').forEach(function(b) { b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); });
@@ -2658,6 +2755,46 @@ section.svc:has(.vid-vis) .wrap {
 })();
 </script>
 
+
+<!-- STATS -->
+<section class="stats" aria-label="Studio statistics">
+  <div class="stats-shimmer" aria-hidden="true"></div>
+  <div class="stats-grid">
+
+    <div class="stat" data-target="20" data-suffix="+">
+      <div class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span class="stat-n"><span class="stat-num">0</span><sup>+</sup></span>
+      <span class="stat-l">Projects Done</span>
+    </div>
+
+    <div class="stat" data-target="50" data-suffix="+">
+      <div class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      </div>
+      <span class="stat-n"><span class="stat-num">0</span><sup>+</sup></span>
+      <span class="stat-l">Videos Delivered</span>
+    </div>
+
+    <div class="stat" data-target="48" data-suffix="h">
+      <div class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <span class="stat-n"><span class="stat-num">0</span><sup>h</sup></span>
+      <span class="stat-l">Avg Turnaround</span>
+    </div>
+
+    <div class="stat" data-target="4.7" data-suffix="★" data-decimal="true">
+      <div class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <span class="stat-n"><span class="stat-num">0</span><sup>★</sup></span>
+      <span class="stat-l">Client Satisfaction</span>
+    </div>
+
+  </div>
+</section>
 
 <!-- PROCESS -->
 <section id="process" class="proc" aria-labelledby="proc-heading">
@@ -2748,6 +2885,79 @@ section.svc:has(.vid-vis) .wrap {
 </section>
 
 
+<!-- FAQ -->
+<section id="faq" class="faq-section" aria-labelledby="faq-heading">
+  <div class="wrap">
+    <div class="faq-head">
+      <div class="eyebrow reveal" style="margin-bottom:12px">quick answers</div>
+      <h2 class="reveal d1" id="faq-heading">Things people<br>usually ask.</h2>
+    </div>
+    <div class="faq-grid" id="faq-grid">
+
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          <span>How long does a project take?</span>
+          <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Short-form videos and reels are usually done within 48–72 hours. Brand films and motion graphics take 5–7 days. Websites typically go live in 7–14 days depending on complexity. We agree on an exact timeline before we start — and we stick to it.</div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d1">
+        <button class="faq-q" aria-expanded="false">
+          <span>Do you work with clients outside Bangladesh?</span>
+          <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Yes — most of our clients are remote. We handle everything online: briefs, feedback, and file delivery. Time zones have never been an issue. We're available on WhatsApp and email, and we respond within a few hours during business days.</div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d2">
+        <button class="faq-q" aria-expanded="false">
+          <span>What do you need from me to get started?</span>
+          <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">For video: your raw footage, any reference videos you like, and a brief idea of the feel you're going for. For web: your logo, brand colours, and a rough idea of what pages you need. For motion: a description of what you want to communicate and any existing brand assets. A rough idea is always enough to get us started.</div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal">
+        <button class="faq-q" aria-expanded="false">
+          <span>How many revisions are included?</span>
+          <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Every project includes two rounds of revisions at no extra cost. In practice, most clients are happy after the first draft. We share work-in-progress previews early so there are rarely any surprises at the end.</div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d1">
+        <button class="faq-q" aria-expanded="false">
+          <span>What are your prices like?</span>
+          <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Projects start from $299 for video editing and motion work. Websites start from $499. Pricing depends on scope — a quick reel is priced very differently from a full brand film. Send us a brief and we'll give you an exact number with no hidden costs.</div>
+        </div>
+      </div>
+
+      <div class="faq-item reveal d2">
+        <button class="faq-q" aria-expanded="false">
+          <span>Who owns the files when the project is done?</span>
+          <div class="faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">You do — completely. Once the project is paid and delivered, all source files and final exports are yours. We don't hold files hostage or charge extra for originals. You'll also get a 14-day support window after delivery for any small tweaks.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section id="contact" class="cta" aria-labelledby="cta-heading">
   <div class="cta-glow" aria-hidden="true"></div>
@@ -2756,9 +2966,66 @@ section.svc:has(.vid-vis) .wrap {
     <div class="cta-brand reveal" aria-hidden="true"><span class="logo-cutout"></span><span>Rendrx Studio</span></div>
     <div class="eyebrow reveal" style="justify-content:center;margin-bottom:16px">let's work together</div>
     <h2 class="cta-h reveal" id="cta-heading">Ready to make<br>something great?</h2>
-    <p class="cta-sub reveal d1">Tell us about your project — even a rough idea is enough. We'll handle the rest.</p>
-    <div class="cta-acts reveal d2"><a href="mailto:hello@rendrx.com" class="btn btn-fill btn-lg">Send a Brief</a><a href="https://wa.me/8801613699448" class="btn btn-ghost btn-lg">Book a Free Call →</a></div>
-    <a href="mailto:hello@rendrx.com" class="cta-mail reveal d3">hello@rendrx.com</a>
+    <p class="cta-sub reveal d1">Fill in the form and we'll get back to you within 24 hours. No commitment needed.</p>
+
+    <div class="cta-form-wrap reveal d1">
+      <div id="cf-form-state">
+        <form class="cta-form" id="cta-form" onsubmit="submitLead(event)" novalidate>
+          <div class="cf-row">
+            <div class="cf-field">
+              <label class="cf-label" for="cf-name">Your Name *</label>
+              <input class="cf-input" id="cf-name" type="text" placeholder="e.g. Rahim Ahmed" required autocomplete="name">
+            </div>
+            <div class="cf-field">
+              <label class="cf-label" for="cf-type">Project Type *</label>
+              <select class="cf-select" id="cf-type" required>
+                <option value="">Select a service…</option>
+                <option value="video">Video Editing</option>
+                <option value="motion">Motion Graphics</option>
+                <option value="web">Web Design</option>
+                <option value="reels">Reels / Shorts</option>
+                <option value="app">App Design</option>
+                <option value="other">Not sure yet</option>
+              </select>
+            </div>
+          </div>
+          <div class="cf-field">
+            <label class="cf-label" for="cf-budget">Budget Range</label>
+            <select class="cf-select" id="cf-budget">
+              <option value="">Select a range…</option>
+              <option value="under-300">Under $300</option>
+              <option value="300-600">$300 – $600</option>
+              <option value="600-1000">$600 – $1,000</option>
+              <option value="1000+">$1,000+</option>
+            </select>
+          </div>
+          <div class="cf-field">
+            <label class="cf-label" for="cf-msg">Tell us about your project *</label>
+            <textarea class="cf-textarea" id="cf-msg" placeholder="A rough idea is enough — what are you trying to achieve?" required></textarea>
+          </div>
+          <button class="cf-submit" id="cf-submit" type="submit">
+            <span id="cf-btn-label">Send Message</span>
+            <svg id="cf-btn-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </form>
+      </div>
+      <div class="cf-success" id="cf-success">
+        <div class="cf-success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <h3>Message received.</h3>
+        <p>We'll get back to you within 24 hours.<br>In the meantime, feel free to reach out directly.</p>
+      </div>
+      <div class="cta-divider"><div class="cta-divider-line"></div><span>or reach out directly</span><div class="cta-divider-line"></div></div>
+      <div class="cta-alt-links">
+        <a href="mailto:hello@rendrx.com" class="cta-alt-link">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          hello@rendrx.com
+        </a>
+        <a href="https://wa.me/8801613699448" class="cta-alt-link" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          WhatsApp
+        </a>
+      </div>
+    </div>
   </div>
 </section><!-- end #contact CTA -->
 
@@ -2957,7 +3224,36 @@ setInterval(()=>{wIdx=(wIdx+1)%WORDS.length;scramble(WORDS[wIdx]);},3200);*/
   });
 })();
 
-// ── SVC NUM PARALLAX ─────────────────────────────────────
+/* ── STATS COUNTER ── */
+(()=>{
+  const stats = document.querySelectorAll('.stat[data-target]');
+  if (!stats.length) return;
+  let fired = false;
+  const obs = new IntersectionObserver(entries => {
+    if (!entries[0].isIntersecting || fired) return;
+    fired = true;
+    obs.disconnect();
+    stats.forEach(stat => {
+      const target  = parseFloat(stat.dataset.target);
+      const isFloat = stat.dataset.decimal === 'true';
+      const el      = stat.querySelector('.stat-num');
+      if (!el) return;
+      const dur = 1600, start = performance.now();
+      const ease = t => 1 - Math.pow(1 - t, 3);
+      (function tick(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const v = ease(p) * target;
+        el.textContent = isFloat ? v.toFixed(1) : Math.floor(v);
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = isFloat ? target.toFixed(1) : target;
+      })(start);
+    });
+  }, { threshold: 0.3 });
+  const section = document.querySelector('.stats');
+  if (section) obs.observe(section);
+})();
+
+/* ── SVC NUM PARALLAX ── */
 const svcNums=Array.from(document.querySelectorAll('.svc-num'));
 if(svcNums.length){let _pTick=false;window.addEventListener('scroll',()=>{if(_pTick)return;_pTick=true;requestAnimationFrame(()=>{svcNums.forEach(num=>{const rect=num.parentElement.getBoundingClientRect();const p=Math.max(0,Math.min(1,(innerHeight-rect.top)/(innerHeight+rect.height)));num.style.transform=`translateY(${(p-.5)*42}px)`;});_pTick=false;});},{passive:true});}
 
@@ -2986,7 +3282,78 @@ document.querySelectorAll('.vid-vis,.ae-vis,.web-vis').forEach(vis=>{
 
 // ── NAV SECTION HIGHLIGHT ─────────────────────────────────
 const navLinks=document.querySelectorAll('.nav-links a');
-document.querySelectorAll('section[id]').forEach(s=>{new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){navLinks.forEach(l=>{l.classList.toggle('active',l.getAttribute('href')==='#'+e.target.id);});}});},{threshold:.4,rootMargin:'-20% 0px -60% 0px'}).observe(s);});
+(()=>{
+  let _active=null;
+  const sections=Array.from(document.querySelectorAll('section[id]'));
+  function update(){
+    const mid=window.scrollY+window.innerHeight*.38;
+    let best=null,bestTop=-Infinity;
+    sections.forEach(s=>{
+      const t=s.getBoundingClientRect().top+window.scrollY;
+      if(t<=mid&&t>bestTop){bestTop=t;best=s.id;}
+    });
+    if(best&&best!==_active){
+      _active=best;
+      navLinks.forEach(l=>l.classList.toggle('active',l.getAttribute('href')==='#'+best));
+    }
+  }
+  window.addEventListener('scroll',update,{passive:true});
+  update();
+})();
+
+/* ── CONTACT FORM ── */
+/* NOTE: Create a 'leads' table in Supabase with columns:
+   id (uuid, default gen_random_uuid()), name (text), project_type (text),
+   budget (text), message (text), created_at (timestamptz, default now())
+   Then enable RLS and add an INSERT policy for anon role.             */
+async function submitLead(e) {
+  e.preventDefault();
+  const name    = document.getElementById('cf-name').value.trim();
+  const type    = document.getElementById('cf-type').value;
+  const budget  = document.getElementById('cf-budget').value;
+  const message = document.getElementById('cf-msg').value.trim();
+  if (!name || !type || !message) {
+    // shake the button
+    const btn = document.getElementById('cf-submit');
+    btn.style.transform = 'translateX(-4px)';
+    setTimeout(() => btn.style.transform = '', 300);
+    return;
+  }
+  const btn      = document.getElementById('cf-submit');
+  const lbl      = document.getElementById('cf-btn-label');
+  const iconEl   = document.getElementById('cf-btn-icon');
+  btn.disabled   = true;
+  lbl.textContent = 'Sending…';
+  iconEl.outerHTML = '<div class="cf-spinner" id="cf-btn-icon"></div>';
+
+  try {
+    await supabase.createClient(
+      'https://tlodulytpnugibtlywen.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ'
+    ).from('leads').insert({ name, project_type: type, budget, message });
+  } catch(_) {}
+
+  document.getElementById('cf-form-state').style.display = 'none';
+  document.getElementById('cf-success').style.display    = 'block';
+}
+
+/* ── FAQ ACCORDION ── */
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    // close all
+    document.querySelectorAll('.faq-item.open').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    // open clicked if it was closed
+    if (!isOpen) {
+      item.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
 
 window.scrollToSection=id=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});};
 document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const id=a.getAttribute('href').slice(1);if(!id)return;const t=document.getElementById(id);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}});});

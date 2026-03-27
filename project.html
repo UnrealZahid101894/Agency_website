@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html data-theme="dark" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project — Rendrx Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a;--bg2:#111111;--bg3:#181818;--card:#141414;
+  --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);
+  --text:#f0f0f0;--text2:#c0c0c0;--text3:#707070;
+  --inv:#f5f5f5;--inv2:#0a0a0a;
+  --s1:0 2px 10px rgba(0,0,0,.6);--s2:0 8px 36px rgba(0,0,0,.7);--s3:0 24px 80px rgba(0,0,0,.8);
+  --fd:'Arvo',serif;--fb:'JetBrains Mono',monospace;--sp:cubic-bezier(.16,1,.3,1);
+}
+[data-theme="light"]{
+  --bg:#f5f5f5;--bg2:#ffffff;--bg3:#ebebeb;--card:#ffffff;
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);
+  --text:#0a0a0a;--text2:#333333;--text3:#888888;
+  --inv:#0a0a0a;--inv2:#f5f5f5;
+  --s1:0 2px 10px rgba(0,0,0,.08);--s2:0 8px 36px rgba(0,0,0,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .5s,color .5s;font-size:14px;line-height:1.6}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+::selection{background:var(--inv);color:var(--inv2)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+@media(max-width:600px){.wrap{padding:0 20px}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:22px 0;transition:background .35s,padding .35s}
+nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:15px 0}
+[data-theme="light"] nav.sc{background:rgba(245,245,245,.96)}
+.nav-i{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 40px}
+.nav-logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-size:20px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:.1em;transition:opacity .2s}
+.nav-logo:hover{opacity:.75}
+.logo-cutout{width:26px;height:26px;flex:0 0 auto;display:inline-block;background:currentColor;-webkit-mask-image:url("assets/logo-mark.png");mask-image:url("assets/logo-mark.png");-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:center;mask-position:center;-webkit-mask-mode:luminance;mask-mode:luminance}
+.nav-r{display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:14px 30px;text-decoration:none;cursor:pointer;border:none;border-radius:12px;transition:transform .25s var(--sp),box-shadow .25s,background .2s,color .2s;white-space:nowrap}
+.btn-fill{background:linear-gradient(180deg,#ffffff 0%,#e8e2db 100%);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,var(--s1)}
+.btn-fill:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(255,255,255,.18),0 12px 32px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.5) inset}
+[data-theme="light"] .btn-fill{background:linear-gradient(180deg,#111 0%,#222 100%);color:#f5f5f5}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2);border-radius:12px}
+.btn-ghost:hover{border-color:var(--text);transform:translateY(-2px);background:var(--bg3)}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+#tbtn{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s}
+#tbtn:hover{transform:rotate(25deg) scale(1.08)}
+#tbtn svg{width:16px;height:16px;stroke:var(--text);fill:none;stroke-width:2}
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--inv);z-index:8999;width:0%;pointer-events:none;transition:width .08s linear}
+
+/* ── PROJECT HERO ── */
+.proj-hero{padding:140px 0 0;position:relative;overflow:hidden;transition:background .5s}
+.proj-hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;opacity:.5}
+.ph-inner{position:relative;z-index:1}
+.ph-back{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s,transform .2s var(--sp);margin-bottom:36px}
+.ph-back:hover{color:var(--text);transform:translateX(-3px)}
+.ph-back svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+.ph-meta{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.ph-badge{font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 14px;border-radius:99px;border:1px solid var(--border2);color:var(--text2)}
+.ph-year{font-size:11px;color:var(--text3);letter-spacing:.06em}
+.ph-title{font-family:var(--fd);font-size:clamp(40px,7vw,88px);font-weight:700;letter-spacing:-.035em;line-height:.95;color:var(--text);margin-bottom:14px;transition:color .5s}
+.ph-client{font-size:14px;color:var(--text3);letter-spacing:.04em;margin-bottom:48px}
+.ph-client span{color:var(--text2)}
+
+/* ── IMAGE ── */
+.proj-image-wrap{position:relative;z-index:1;margin-top:0}
+.proj-image{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;border-radius:0;border-top:1px solid var(--border);transition:border-color .5s}
+.proj-image-placeholder{width:100%;aspect-ratio:16/9;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:clamp(60px,12vw,140px);font-weight:700;color:var(--border2);transition:background .5s,border-color .5s}
+
+/* ── CONTENT ── */
+.proj-content{padding:80px 0 120px;border-top:1px solid var(--border);transition:border-color .5s}
+.proj-layout{display:grid;grid-template-columns:1fr 340px;gap:80px;align-items:start}
+@media(max-width:960px){.proj-layout{grid-template-columns:1fr;gap:48px}}
+
+.proj-main h2{font-family:var(--fd);font-size:clamp(22px,2.5vw,30px);font-weight:700;letter-spacing:-.025em;color:var(--text);margin-bottom:18px;transition:color .5s}
+.proj-description{font-size:15px;color:var(--text2);line-height:1.95;margin-bottom:40px;transition:color .5s;max-width:580px}
+.proj-description p+p{margin-top:18px}
+.proj-tags-section h3{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+.proj-tags{display:flex;gap:8px;flex-wrap:wrap}
+.proj-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 14px;border-radius:99px;border:1px solid var(--border2);color:var(--text2);transition:border-color .2s,color .2s,transform .2s var(--sp)}
+.proj-tag:hover{border-color:var(--text);color:var(--text);transform:translateY(-2px)}
+
+/* ── SIDEBAR ── */
+.proj-sidebar{display:flex;flex-direction:column;gap:0;background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:background .5s,border-color .5s;position:sticky;top:100px}
+.proj-meta-row{padding:18px 22px;border-bottom:1px solid var(--border);transition:border-color .5s}
+.proj-meta-row:last-child{border-bottom:none}
+.proj-meta-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;transition:color .5s}
+.proj-meta-value{font-size:13px;color:var(--text);font-weight:600;transition:color .5s}
+.proj-status{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700}
+.proj-status-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-done{background:#4ade80}
+.dot-progress{background:#fb923c;animation:sdPulse 2s ease-in-out infinite}
+.dot-hold{background:#707070}
+@keyframes sdPulse{0%{box-shadow:0 0 0 0 rgba(251,146,60,.4)}70%{box-shadow:0 0 0 6px rgba(251,146,60,0)}100%{box-shadow:0 0 0 0 rgba(251,146,60,0)}}
+.proj-sidebar-cta{padding:20px 22px;background:var(--bg3);transition:background .5s}
+.proj-sidebar-cta a{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:linear-gradient(180deg,#ffffff 0%,#e8e2db 100%);color:#0a0a0a;border-radius:10px;font-family:var(--fb);font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;text-decoration:none;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,var(--s1);transition:transform .2s var(--sp),box-shadow .2s}
+.proj-sidebar-cta a:hover{transform:translateY(-2px);box-shadow:0 0 20px rgba(255,255,255,.18),0 8px 24px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.5) inset}
+[data-theme="light"] .proj-sidebar-cta a{background:linear-gradient(180deg,#111 0%,#222 100%);color:#f5f5f5}
+.proj-sidebar-cta a svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* ── RELATED ── */
+.related-section{padding:0 0 120px;border-top:1px solid var(--border);padding-top:80px;transition:border-color .5s}
+.related-title{font-family:var(--fd);font-size:clamp(22px,3vw,32px);font-weight:700;letter-spacing:-.025em;color:var(--text);margin-bottom:32px;transition:color .5s}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:960px){.related-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.related-grid{grid-template-columns:1fr}}
+.proj-card{background:var(--card);border:1px solid var(--border2);border-radius:12px;overflow:hidden;text-decoration:none;display:block;transition:transform .3s var(--sp),box-shadow .3s,border-color .25s}
+.proj-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.35);border-color:var(--text3)}
+.proj-card-thumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:var(--bg3)}
+.proj-card-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--sp)}
+.proj-card:hover .proj-card-thumb img{transform:scale(1.04)}
+.proj-card-letter{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:48px;font-weight:700;color:var(--border2)}
+.proj-card-badge{position:absolute;top:12px;left:12px}
+.proj-card-badge span{font-family:var(--fb);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.15)}
+.proj-card-body{padding:16px 18px}
+.proj-card-title{font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:4px;transition:color .5s}
+.proj-card-sub{font-size:11px;color:var(--text3)}
+
+/* ── SKELETON ── */
+.skel{animation:skPulse 1.6s ease-in-out infinite;border-radius:6px;background:var(--bg3)}
+@keyframes skPulse{0%,100%{opacity:.4}50%{opacity:.9}}
+.skel-title{height:64px;width:70%;margin-bottom:16px}
+.skel-sub{height:14px;width:30%;margin-bottom:48px}
+.skel-block{height:400px;width:100%}
+
+/* ── NOT FOUND ── */
+.not-found{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:80px 20px}
+.not-found h2{font-family:var(--fd);font-size:40px;font-weight:700;color:var(--text3)}
+.not-found p{font-size:14px;color:var(--text3)}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<nav id="nav">
+  <div class="nav-i">
+    <a href="index.html" class="nav-logo"><span class="logo-cutout" aria-hidden="true"></span><span>Rendrx</span></a>
+    <div class="nav-r">
+      <button id="tbtn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg id="tmoon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="tsun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+      </button>
+      <a href="index.html#contact" class="btn btn-ghost" style="padding:9px 20px;font-size:10px">Get in touch</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PROJECT HERO -->
+<section class="proj-hero" id="proj-hero">
+  <div class="wrap ph-inner">
+    <a href="javascript:history.back()" class="ph-back">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back
+    </a>
+    <div id="hero-content">
+      <!-- loading skeleton -->
+      <div class="skel skel-title"></div>
+      <div class="skel skel-sub"></div>
+    </div>
+  </div>
+  <div class="proj-image-wrap" id="image-wrap"></div>
+</section>
+
+<!-- PROJECT CONTENT -->
+<section class="proj-content" id="proj-body" style="display:none">
+  <div class="wrap">
+    <div class="proj-layout">
+      <div class="proj-main">
+        <h2>About this project</h2>
+        <div class="proj-description" id="proj-desc"></div>
+        <div class="proj-tags-section" id="proj-tags-wrap" style="display:none">
+          <h3>Deliverables &amp; Tags</h3>
+          <div class="proj-tags" id="proj-tags"></div>
+        </div>
+      </div>
+      <div class="proj-sidebar">
+        <div class="proj-meta-row" id="meta-type" style="display:none">
+          <div class="proj-meta-label">Category</div>
+          <div class="proj-meta-value" id="mv-type"></div>
+        </div>
+        <div class="proj-meta-row" id="meta-client" style="display:none">
+          <div class="proj-meta-label">Client</div>
+          <div class="proj-meta-value" id="mv-client"></div>
+        </div>
+        <div class="proj-meta-row" id="meta-year" style="display:none">
+          <div class="proj-meta-label">Year</div>
+          <div class="proj-meta-value" id="mv-year"></div>
+        </div>
+        <div class="proj-meta-row">
+          <div class="proj-meta-label">Status</div>
+          <div class="proj-meta-value" id="mv-status"></div>
+        </div>
+        <div class="proj-sidebar-cta" id="sidebar-cta" style="display:none">
+          <a href="#" id="live-link" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Visit Live Project
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED PROJECTS -->
+<section class="related-section" id="related-section" style="display:none">
+  <div class="wrap">
+    <div class="related-title" id="related-title">More projects like this</div>
+    <div class="related-grid" id="related-grid"></div>
+  </div>
+</section>
+
+<!-- NOT FOUND -->
+<div class="not-found" id="not-found" style="display:none">
+  <h2>Project not found</h2>
+  <p>This project may have been removed or the link is incorrect.</p>
+  <a href="projects.html" class="btn btn-ghost" style="margin-top:8px">Browse all projects</a>
+</div>
+
+<script>
+'use strict';
+const sb = supabase.createClient(
+  'https://tlodulytpnugibtlywen.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ'
+);
+
+// ── Theme ──
+const TKEY = 'rendrx-theme';
+function applyTheme(t) {
+  document.documentElement.dataset.theme = t;
+  document.getElementById('tmoon').style.display = t === 'dark' ? 'block' : 'none';
+  document.getElementById('tsun').style.display  = t === 'dark' ? 'none'  : 'block';
+}
+function toggleTheme() {
+  const n = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  applyTheme(n); localStorage.setItem(TKEY, n);
+}
+applyTheme(localStorage.getItem(TKEY) || 'dark');
+
+// ── Scroll ──
+window.addEventListener('scroll', () => {
+  const sh = document.body.scrollHeight - innerHeight;
+  document.getElementById('prog').style.width = (sh > 0 ? window.scrollY / sh * 100 : 0) + '%';
+  document.getElementById('nav').classList.toggle('sc', window.scrollY > 60);
+}, { passive: true });
+
+// ── Status helper ──
+function statusHTML(s) {
+  const map = { done: ['dot-done','Done'], 'in-progress': ['dot-progress','In Progress'], 'on-hold': ['dot-hold','On Hold'] };
+  const [cls, label] = map[s] || ['dot-hold', s || 'Unknown'];
+  return `<span class="proj-status"><span class="proj-status-dot ${cls}"></span>${label}</span>`;
+}
+
+// ── Capitalise ──
+function cap(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+// ── Load & render ──
+async function init() {
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) { showNotFound(); return; }
+
+  const { data: p, error } = await sb.from('projects').select('*').eq('id', id).single();
+  if (error || !p) { showNotFound(); return; }
+
+  // Update page title
+  document.title = (p.title || 'Project') + ' — Rendrx Studio';
+
+  // Hero
+  document.getElementById('hero-content').innerHTML = `
+    <div class="ph-meta">
+      <span class="ph-badge">${cap(p.type || 'Project')}</span>
+      ${p.year ? `<span class="ph-year">${p.year}</span>` : ''}
+    </div>
+    <h1 class="ph-title">${p.title || 'Untitled'}</h1>
+    ${p.client ? `<div class="ph-client">Client — <span>${p.client}</span></div>` : ''}
+  `;
+
+  // Image
+  const iw = document.getElementById('image-wrap');
+  if (p.img) {
+    iw.innerHTML = `<img src="${p.img}" alt="${p.title || ''}" class="proj-image">`;
+  } else {
+    iw.innerHTML = `<div class="proj-image-placeholder">${(p.title || '?')[0].toUpperCase()}</div>`;
+  }
+
+  // Description
+  const desc = p.description || p.desc || '';
+  document.getElementById('proj-desc').innerHTML = desc
+    ? desc.split('\n').filter(Boolean).map(l => `<p>${l}</p>`).join('')
+    : '<p style="color:var(--text3);font-style:italic">No description provided for this project.</p>';
+
+  // Tags
+  const tags = p.tags || [];
+  if (tags.length) {
+    document.getElementById('proj-tags-wrap').style.display = 'block';
+    document.getElementById('proj-tags').innerHTML = tags.map(t => `<span class="proj-tag">${t}</span>`).join('');
+  }
+
+  // Sidebar meta
+  if (p.type)   { document.getElementById('meta-type').style.display='block';   document.getElementById('mv-type').textContent   = cap(p.type); }
+  if (p.client) { document.getElementById('meta-client').style.display='block'; document.getElementById('mv-client').textContent = p.client; }
+  if (p.year)   { document.getElementById('meta-year').style.display='block';   document.getElementById('mv-year').textContent   = p.year; }
+  document.getElementById('mv-status').innerHTML = statusHTML(p.status);
+
+  if (p.url) {
+    document.getElementById('sidebar-cta').style.display = 'block';
+    document.getElementById('live-link').href = p.url;
+  }
+
+  // Show content
+  document.getElementById('proj-body').style.display = 'block';
+
+  // Related projects
+  if (p.type) {
+    const { data: related } = await sb
+      .from('projects').select('*')
+      .eq('type', p.type).neq('id', id).limit(3);
+    if (related && related.length) {
+      document.getElementById('related-title').textContent = `More ${cap(p.type)} projects`;
+      document.getElementById('related-grid').innerHTML = related.map(r => `
+        <a href="project.html?id=${r.id}" class="proj-card">
+          <div class="proj-card-thumb">
+            ${r.img ? `<img src="${r.img}" alt="${r.title||''}">` : `<div class="proj-card-letter">${(r.title||'?')[0].toUpperCase()}</div>`}
+            <div class="proj-card-badge"><span>${cap(r.type)}</span></div>
+          </div>
+          <div class="proj-card-body">
+            <div class="proj-card-title">${r.title||'Untitled'}</div>
+            <div class="proj-card-sub">${r.client||''}${r.client&&r.year?' · ':''}${r.year||''}</div>
+          </div>
+        </a>
+      `).join('');
+      document.getElementById('related-section').style.display = 'block';
+    }
+  }
+}
+
+function showNotFound() {
+  document.getElementById('proj-hero').style.display = 'none';
+  document.getElementById('not-found').style.display = 'flex';
+}
+
+init();
+</script>
+</body>
+</html>

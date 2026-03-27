@@ -200,6 +200,8 @@ input::placeholder{color:var(--text3)}
 .tag-video{border:1px solid rgba(96,165,250,.3);color:#60a5fa;background:rgba(96,165,250,.08)}
 .tag-motion{border:1px solid rgba(251,146,60,.3);color:#fb923c;background:rgba(251,146,60,.08)}
 .tag-web{border:1px solid rgba(74,222,128,.3);color:#4ade80;background:rgba(74,222,128,.08)}
+.tag-reels{border:1px solid rgba(232,121,249,.3);color:#e879f9;background:rgba(232,121,249,.08)}
+.tag-app{border:1px solid rgba(251,191,36,.3);color:#fb4f24;background:rgba(251,191,36,.08)}
 .sdwrap{display:flex;align-items:center;gap:6px;font-size:10px;color:var(--text2)}
 .sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 .sdot-done{background:#4ade80}
@@ -459,6 +461,8 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;padding-left:13px}
           <button class="fpill" data-f="video" onclick="setFilter('video')">Video</button>
           <button class="fpill" data-f="motion" onclick="setFilter('motion')">Motion</button>
           <button class="fpill" data-f="web" onclick="setFilter('web')">Web</button>
+          <button class="fpill" data-f="reels" onclick="setFilter('reels')">Reels</button>
+          <button class="fpill" data-f="app" onclick="setFilter('app')">App</button>
         </div>
         <div class="ptable" id="proj-table"></div>
       </div>
@@ -525,7 +529,7 @@ textarea{resize:vertical;min-height:72px;line-height:1.6;padding-left:13px}
     <div class="modal-body">
       <div class="frow"><label>Project Title *</label><input type="text" id="f-title" placeholder="e.g. NovaCo Brand Film"></div>
       <div class="frow-2">
-        <div><label>Category *</label><select id="f-type"><option value="">Select…</option><option value="video">Video</option><option value="motion">Motion</option><option value="web">Web</option></select></div>
+       <div><label>Category *</label><select id="f-type"><option value="">Select…</option><option value="video">Video</option><option value="motion">Motion</option><option value="web">Web</option><option value="reels">Reels</option><option value="app">App</option></select></div>
         <div><label>Status</label><select id="f-status"><option value="done">Done</option><option value="in-progress">In Progress</option><option value="on-hold">On Hold</option></select></div>
       </div>
       <div class="frow"><label>Client Name</label><input type="text" id="f-client" placeholder="e.g. NovaCo"></div>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html data-theme="dark" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Projects — Rendrx Studio</title>
+<meta name="description" content="Browse the full project archive from Rendrx — video editing, motion graphics, and web design work.">
+<link rel="canonical" href="https://rendrx.com/projects.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── paste your :root variables and base styles here ── */
+:root {
+  --bg:#0a0a0a;--bg2:#111111;--bg3:#181818;
+  --card:#141414;
+  --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);
+  --text:#f0f0f0;--text2:#c0c0c0;--text3:#707070;
+  --inv:#f5f5f5;--inv2:#0a0a0a;
+  --s1:0 2px 10px rgba(0,0,0,.6);--s2:0 8px 36px rgba(0,0,0,.7);--s3:0 24px 80px rgba(0,0,0,.8);
+  --fd:'Arvo',serif;--fb:'JetBrains Mono',monospace;--sp:cubic-bezier(.16,1,.3,1);
+  --inv-bg:#f5f5f5;--inv-bg2:#ffffff;--inv-bg3:#ebebeb;
+  --inv-text:#0a0a0a;--inv-text2:#333333;--inv-text3:#888888;
+  --inv-border:rgba(0,0,0,.09);--inv-border2:rgba(0,0,0,.18);
+  --inv-s1:0 2px 10px rgba(0,0,0,.08);--inv-s2:0 8px 36px rgba(0,0,0,.12);
+}
+[data-theme="light"]{
+  --bg:#f5f5f5;--bg2:#ffffff;--bg3:#ebebeb;--card:#ffffff;
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);
+  --text:#0a0a0a;--text2:#333333;--text3:#888888;
+  --inv:#0a0a0a;--inv2:#f5f5f5;
+  --s1:0 2px 10px rgba(0,0,0,.08);--s2:0 8px 36px rgba(0,0,0,.1);
+  --inv-bg:#0a0a0a;--inv-bg2:#111111;--inv-bg3:#181818;
+  --inv-text:#f0f0f0;--inv-text2:#c0c0c0;--inv-text3:#707070;
+  --inv-border:rgba(255,255,255,.09);--inv-border2:rgba(255,255,255,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .5s,color .5s;font-size:14px;line-height:1.6}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+::selection{background:var(--inv);color:var(--inv2)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 40px}
+@media(max-width:600px){.wrap{padding:0 20px}}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:22px 0;transition:background .35s,padding .35s}
+nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:15px 0}
+[data-theme="light"] nav.sc{background:rgba(238,238,238,.92)}
+.nav-i{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 40px}
+.nav-logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-size:20px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:.1em;transition:opacity .2s}
+.nav-logo:hover{opacity:.75}
+.logo-cutout{width:26px;height:26px;flex:0 0 auto;display:inline-block;background:currentColor;-webkit-mask-image:url("assets/logo-mark.png");mask-image:url("assets/logo-mark.png");-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:center;mask-position:center;-webkit-mask-mode:luminance;mask-mode:luminance}
+.nav-r{display:flex;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--fb);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:14px 30px;text-decoration:none;cursor:pointer;border:none;border-radius:12px;transition:transform .25s var(--sp),box-shadow .25s,background .2s,color .2s,border-color .2s;white-space:nowrap}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2);border-radius:12px}
+.btn-ghost:hover{border-color:var(--text);transform:translateY(-2px);background:var(--bg3)}
+#tbtn{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s,background .25s}
+#tbtn:hover{transform:rotate(25deg) scale(1.08)}
+#tbtn svg{width:16px;height:16px;stroke:var(--text);fill:none;stroke-width:2;transition:stroke .3s}
+
+/* ── PAGE HEADER ── */
+.page-header{padding:160px 0 72px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;transition:border-color .5s}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;opacity:.6}
+.page-header .wrap{position:relative;z-index:1}
+.page-header-eyebrow{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);display:inline-flex;align-items:center;gap:8px;margin-bottom:16px}
+.page-header-eyebrow::before{content:'//';opacity:.5}
+.page-header h1{font-family:var(--fd);font-size:clamp(40px,7vw,88px);font-weight:700;letter-spacing:-.035em;line-height:.95;color:var(--text);margin-bottom:18px;transition:color .5s}
+.page-header-sub{font-size:15px;color:var(--text2);line-height:1.9;max-width:460px;transition:color .5s}
+.page-header-meta{display:flex;align-items:center;gap:24px;margin-top:28px;flex-wrap:wrap}
+.page-header-count{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--text3);letter-spacing:.04em}
+.page-header-count span{color:var(--text);font-size:20px}
+
+/* ── FILTER + GRID ── */
+.proj-archive{padding:72px 0 120px;transition:background .5s}
+.proj-archive-top{display:flex;align-items:center;gap:8px;margin-bottom:40px;flex-wrap:wrap}
+.eyebrow{font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:'//';opacity:.5}
+.pf{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--border2);border-radius:99px;background:transparent;color:var(--text2);cursor:pointer;transition:all .22s var(--sp);font-family:var(--fb)}
+.pf:hover{color:var(--text);border-color:var(--text);transform:translateY(-1px)}
+.pf.on{background:var(--inv);color:var(--inv2);border-color:var(--inv)}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:960px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.proj-grid{grid-template-columns:1fr}}
+.proj-empty{grid-column:1/-1;padding:80px 20px;text-align:center;border:1px dashed var(--border2);border-radius:12px;color:var(--text3);font-size:13px}
+
+/* ── PROJECT CARDS ── */
+.proj-card{background:var(--inv-bg);border:1px solid var(--inv-border2);border-radius:12px;overflow:hidden;cursor:default;transition:transform .3s var(--sp),box-shadow .3s,border-color .25s,background .5s}
+.proj-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.35);border-color:var(--inv-text3)}
+.proj-card-thumb{aspect-ratio:16/9;position:relative;overflow:hidden;background:var(--inv-bg3)}
+.proj-card-thumb-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s var(--sp)}
+.proj-card:hover .proj-card-thumb-img{transform:scale(1.04)}
+.proj-card-letter{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:48px;font-weight:700;color:var(--inv-border2)}
+.proj-card-badge{position:absolute;top:12px;left:12px}
+.proj-card-badge span{font-family:var(--fb);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);color:rgba(255,255,255,.9);border:1px solid rgba(255,255,255,.15)}
+.proj-card-body{padding:18px 20px 20px}
+.proj-card-title{font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:-.02em;color:var(--inv-text);margin-bottom:8px;transition:color .5s}
+.proj-card-desc{font-size:12px;color:var(--inv-text2);line-height:1.8;margin-bottom:14px;transition:color .5s}
+.proj-card-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.proj-card-tags{display:flex;gap:6px;flex-wrap:wrap}
+.proj-card-tag{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid var(--inv-border2);color:var(--inv-text3);transition:border-color .5s,color .5s}
+.proj-card-link{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--inv-text2);text-decoration:none;border:1px solid var(--inv-border2);border-radius:99px;padding:5px 12px;transition:color .15s,border-color .15s,transform .2s}
+.proj-card-link:hover{color:var(--inv-text);border-color:var(--inv-text3);transform:translateX(2px)}
+.proj-card-client{font-size:10px;color:var(--inv-text3);margin-top:12px;letter-spacing:.04em;transition:color .5s}
+
+/* ── PROGRESS BAR ── */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--inv);z-index:8999;width:0%;pointer-events:none;transition:width .08s linear}
+
+/* ── EMPTY STATE WHILE LOADING ── */
+.proj-skeleton{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:960px){.proj-skeleton{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.proj-skeleton{grid-template-columns:1fr}}
+.proj-skel-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:background .5s}
+.proj-skel-thumb{aspect-ratio:16/9;background:var(--bg3);animation:skelPulse 1.6s ease-in-out infinite}
+.proj-skel-body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px}
+.proj-skel-line{height:10px;border-radius:4px;background:var(--bg3);animation:skelPulse 1.6s ease-in-out infinite}
+.proj-skel-line.w70{width:70%}.proj-skel-line.w90{width:90%}.proj-skel-line.w50{width:50%}
+@keyframes skelPulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .75s var(--sp),transform .75s var(--sp)}
+.reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.07s}.d2{transition-delay:.14s}
+
+/* ── BACK LINK ── */
+.back-link{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);text-decoration:none;transition:color .2s,transform .2s var(--sp);margin-bottom:32px}
+.back-link:hover{color:var(--text);transform:translateX(-3px)}
+.back-link svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+
+<nav id="nav">
+  <div class="nav-i">
+    <a href="index.html" class="nav-logo"><span class="logo-cutout" aria-hidden="true"></span><span>Rendrx</span></a>
+    <div class="nav-r">
+      <button id="tbtn" onclick="toggleTheme()" title="Switch theme" aria-label="Toggle theme">
+        <svg id="tmoon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="tsun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <a href="index.html#contact" class="btn btn-ghost" style="padding:9px 20px;font-size:10px">Get in touch</a>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="wrap">
+    <a href="index.html#projects" class="back-link">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to home
+    </a>
+    <div class="page-header-eyebrow">Full archive</div>
+    <h1>All our work.</h1>
+    <p class="page-header-sub">Every project we've shipped — video, motion, and web. Filter by type or browse the whole lot.</p>
+    <div class="page-header-meta">
+      <div class="page-header-count"><span id="total-count">—</span> projects total</div>
+    </div>
+  </div>
+</header>
+
+<!-- ARCHIVE GRID -->
+<section class="proj-archive">
+  <div class="wrap">
+    <div class="proj-archive-top" role="group" aria-label="Filter projects">
+      <button class="pf on" data-f="all" aria-pressed="true">All</button>
+      <button class="pf" data-f="video" aria-pressed="false">Video</button>
+      <button class="pf" data-f="motion" aria-pressed="false">Motion</button>
+      <button class="pf" data-f="web" aria-pressed="false">Web</button>
+      <button class="pf" data-f="reels" aria-pressed="false">Reels</button>
+      <button class="pf" data-f="app" aria-pressed="false">App</button>
+    </div>
+    <div class="proj-grid" id="pgrid">
+      <!-- skeleton loading state -->
+      <div class="proj-skeleton" id="pskeleton">
+        <div class="proj-skel-card"><div class="proj-skel-thumb"></div><div class="proj-skel-body"><div class="proj-skel-line w70"></div><div class="proj-skel-line w90"></div><div class="proj-skel-line w50"></div></div></div>
+        <div class="proj-skel-card"><div class="proj-skel-thumb"></div><div class="proj-skel-body"><div class="proj-skel-line w70"></div><div class="proj-skel-line w90"></div><div class="proj-skel-line w50"></div></div></div>
+        <div class="proj-skel-card"><div class="proj-skel-thumb"></div><div class="proj-skel-body"><div class="proj-skel-line w70"></div><div class="proj-skel-line w90"></div><div class="proj-skel-line w50"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+'use strict';
+
+// ── THEME ──
+const TKEY = 'rendrx-theme';
+function applyTheme(t) { document.documentElement.dataset.theme = t; document.getElementById('tmoon').style.display = t === 'dark' ? 'block' : 'none'; document.getElementById('tsun').style.display = t === 'dark' ? 'none' : 'block'; }
+function toggleTheme() { const n = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; applyTheme(n); localStorage.setItem(TKEY, n); }
+const sv = localStorage.getItem(TKEY); if (sv) applyTheme(sv);
+
+// ── SCROLL ──
+window.addEventListener('scroll', () => {
+  const sh = document.body.scrollHeight - innerHeight, pct = sh > 0 ? (window.scrollY / sh * 100) : 0;
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('nav').classList.toggle('sc', window.scrollY > 60);
+}, { passive: true });
+
+// ── REVEAL ──
+const ro = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); ro.unobserve(e.target); } }); }, { threshold: .06 });
+document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+// ── PROJECTS ──
+(function () {
+  var allProjects = [];
+  const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ');
+
+  async function load() {
+    const { data } = await sb.from('projects').select('*').order('created_at', { ascending: false });
+    return (data || []).map(p => ({ ...p, desc: p.description }));
+  }
+
+  function buildCard(p) {
+    var card = document.createElement('div');
+    card.className = 'proj-card';
+    var thumb = document.createElement('div'); thumb.className = 'proj-card-thumb';
+    if (p.img) { var img = document.createElement('img'); img.src = p.img; img.alt = p.title || ''; img.className = 'proj-card-thumb-img'; img.loading = 'lazy'; thumb.appendChild(img); }
+    else { var letter = document.createElement('div'); letter.className = 'proj-card-letter'; letter.textContent = (p.title || '?')[0].toUpperCase(); thumb.appendChild(letter); }
+    var badge = document.createElement('div'); badge.className = 'proj-card-badge';
+    var bs = document.createElement('span'); bs.textContent = p.type || ''; badge.appendChild(bs); thumb.appendChild(badge); card.appendChild(thumb);
+    var body = document.createElement('div'); body.className = 'proj-card-body';
+    var title = document.createElement('div'); title.className = 'proj-card-title'; title.textContent = p.title || ''; body.appendChild(title);
+    if (p.desc) { var desc = document.createElement('div'); desc.className = 'proj-card-desc'; desc.textContent = p.desc; body.appendChild(desc); }
+    var foot = document.createElement('div'); foot.className = 'proj-card-foot';
+    var tags = document.createElement('div'); tags.className = 'proj-card-tags';
+    (p.tags || []).slice(0, 3).forEach(function (t) { var tag = document.createElement('span'); tag.className = 'proj-card-tag'; tag.textContent = t; tags.appendChild(tag); });
+    foot.appendChild(tags);
+    var link = document.createElement('a'); link.href = 'project.html?id=' + p.id; link.className = 'proj-card-link'; link.textContent = 'View Project →'; foot.appendChild(link);
+    body.appendChild(foot);
+    if (p.client) { var client = document.createElement('div'); client.className = 'proj-card-client'; client.textContent = p.client + (p.year ? ' · ' + p.year : ''); body.appendChild(client); }
+    card.appendChild(body);
+    return card;
+  }
+
+  function buildCards(projects) {
+    var grid = document.getElementById('pgrid');
+    var skel = document.getElementById('pskeleton');
+    if (!grid) return;
+    if (skel) skel.remove();
+    while (grid.firstChild) grid.removeChild(grid.firstChild);
+    if (!projects.length) {
+      var empty = document.createElement('div'); empty.className = 'proj-empty'; empty.textContent = 'No projects yet. Check back soon.'; grid.appendChild(empty); return;
+    }
+    projects.forEach(function (p) { grid.appendChild(buildCard(p)); });
+    var count = document.getElementById('total-count');
+    if (count) count.textContent = projects.length;
+  }
+
+  load().then(function (data) {
+    allProjects = data;
+    var count = document.getElementById('total-count');
+    if (count) count.textContent = allProjects.length;
+    buildCards(allProjects);
+  });
+
+  document.querySelectorAll('.pf').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.pf').forEach(function (b) { b.classList.remove('on'); b.setAttribute('aria-pressed', 'false'); });
+      btn.classList.add('on'); btn.setAttribute('aria-pressed', 'true');
+      var f = btn.dataset.f;
+      var filtered = f === 'all' ? allProjects : allProjects.filter(function (p) { return p.type === f; });
+      buildCards(filtered);
+      var count = document.getElementById('total-count');
+      if (count) count.textContent = filtered.length;
+    });
+  });
+})();
+</script>
+</body>
+</html>
