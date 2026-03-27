@@ -118,108 +118,24 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;o
 #admin-link.visible{opacity:1}
 #admin-link:hover{color:var(--text2);border-color:var(--border2);transform:translateY(-2px)}
 #admin-link svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
-@media(max-width:600px){#admin-link{display:none!important}}
+@media(max-width:600px){#admin-link{left:20px;bottom:24px}}
 
 /* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:800;
-  padding:0;
-  transition:background .4s,border-color .4s,box-shadow .4s;
-}
-nav.sc{
-  background:rgba(10,10,10,.75);
-  backdrop-filter:blur(28px) saturate(180%);
-  -webkit-backdrop-filter:blur(28px) saturate(180%);
-  border-bottom:1px solid rgba(255,255,255,.07);
-  box-shadow:0 1px 0 rgba(255,255,255,.04), 0 8px 32px rgba(0,0,0,.4);
-}
-[data-theme="light"] nav.sc{
-  background:rgba(248,248,246,.82);
-  border-bottom:1px solid rgba(0,0,0,.07);
-  box-shadow:0 1px 0 rgba(255,255,255,.9) inset, 0 4px 24px rgba(0,0,0,.08);
-}
-.nav-i{
-  display:flex;align-items:center;justify-content:space-between;
-  max-width:1200px;margin:0 auto;padding:0 40px;
-  height:64px;
-}
-.nav-logo{
-  display:inline-flex;align-items:center;gap:9px;
-  font-family:var(--fd);font-size:19px;font-weight:700;
-  color:var(--text);text-decoration:none;letter-spacing:.08em;
-  transition:opacity .2s;
-  position:relative;
-}
-.nav-logo:hover{opacity:.7}
-.logo-cutout{
-  width:24px;height:24px;flex:0 0 auto;display:inline-block;
-  background:currentColor;
-  -webkit-mask-image:url("assets/logo-mark.png");mask-image:url("assets/logo-mark.png");
-  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
-  -webkit-mask-size:contain;mask-size:contain;
-  -webkit-mask-position:center;mask-position:center;
-  -webkit-mask-mode:luminance;mask-mode:luminance;
-}
+nav{position:fixed;top:0;left:0;right:0;z-index:800;padding:22px 0;transition:background .35s,padding .35s,border-color .35s}
+nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:15px 0}
+[data-theme="light"] nav.sc{background:rgba(238,238,238,.92)}
+.nav-i{display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:0 40px}
+.nav-logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-size:20px;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:.1em;transition:color .3s,opacity .2s}
+.nav-logo:hover{opacity:.75}
+.logo-cutout{width:26px;height:26px;flex:0 0 auto;display:inline-block;background:currentColor;-webkit-mask-image:url("assets/logo-mark.png");mask-image:url("assets/logo-mark.png");-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:contain;mask-size:contain;-webkit-mask-position:center;mask-position:center;-webkit-mask-mode:luminance;mask-mode:luminance}
 .ld-corner-logo .logo-cutout{width:22px;height:22px;opacity:.9}
-
-/* ── NAV LINKS ── */
-.nav-links{
-  display:flex;gap:2px;list-style:none;
-}
-.nav-links a{
-  font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--text2);text-decoration:none;
-  padding:8px 14px;border-radius:99px;
-  transition:color .18s,background .18s,transform .18s;
-}
-.nav-links a:hover,.nav-links a.active{
-  color:var(--inv2);
-  background:var(--inv);
-}
-
-/* ── NAV RIGHT SIDE ── */
-.nav-r{display:flex;gap:10px;align-items:center}
-
-/* ── THEME TOGGLE ── */
-#tbtn{
-  width:36px;height:36px;border-radius:50%;
-  background:var(--bg3);border:1px solid var(--border);
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  transition:background .25s,border-color .25s,transform .3s var(--sp);
-}
-#tbtn:hover{background:var(--bg2);border-color:var(--border2);transform:rotate(20deg) scale(1.05)}
-#tbtn svg{width:14px;height:14px;stroke:var(--text2);fill:none;stroke-width:2;transition:stroke .3s}
-
-/* ── CTA BUTTON GLOW ── */
-nav .btn-ghost{
-  font-size:10px;padding:8px 18px;border-radius:99px;
-  position:relative;overflow:hidden;
-  border-color:var(--border2);
-}
-nav .btn-ghost::before{
-  content:'';position:absolute;inset:0;border-radius:99px;
-  background:var(--inv);opacity:0;
-  transition:opacity .25s;
-}
-nav .btn-ghost:hover{
-  color:var(--inv2);border-color:transparent;
-  transform:none;
-}
-nav .btn-ghost:hover::before{opacity:1}
-nav .btn-ghost span,nav .btn-ghost{position:relative;z-index:1}
-
-/* ── SCROLL INDICATOR LINE ── */
-nav::after{
-  content:'';
-  position:absolute;bottom:-1px;left:0;
-  height:1px;width:var(--scroll-pct, 0%);
-  background:linear-gradient(90deg,transparent,var(--text3) 30%,var(--text3) 70%,transparent);
-  transition:width .08s linear;
-  pointer-events:none;
-  opacity:0;
-  z-index:2;
-}
-nav.sc::after{opacity:.55}
+.nav-links{display:flex;gap:2px;list-style:none}
+.nav-links a{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text2);text-decoration:none;padding:8px 14px;border-radius:99px;transition:color .18s,background .18s,transform .18s}
+.nav-links a:hover,.nav-links a.active{color:var(--inv2);background:var(--inv)}
+.nav-r{display:flex;gap:12px;align-items:center}
+#tbtn{width:38px;height:38px;border-radius:50%;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .3s var(--sp),background .25s,border-color .25s}
+#tbtn:hover{transform:rotate(25deg) scale(1.08)}
+#tbtn svg{width:16px;height:16px;stroke:var(--text);fill:none;stroke-width:2;transition:stroke .3s}
 .hbg{display:none;flex-direction:column;gap:5.5px;cursor:pointer;padding:8px}
 .hbg span{width:22px;height:1.5px;background:var(--text);display:block;transition:transform .3s var(--sp),opacity .3s var(--sp),background .3s}
 .hbg.o span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
@@ -1354,7 +1270,7 @@ nav.sc::after{opacity:.55}
 .cf-field{display:flex;flex-direction:column;gap:7px}
 .cf-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.35)}
 .cf-input,.cf-select,.cf-textarea{width:100%;font-family:var(--fb);font-size:12px;color:rgba(255,255,255,.85);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:12px 14px;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none}
-.cf-input::placeholder,.cf-textarea::placeholder{color:rgba(255,255,255,.22)}
+.cf-input::placeholder,.cf-textarea::placeholder{color:rgba(255, 255, 255, 0.199)}
 .cf-input:focus,.cf-select:focus,.cf-textarea:focus{border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.09)}
 .cf-select{cursor:pointer}
 .cf-select option{background:#111;color:#f0f0f0}
@@ -2118,7 +2034,6 @@ section.svc:has(.vid-vis) .wrap {
       <li><a href="#services">Services</a></li>
       <li><a href="#projects">Work</a></li>
       <li><a href="#team">Team</a></li>
-      <li><a href="#testimonials">Reviews</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-r">
@@ -3116,7 +3031,7 @@ section.svc:has(.vid-vis) .wrap {
 </section>
 
 <!-- TESTIMONIALS -->
-<section id="testimonials" class="testi" aria-labelledby="testi-heading">
+<section class="testi" aria-labelledby="testi-heading">
   <div class="wrap">
     <div class="eyebrow reveal" style="margin-bottom:12px">client reviews</div>
     <h2 class="reveal d1" style="font-family:var(--fd);font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.03em" id="testi-heading">What clients say</h2>
@@ -3408,7 +3323,7 @@ section.svc:has(.vid-vis) .wrap {
 
 <button id="btt" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="18 15 12 9 6 15"/></svg></button>
 
-<a id="admin-link" href="admin.html" aria-label="Admin login"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Admin</a>
+
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
