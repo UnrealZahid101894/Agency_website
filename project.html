@@ -6,7 +6,7 @@
 <title>Project — Rendrx Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#0a0a0a;--bg2:#111111;--bg3:#181818;--card:#141414;
@@ -14,7 +14,7 @@
   --text:#f0f0f0;--text2:#c0c0c0;--text3:#707070;
   --inv:#f5f5f5;--inv2:#0a0a0a;
   --s1:0 2px 10px rgba(0,0,0,.6);--s2:0 8px 36px rgba(0,0,0,.7);--s3:0 24px 80px rgba(0,0,0,.8);
-  --fd:'Arvo',serif;--fb:'JetBrains Mono',monospace;--sp:cubic-bezier(.16,1,.3,1);
+  --fd:'Arvo',serif;--fb:'DM Sans',sans-serif;--fm:'JetBrains Mono',monospace;--sp:cubic-bezier(.16,1,.3,1);
 }
 [data-theme="light"]{
   --bg:#f5f5f5;--bg2:#ffffff;--bg3:#ebebeb;--card:#ffffff;
@@ -25,7 +25,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .5s,color .5s;font-size:14px;line-height:1.6}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:hidden;transition:background .5s,color .5s;font-size:15px;line-height:1.75;letter-spacing:-.01em;font-weight:400}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
 ::selection{background:var(--inv);color:var(--inv2)}
@@ -132,6 +132,96 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);border-bottom:1p
 .not-found{min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;padding:80px 20px}
 .not-found h2{font-family:var(--fd);font-size:40px;font-weight:700;color:var(--text3)}
 .not-found p{font-size:14px;color:var(--text3)}
+
+/* ── TYPOGRAPHY OVERRIDES ── */
+.ph-back,
+.ph-badge,
+.ph-year,
+.proj-meta-label,
+.proj-tag,
+.proj-card-sub,
+.proj-sidebar-cta a { font-family: var(--fm) !important; font-size: 10px; }
+
+.proj-description,
+.proj-description p {
+  font-family: var(--fb);
+  font-size: 15px !important;
+  line-height: 1.9 !important;
+  color: var(--text2);
+  letter-spacing: -.01em;
+}
+
+.proj-meta-value {
+  font-family: var(--fb);
+  font-size: 14px;
+  letter-spacing: -.01em;
+}
+
+.related-title { letter-spacing: -.03em; }
+
+.proj-card-title { font-size: 16px; letter-spacing: -.02em; }
+.proj-card-sub { font-size: 11px; }
+
+.btn {
+  font-family: var(--fb) !important;
+  font-weight: 600 !important;
+  letter-spacing: .02em !important;
+}
+
+/* ── NEW SPLIT HERO ── */
+.ph-split{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;padding-bottom:72px}
+.ph-split .ph-title{font-size:clamp(34px,4.5vw,62px)}
+.ph-right{position:relative}
+.ph-img-frame{border-radius:12px;overflow:hidden;border:1px solid var(--border2);box-shadow:0 32px 80px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.3);aspect-ratio:16/9;background:var(--bg3);transition:border-color .5s}
+.ph-img-frame img{width:100%;height:100%;object-fit:cover;display:block}
+.ph-img-letter{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:72px;font-weight:700;color:var(--border2)}
+.ph-deco-num{position:absolute;top:-24px;right:-16px;font-family:var(--fd);font-size:clamp(100px,14vw,180px);font-weight:700;color:var(--border);line-height:1;pointer-events:none;user-select:none;z-index:-1;transition:color .5s}
+.ph-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+
+/* ── META STRIP ── */
+.ph-meta-strip{display:flex;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:52px 0 48px;transition:border-color .5s}
+.ph-meta-cell{flex:1;padding:20px 24px;border-right:1px solid var(--border);transition:border-color .5s,background .25s}
+.ph-meta-cell:last-child{border-right:none}
+.ph-meta-cell:hover{background:var(--bg3)}
+.ph-meta-cell-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:6px;font-family:var(--fm,'JetBrains Mono',monospace)}
+.ph-meta-cell-val{font-family:var(--fd);font-size:16px;font-weight:700;color:var(--text);letter-spacing:-.02em;transition:color .5s}
+.ph-status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+/* ── DESCRIPTION ── */
+.ph-desc-wrap{max-width:760px;margin:0 auto 52px;padding-bottom:52px;border-bottom:1px solid var(--border);transition:border-color .5s}
+.ph-desc-lead{font-family:var(--fd);font-size:clamp(18px,2.5vw,24px);font-style:italic;color:var(--text);line-height:1.65;letter-spacing:-.02em;margin-bottom:24px;transition:color .5s}
+.ph-desc-body{font-size:15px;color:var(--text2);line-height:1.95;transition:color .5s}
+.ph-desc-body p+p{margin-top:18px}
+
+/* ── TAGS ── */
+.ph-tags-wrap{margin-bottom:52px}
+.ph-tags-eyebrow{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:8px;font-family:var(--fm,'JetBrains Mono',monospace)}
+.ph-tags-eyebrow::before{content:'//';opacity:.4}
+.ph-tags-grid{display:flex;gap:8px;flex-wrap:wrap}
+.ph-big-tag{font-size:12px;font-weight:600;letter-spacing:.04em;padding:10px 20px;border-radius:99px;border:1px solid var(--border2);color:var(--text2);cursor:default;transition:all .2s var(--sp)}
+.ph-big-tag:hover{border-color:var(--text);color:var(--text);transform:translateY(-2px);background:var(--bg3)}
+
+/* ── LIVE CTA CARD ── */
+.ph-live-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;padding:32px 36px;display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:52px;transition:border-color .25s,background .5s}
+.ph-live-card:hover{border-color:var(--text3)}
+.ph-live-card h3{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--text);margin-bottom:4px;transition:color .5s}
+.ph-live-card p{font-size:13px;color:var(--text3);transition:color .5s}
+
+/* ── BOTTOM CTA ── */
+.proj-cta{padding:100px 0;border-top:1px solid var(--border);text-align:center;position:relative;overflow:hidden;background:var(--bg2);transition:background .5s,border-color .5s}
+.proj-cta::before{content:'';position:absolute;inset:0;background-image:radial-gradient(var(--border) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;opacity:.6}
+.proj-cta .wrap{position:relative;z-index:1}
+.proj-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.proj-cta-eyebrow::before{content:'//';opacity:.4}
+.proj-cta h2{font-family:var(--fd);font-size:clamp(28px,4.5vw,52px);font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:14px;transition:color .5s}
+.proj-cta p{font-size:14px;color:var(--text3);max-width:380px;margin:0 auto 32px;line-height:1.85;transition:color .5s}
+.proj-cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){.ph-split{grid-template-columns:1fr;gap:40px}.ph-deco-num{display:none}.ph-meta-strip{flex-direction:column}.ph-meta-cell{border-right:none;border-bottom:1px solid var(--border)}.ph-meta-cell:last-child{border-bottom:none}}
+@media(max-width:600px){.ph-live-card{flex-direction:column;align-items:flex-start;padding:24px}.ph-desc-lead{font-size:18px}.proj-cta{padding:72px 0}}
+
+
 </style>
 </head>
 <body>
@@ -207,6 +297,19 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);border-bottom:1p
   </div>
 </section>
 
+<!-- BOTTOM CTA -->
+<section class="proj-cta">
+  <div class="wrap">
+    <div class="proj-cta-eyebrow">work with us</div>
+    <h2>Want something<br>like this?</h2>
+    <p>We're currently taking on new projects. Let's talk about what you need.</p>
+    <div class="proj-cta-btns">
+      <a href="index.html#contact" class="btn btn-fill btn-lg">Start a Project</a>
+      <a href="projects.html" class="btn btn-ghost btn-lg">Browse All Work</a>
+    </div>
+  </div>
+</section>
+
 <!-- RELATED PROJECTS -->
 <section class="related-section" id="related-section" style="display:none">
   <div class="wrap">
@@ -267,55 +370,105 @@ async function init() {
   const { data: p, error } = await sb.from('projects').select('*').eq('id', id).single();
   if (error || !p) { showNotFound(); return; }
 
-  // Update page title
   document.title = (p.title || 'Project') + ' — Rendrx Studio';
 
-  // Hero
+  const desc = p.description || p.desc || '';
+  const tags = p.tags || [];
+  const descLines = desc.split('\n').filter(Boolean);
+  const leadText = descLines[0] || 'A creative project by Rendrx Studio.';
+  const bodyParas = descLines.slice(1).filter(Boolean).map(l => `<p>${l}</p>`).join('');
+
+  // ── HERO (split layout) ──
   document.getElementById('hero-content').innerHTML = `
-    <div class="ph-meta">
-      <span class="ph-badge">${cap(p.type || 'Project')}</span>
-      ${p.year ? `<span class="ph-year">${p.year}</span>` : ''}
+    <div class="ph-split">
+      <div class="ph-left">
+        <div class="ph-meta">
+          <span class="ph-badge">${cap(p.type || 'Project')}</span>
+          ${p.year ? `<span class="ph-year">${p.year}</span>` : ''}
+        </div>
+        <h1 class="ph-title" style="margin-bottom:12px">${p.title || 'Untitled'}</h1>
+        ${p.client ? `<div class="ph-client">${p.client}</div>` : ''}
+        <div class="ph-actions">
+          ${p.url ? `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn btn-fill" style="padding:12px 26px;font-size:11px">
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            View Live
+          </a>` : ''}
+          <a href="index.html#projects" class="btn btn-ghost" style="padding:12px 26px;font-size:11px">← All Projects</a>
+        </div>
+      </div>
+      <div class="ph-right">
+        <div class="ph-deco-num">${(p.title || '?')[0].toUpperCase()}</div>
+        <div class="ph-img-frame">
+          ${p.img
+            ? `<img src="${p.img}" alt="${p.title || ''}">`
+            : `<div class="ph-img-letter">${(p.title || '?')[0].toUpperCase()}</div>`}
+        </div>
+      </div>
     </div>
-    <h1 class="ph-title">${p.title || 'Untitled'}</h1>
-    ${p.client ? `<div class="ph-client">Client — <span>${p.client}</span></div>` : ''}
   `;
 
-  // Image
-  const iw = document.getElementById('image-wrap');
-  if (p.img) {
-    iw.innerHTML = `<img src="${p.img}" alt="${p.title || ''}" class="proj-image">`;
-  } else {
-    iw.innerHTML = `<div class="proj-image-placeholder">${(p.title || '?')[0].toUpperCase()}</div>`;
-  }
+  // Hide old standalone image strip
+  document.getElementById('image-wrap').style.display = 'none';
 
-  // Description
-  const desc = p.description || p.desc || '';
-  document.getElementById('proj-desc').innerHTML = desc
-    ? desc.split('\n').filter(Boolean).map(l => `<p>${l}</p>`).join('')
-    : '<p style="color:var(--text3);font-style:italic">No description provided for this project.</p>';
+  // ── CONTENT ──
+  const statusMap = {
+    done: ['#4ade80','Completed'],
+    'in-progress': ['#fb923c','In Progress'],
+    'on-hold': ['#707070','On Hold']
+  };
+  const [sc, sl] = statusMap[p.status] || ['#707070', p.status || '—'];
 
-  // Tags
-  const tags = p.tags || [];
-  if (tags.length) {
-    document.getElementById('proj-tags-wrap').style.display = 'block';
-    document.getElementById('proj-tags').innerHTML = tags.map(t => `<span class="proj-tag">${t}</span>`).join('');
-  }
+  const metaCells = [
+    { label: 'Category', val: cap(p.type || '—') },
+    ...(p.client ? [{ label: 'Client', val: p.client }] : []),
+    ...(p.year ? [{ label: 'Year', val: p.year }] : []),
+    { label: 'Status', val: `<span class="ph-status-dot" style="background:${sc}"></span>${sl}` },
+  ];
 
-  // Sidebar meta
-  if (p.type)   { document.getElementById('meta-type').style.display='block';   document.getElementById('mv-type').textContent   = cap(p.type); }
-  if (p.client) { document.getElementById('meta-client').style.display='block'; document.getElementById('mv-client').textContent = p.client; }
-  if (p.year)   { document.getElementById('meta-year').style.display='block';   document.getElementById('mv-year').textContent   = p.year; }
-  document.getElementById('mv-status').innerHTML = statusHTML(p.status);
+  document.getElementById('proj-body').innerHTML = `
+    <div class="wrap">
 
-  if (p.url) {
-    document.getElementById('sidebar-cta').style.display = 'block';
-    document.getElementById('live-link').href = p.url;
-  }
+      <div class="ph-meta-strip">
+        ${metaCells.map(m => `
+          <div class="ph-meta-cell">
+            <div class="ph-meta-cell-label">${m.label}</div>
+            <div class="ph-meta-cell-val">${m.val}</div>
+          </div>
+        `).join('')}
+      </div>
 
-  // Show content
+      <div class="ph-desc-wrap">
+        <div class="ph-desc-lead">${leadText}</div>
+        ${bodyParas ? `<div class="ph-desc-body">${bodyParas}</div>` : ''}
+      </div>
+
+      ${tags.length ? `
+        <div class="ph-tags-wrap">
+          <div class="ph-tags-eyebrow">Deliverables &amp; Tags</div>
+          <div class="ph-tags-grid">
+            ${tags.map(t => `<span class="ph-big-tag">${t}</span>`).join('')}
+          </div>
+        </div>
+      ` : ''}
+
+      ${p.url ? `
+        <div class="ph-live-card">
+          <div>
+            <h3>See it live</h3>
+            <p>This project is published and ready to explore.</p>
+          </div>
+          <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn btn-fill" style="padding:13px 26px;flex-shrink:0">
+            Visit Project
+            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+      ` : ''}
+
+    </div>
+  `;
   document.getElementById('proj-body').style.display = 'block';
 
-  // Related projects
+  // ── RELATED ──
   if (p.type) {
     const { data: related } = await sb
       .from('projects').select('*')
@@ -323,14 +476,14 @@ async function init() {
     if (related && related.length) {
       document.getElementById('related-title').textContent = `More ${cap(p.type)} projects`;
       document.getElementById('related-grid').innerHTML = related.map(r => `
-        <a href="project.html?id=${r.id}" class="proj-card">
+        <a href="project.html?id=${r.id}" class="proj-card" style="text-decoration:none;display:block">
           <div class="proj-card-thumb">
-            ${r.img ? `<img src="${r.img}" alt="${r.title||''}">` : `<div class="proj-card-letter">${(r.title||'?')[0].toUpperCase()}</div>`}
+            ${r.img ? `<img src="${r.img}" alt="${r.title || ''}">` : `<div class="proj-card-letter">${(r.title || '?')[0].toUpperCase()}</div>`}
             <div class="proj-card-badge"><span>${cap(r.type)}</span></div>
           </div>
           <div class="proj-card-body">
-            <div class="proj-card-title">${r.title||'Untitled'}</div>
-            <div class="proj-card-sub">${r.client||''}${r.client&&r.year?' · ':''}${r.year||''}</div>
+            <div class="proj-card-title">${r.title || 'Untitled'}</div>
+            <div class="proj-card-sub">${r.client || ''}${r.client && r.year ? ' · ' : ''}${r.year || ''}</div>
           </div>
         </a>
       `).join('');
