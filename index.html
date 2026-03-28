@@ -1201,20 +1201,6 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 
 /* ── TESTIMONIALS ── */
 .testi{padding:120px 0;border-top:1px solid var(--border);background:var(--bg2);transition:background .5s,border-color .5s}
-.tc-wrap{display:flex;gap:14px;justify-content:center;max-height:620px;overflow:hidden;-webkit-mask-image:linear-gradient(to bottom,transparent,black 14%,black 86%,transparent);mask-image:linear-gradient(to bottom,transparent,black 14%,black 86%,transparent);margin-top:56px}
-.tc{display:flex;flex-direction:column;gap:14px;width:316px;flex-shrink:0}
-.tci{display:flex;flex-direction:column;gap:14px;animation:tcs var(--d,18s) linear infinite}
-@keyframes tcs{to{transform:translateY(-50%)}}
-.tcard{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:22px;flex-shrink:0;transition:border-color .25s,background .5s,box-shadow .25s,transform .3s var(--sp)}
-.tcard:hover{border-color:var(--text3);box-shadow:var(--s2);transform:translateY(-3px)}
-.tq{font-size:14px;color:var(--text2);line-height:1.85;font-style:italic;margin-bottom:16px;transition:color .5s}
-.tau{display:flex;align-items:center;gap:10px}
-.tav{width:32px;height:32px;border-radius:50%;border:1px solid var(--border2);flex-shrink:0;transition:border-color .5s}
-.tn{font-family:var(--fd);font-size:14px;font-weight:700;color:var(--text);letter-spacing:-.01em;transition:color .5s}
-.tr{font-size:11px;color:var(--text3);letter-spacing:.04em;transition:color .5s}
-.tc2,.tc3{display:none}
-@media(min-width:768px){.tc2{display:flex}}
-@media(min-width:1100px){.tc3{display:flex}}
 
 /* ── FAQ ── */
 .faq-section{padding:120px 0;border-top:1px solid var(--border);transition:background .5s,border-color .5s}
@@ -1981,9 +1967,109 @@ section.svc:has(.vid-vis) .wrap {
   .tq { font-size: 13.5px !important; }
 }
 
+/* ── PRICING ── */
+.pricing-section{padding:120px 0;border-top:1px solid var(--border);position:relative;overflow:hidden;transition:background .5s,border-color .5s}
+.pricing-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,var(--border) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;opacity:.5}
+.pr-wrap{position:relative;z-index:1}
+.pr-head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:64px}
+.pr-head-left h2{font-family:var(--fd);font-size:clamp(28px,4vw,52px);font-weight:700;letter-spacing:-.03em;color:var(--text);line-height:1.05;margin-bottom:14px;transition:color .5s}
+.pr-head-left p{font-size:15px;color:var(--text2);line-height:1.9;max-width:400px;transition:color .5s}
+.pr-toggle-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.pr-toggle{display:inline-flex;background:var(--bg3);border:1px solid var(--border2);border-radius:99px;padding:4px;gap:2px;transition:background .5s,border-color .5s}
+.pr-toggle-btn{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:8px 18px;border-radius:99px;border:none;cursor:pointer;background:transparent;color:var(--text3);transition:all .3s var(--sp)}
+.pr-toggle-btn.on{background:var(--inv);color:var(--inv2);box-shadow:var(--s1)}
+.pr-toggle-note{font-family:var(--fm);font-size:9px;color:var(--text3);letter-spacing:.08em}
+.pr-toggle-note span{color:var(--green);font-weight:700}
+
+.pr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .5s}
+.pr-card{position:relative;padding:40px 36px 44px;border-right:1px solid var(--border);background:var(--card);transition:background .3s var(--sp),border-color .5s,transform .4s var(--sp),box-shadow .4s var(--sp);overflow:hidden;isolation:isolate}
+.pr-card:last-child{border-right:none}
+.pr-card::before{content:'';position:absolute;inset:0;background:var(--inv);opacity:0;transition:opacity .4s var(--sp);z-index:0;pointer-events:none}
+.pr-card:hover{transform:translateY(-8px);box-shadow:0 32px 64px rgba(0,0,0,.5);z-index:2}
+.pr-card:hover::before{opacity:.04}
+[data-theme="light"] .pr-card:hover::before{opacity:.03}
+.pr-card.featured{background:var(--bg2);border-right-color:var(--border)}
+.pr-card>*{position:relative;z-index:1}
+
+.pr-card-top{margin-bottom:28px}
+.pr-type{font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:8px;transition:color .3s}
+.pr-type::before{content:'';width:20px;height:1px;background:currentColor;opacity:.4}
+.pr-featured-badge{display:inline-flex;align-items:center;gap:5px;font-family:var(--fm);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:99px;background:var(--inv);color:var(--inv2);margin-bottom:14px}
+.pr-featured-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);animation:glow 2s infinite}
+.pr-name{font-family:var(--fd);font-size:26px;font-weight:700;letter-spacing:-.025em;color:var(--text);margin-bottom:10px;transition:color .5s}
+.pr-desc{font-size:13px;color:var(--text2);line-height:1.85;transition:color .5s}
+
+.pr-price-wrap{margin-bottom:28px;padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);transition:border-color .5s}
+.pr-price{font-family:var(--fd);font-size:52px;font-weight:700;letter-spacing:-.04em;color:var(--text);line-height:1;transition:color .5s,transform .4s var(--sp)}
+.pr-card:hover .pr-price{transform:scale(1.04);transform-origin:left}
+.pr-price sup{font-size:.4em;vertical-align:super;color:var(--text2);letter-spacing:0}
+.pr-price-note{font-family:var(--fm);font-size:9px;color:var(--text3);letter-spacing:.08em;margin-top:6px}
+
+.pr-features{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:32px}
+.pr-features li{font-size:13px;color:var(--text2);display:flex;align-items:flex-start;gap:10px;line-height:1.6;transition:color .5s}
+.pr-features li::before{content:'→';color:var(--text3);font-size:11px;flex-shrink:0;margin-top:2px;transition:color .3s var(--sp)}
+.pr-card:hover .pr-features li::before{color:var(--text2)}
+
+.pr-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:14px;font-family:var(--fb);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-radius:10px;transition:all .3s var(--sp);cursor:pointer;border:none}
+.pr-cta-fill{background:linear-gradient(180deg,#fff 0%,#e8e2db 100%);color:#0a0a0a;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,var(--s1)}
+.pr-cta-fill:hover{transform:translateY(-2px);box-shadow:0 0 24px rgba(255,255,255,.2),0 10px 28px rgba(0,0,0,.4),0 1px 0 rgba(255,255,255,.5) inset}
+[data-theme="light"] .pr-cta-fill{background:linear-gradient(180deg,#111 0%,#222 100%);color:#f5f5f5}
+.pr-cta-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
+.pr-cta-ghost:hover{border-color:var(--text);background:var(--bg3);transform:translateY(-2px)}
+.pr-cta svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--sp)}
+.pr-cta:hover svg{transform:translateX(3px)}
+
+.pr-footnote{display:flex;align-items:center;gap:10px;margin-top:20px;font-family:var(--fm);font-size:9px;color:var(--text3);letter-spacing:.07em}
+.pr-footnote::before{content:'//';opacity:.4}
+
+@media(max-width:960px){
+  .pr-head{grid-template-columns:1fr;gap:32px}
+  .pr-toggle-wrap{align-items:flex-start}
+  .pr-grid{grid-template-columns:1fr}
+  .pr-card{border-right:none;border-bottom:1px solid var(--border)}
+  .pr-card:last-child{border-bottom:none}
+  .pr-card:hover{transform:none;box-shadow:none}
+}
+
+/* ── CUSTOM CURSOR ── */
+* { cursor: none !important; }
+@media (hover: none) { * { cursor: auto !important; } }
+
+.cur { position: fixed; pointer-events: none; z-index: 99999; mix-blend-mode: difference; }
+.cur-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #fff; top: 0; left: 0;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+}
+.cur-ring {
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,.6);
+  top: 0; left: 0;
+  transform: translate(-50%, -50%);
+  will-change: left, top;
+  transition: width .25s var(--sp), height .25s var(--sp), border-color .25s;
+}
+body.cur-hovering .cur-ring { width: 48px; height: 48px; border-color: rgba(255,255,255,.9); }
+body.cur-clicking .cur-ring { width: 24px; height: 24px; }
+body.cur-hidden .cur-dot,
+body.cur-hidden .cur-ring { opacity: 0; }
+
+/* ── PAGE TRANSITIONS ── */
+.page-trans{position:fixed;inset:0;z-index:99998;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease}
+.page-trans.show{opacity:1;pointer-events:all}
+
+
+#wa-btn:hover{transform:translateY(-3px) !important;box-shadow:0 8px 28px rgba(37,211,102,.55) !important}
+
 </style>
 </head>
 <body>
+
+  <div class="page-trans" id="page-trans"></div>
+
+  <div class="cur cur-dot" id="cur-dot"></div>
+  <div class="cur cur-ring" id="cur-ring"></div>
 
 <div id="theme-flash" aria-hidden="true"></div>
 
@@ -2007,9 +2093,11 @@ section.svc:has(.vid-vis) .wrap {
 
 <div class="mnav" id="mnav" role="dialog" aria-label="Mobile navigation" aria-hidden="true">
   <a href="#services" onclick="cmn()">Services</a>
-  <a href="#projects" onclick="cmn()">Projects</a>
-  <a href="#team" onclick="cmn()">Team</a>
-  <a href="#contact" onclick="cmn()">Contact</a>
+<a href="#projects" onclick="cmn()">Projects</a>
+<a href="#reviews" onclick="cmn()">Reviews</a>
+<a href="#team" onclick="cmn()">Team</a>
+<a href="#pricing" onclick="cmn()">Pricing</a>
+<a href="#contact" onclick="cmn()">Contact</a>
 </div>
 
 <nav id="nav" aria-label="Main navigation">
@@ -2017,14 +2105,16 @@ section.svc:has(.vid-vis) .wrap {
     <a href="#hero" class="nav-logo" aria-label="Rendrx — Home"><span class="logo-cutout" aria-hidden="true"></span><span>Rendrx</span></a>
     <ul class="nav-links" role="list">
       <li><a href="#services">Services</a></li>
-      <li><a href="#projects">Work</a></li>
-      <li><a href="#team">Team</a></li>
-      <li><a href="#contact">Contact</a></li>
+<li><a href="#projects">Work</a></li>
+<li><a href="#reviews">Reviews</a></li>
+<li><a href="#team">Team</a></li>
+<li><a href="#pricing">Pricing</a></li>
+<li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-r">
       <button id="tbtn" onclick="toggleTheme()" title="Switch theme" aria-label="Toggle light and dark mode">
         <svg id="tmoon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <svg id="tsun" viewBox="0 0 24 24" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg id="tsun" viewBox="0 0 24 24" style="display:none" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.2２"/></svg>
       </button>
       <a href="#contact" class="btn btn-ghost" style="padding:9px 20px;font-size:10px">Get in touch</a>
       <div class="hbg" id="hbg" onclick="tmn()" role="button" tabindex="0" aria-expanded="false" aria-controls="mnav" aria-label="Open menu"><span></span><span></span><span></span></div>
@@ -2182,7 +2272,7 @@ section.svc:has(.vid-vis) .wrap {
  
         <!-- Floating stat cards -->
         <div class="h3d-card h3d-card-a">
-          <div class="h3d-card-n">20+</div>
+          <div class="h3d-card-n">4+</div>
           <div class="h3d-card-l">Projects done</div>
         </div>
         <div class="h3d-card h3d-card-b">
@@ -2966,7 +3056,7 @@ section.svc:has(.vid-vis) .wrap {
   <div class="stats-shimmer" aria-hidden="true"></div>
   <div class="stats-grid">
 
-    <div class="stat" data-target="20" data-suffix="+">
+    <div class="stat" data-target="4" data-suffix="+">
       <div class="stat-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       </div>
@@ -2974,7 +3064,7 @@ section.svc:has(.vid-vis) .wrap {
       <span class="stat-l">Projects Done</span>
     </div>
 
-    <div class="stat" data-target="50" data-suffix="+">
+    <div class="stat" data-target="2" data-suffix="+">
       <div class="stat-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
       </div>
@@ -3016,36 +3106,12 @@ section.svc:has(.vid-vis) .wrap {
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="testi" aria-labelledby="testi-heading">
-  <div class="wrap">
-    <div class="eyebrow reveal" style="margin-bottom:12px">client reviews</div>
-    <h2 class="reveal d1" style="font-family:var(--fd);font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.03em" id="testi-heading">What clients say</h2>
-    <div class="tc-wrap" aria-label="Client testimonials">
-      <div class="tc tc1"><div class="tci" style="--d:18s">
-        <div class="tcard"><p class="tq">"Rendrx turned our raw footage into a brand film we actually use everywhere. It exceeded every expectation."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2a2a2a"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">RS</text></svg><div><div class="tn">Rahim S.</div><div class="tr">CEO, NovaCo</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our logo animation gets complimented every single day. Worth every taka — it made our brand look instantly more professional."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#323232"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">FK</text></svg><div><div class="tn">Fatema K.</div><div class="tr">Founder, LunaLabs</div></div></div></div>
-        <div class="tcard"><p class="tq">"Concept to live website in 8 days. It loads fast, looks great on mobile, and our enquiry rate doubled in month one."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#282828"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">KM</text></svg><div><div class="tn">Dr. Khalid M.</div><div class="tr">Director, MediCore</div></div></div></div>
-        <div class="tcard"><p class="tq">"Rendrx turned our raw footage into a brand film we actually use everywhere. It exceeded every expectation."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2a2a2a"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">RS</text></svg><div><div class="tn">Rahim S.</div><div class="tr">CEO, NovaCo</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our logo animation gets complimented every single day. Worth every taka — it made our brand look instantly more professional."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#323232"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">FK</text></svg><div><div class="tn">Fatema K.</div><div class="tr">Founder, LunaLabs</div></div></div></div>
-        <div class="tcard"><p class="tq">"Concept to live website in 8 days. It loads fast, looks great on mobile, and our enquiry rate doubled in month one."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#282828"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">KM</text></svg><div><div class="tn">Dr. Khalid M.</div><div class="tr">Director, MediCore</div></div></div></div>
-      </div></div>
-      <div class="tc tc2"><div class="tci" style="--d:22s">
-        <div class="tcard"><p class="tq">"Our social videos went from 200 to 20,000 views after Rendrx edited them. Night and day difference."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2e2e2e"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">NR</text></svg><div><div class="tn">Nadia R.</div><div class="tr">Marketing Lead, FlowBrand</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our explainer video increased our sign-up rate by 34%. The return on investment was almost immediate."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#303030"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">KA</text></svg><div><div class="tn">Karim A.</div><div class="tr">CMO, Stackify</div></div></div></div>
-        <div class="tcard"><p class="tq">"Rare to find people who understand both design and motion. They cared about the result, not just the deadline."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#262626"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">SM</text></svg><div><div class="tn">Sara M.</div><div class="tr">Creative Director, Studio8</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our social videos went from 200 to 20,000 views after Rendrx edited them. Night and day difference."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2e2e2e"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">NR</text></svg><div><div class="tn">Nadia R.</div><div class="tr">Marketing Lead, FlowBrand</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our explainer video increased our sign-up rate by 34%. The return on investment was almost immediate."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#303030"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">KA</text></svg><div><div class="tn">Karim A.</div><div class="tr">CMO, Stackify</div></div></div></div>
-        <div class="tcard"><p class="tq">"Rare to find people who understand both design and motion. They cared about the result, not just the deadline."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#262626"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">SM</text></svg><div><div class="tn">Sara M.</div><div class="tr">Creative Director, Studio8</div></div></div></div>
-      </div></div>
-      <div class="tc tc3"><div class="tci" style="--d:20s">
-        <div class="tcard"><p class="tq">"We needed three brand films. Rendrx delivered all of them on budget and ahead of schedule."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2c2c2c"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">TH</text></svg><div><div class="tn">Tariq H.</div><div class="tr">GM, AlphaVentures</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our app launch videos looked incredible. Multiple reviewers commented on how polished everything appeared."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#343434"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">RI</text></svg><div><div class="tn">Roksana I.</div><div class="tr">Product, LaunchPad</div></div></div></div>
-        <div class="tcard"><p class="tq">"Best creative studio I've worked with in 10 years. They actually care about whether the work gets results."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2a2a2a"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">AB</text></svg><div><div class="tn">Arif B.</div><div class="tr">Founder, GrowthLabs</div></div></div></div>
-        <div class="tcard"><p class="tq">"We needed three brand films. Rendrx delivered all of them on budget and ahead of schedule."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2c2c2c"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">TH</text></svg><div><div class="tn">Tariq H.</div><div class="tr">GM, AlphaVentures</div></div></div></div>
-        <div class="tcard"><p class="tq">"Our app launch videos looked incredible. Multiple reviewers commented on how polished everything appeared."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#343434"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">RI</text></svg><div><div class="tn">Roksana I.</div><div class="tr">Product, LaunchPad</div></div></div></div>
-        <div class="tcard"><p class="tq">"Best creative studio I've worked with in 10 years. They actually care about whether the work gets results."</p><div class="tau"><svg class="tav" viewBox="0 0 34 34" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="34" height="34" rx="17" fill="#2a2a2a"/><text x="17" y="22" text-anchor="middle" font-family="Arvo,serif" font-size="12" font-weight="700" fill="rgba(255,255,255,0.85)">AB</text></svg><div><div class="tn">Arif B.</div><div class="tr">Founder, GrowthLabs</div></div></div></div>
-      </div></div>
-    </div>
+<section class="testi" id="reviews" aria-labelledby="testi-heading">
+  <div class="wrap" style="padding:40px 10px;text-align:center;max-width:640px;margin:0 auto">
+    <div class="eyebrow reveal" style="justify-content:center;margin-bottom:20px">client reviews</div>
+    <h2 class="reveal d1" style="font-family:var(--fd);font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-.03em;color:var(--text);margin-bottom:20px" id="testi-heading">Reviews coming soon.</h2>
+    <p class="reveal d2" style="font-size:15px;color:var(--text2);line-height:1.9;margin-bottom:36px">We're a new studio actively building our client base. Early project partners get priority pricing and direct access to the founders — no account managers, no handoffs.</p>
+    <a href="#contact" class="btn btn-ghost reveal d2" style="margin:0 auto">Be our first review →</a>
   </div>
 </section>
 
@@ -3061,12 +3127,12 @@ section.svc:has(.vid-vis) .wrap {
       <div class="tm-inner">
         <div class="tm-name-row">
           <div class="tm-portrait">
-  <img src="/assets/zahid.jpeg" alt="Zahid">
+  <img src="assets/zahid.jpeg" alt="Zahid" onerror="this.style.display='none'">
 </div>
           <div class="tm-name-text"><div class="tm-role-tag">Web &amp; Development</div><div class="tm-name" id="tm1-name">Zahid<span>.</span></div></div>
         </div>
         <p class="tm-bio">Builds websites that work as well as they look. Focused on sites that load fast, are easy to use, and actually bring in enquiries — not just ones that look good on a screen. Clean code, no shortcuts.</p>
-        <div class="tm-stats" aria-label="Zahid's stats"><div class="tm-stat"><span class="tm-stat-n">4+</span><span class="tm-stat-l">yrs experience</span></div><div class="tm-stat"><span class="tm-stat-n">92</span><span class="tm-stat-l">avg page speed</span></div><div class="tm-stat"><span class="tm-stat-n">5d</span><span class="tm-stat-l">avg delivery</span></div></div>
+        <div class="tm-stats" aria-label="Zahid's stats"><div class="tm-stat"><span class="tm-stat-n">3+</span><span class="tm-stat-l">yrs experience</span></div><div class="tm-stat"><span class="tm-stat-n">92</span><span class="tm-stat-l">avg page speed</span></div><div class="tm-stat"><span class="tm-stat-n">10d</span><span class="tm-stat-l">avg delivery</span></div></div>
         <div class="tm-tools" aria-label="Technologies used"><span class="tm-tool">Next.js</span><span class="tm-tool">React</span><span class="tm-tool">Tailwind</span><span class="tm-tool">Figma</span><span class="tm-tool">Vercel</span><span class="tm-tool">Node.js</span></div>
       </div>
       <div class="tm-deco" aria-hidden="true"><svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="28" width="160" height="120" rx="8" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="52" x2="180" y2="52" stroke="currentColor" stroke-width="1.5"/><circle cx="38" cy="40" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="56" cy="40" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="74" cy="40" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="40" y1="76" x2="96" y2="76" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="90" x2="140" y2="90" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="104" x2="116" y2="104" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="118" x2="155" y2="118" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="132" x2="80" y2="132" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><rect x="20" y="162" width="160" height="10" rx="2" stroke="currentColor" stroke-width="1"/></svg></div>
@@ -3076,12 +3142,12 @@ section.svc:has(.vid-vis) .wrap {
       <div class="tm-inner">
         <div class="tm-name-row">
           <div class="tm-portrait">
-  <img src="/assets/reyad.jpeg" alt="Reyad">
+  <img src="assets/reyad.jpeg" alt="Reyad" onerror="this.style.display='none'">
 </div>
           <div class="tm-name-text"><div class="tm-role-tag">Video &amp; Motion</div><div class="tm-name" id="tm2-name">Reyad<span>.</span></div></div>
         </div>
         <p class="tm-bio">Edits footage like a writer edits sentences — cutting until only what matters remains. Works on brand films, reels, and motion packages with a sharp focus on pacing, sound, and the kind of edit people actually rewatch.</p>
-        <div class="tm-stats" aria-label="Reyad's stats"><div class="tm-stat"><span class="tm-stat-n">3+</span><span class="tm-stat-l">yrs experience</span></div><div class="tm-stat"><span class="tm-stat-n">50+</span><span class="tm-stat-l">videos delivered</span></div><div class="tm-stat"><span class="tm-stat-n">48h</span><span class="tm-stat-l">avg turnaround</span></div></div>
+        <div class="tm-stats" aria-label="Reyad's stats"><div class="tm-stat"><span class="tm-stat-n">3+</span><span class="tm-stat-l">yrs experience</span></div><div class="tm-stat"><span class="tm-stat-n">2+</span><span class="tm-stat-l">videos delivered</span></div><div class="tm-stat"><span class="tm-stat-n">48h</span><span class="tm-stat-l">avg turnaround</span></div></div>
         <div class="tm-tools" aria-label="Software used"><span class="tm-tool">Premiere Pro</span><span class="tm-tool">After Effects</span><span class="tm-tool">DaVinci</span><span class="tm-tool">Cinema 4D</span><span class="tm-tool">Audition</span></div>
       </div>
       <div class="tm-deco" aria-hidden="true"><svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="16" y="60" width="168" height="96" rx="6" stroke="currentColor" stroke-width="1.5"/><polygon points="88,88 88,132 126,110" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><line x1="16" y1="174" x2="184" y2="174" stroke="currentColor" stroke-width="1"/><rect x="16" y="180" width="20" height="8" rx="1.5" fill="currentColor" opacity=".4"/><rect x="40" y="180" width="32" height="8" rx="1.5" fill="currentColor" opacity=".2"/><rect x="76" y="180" width="14" height="8" rx="1.5" fill="currentColor" opacity=".5"/><rect x="94" y="180" width="40" height="8" rx="1.5" fill="currentColor" opacity=".15"/><rect x="138" y="180" width="22" height="8" rx="1.5" fill="currentColor" opacity=".35"/><circle cx="184" cy="110" r="3" fill="currentColor" opacity=".6"/><line x1="184" y1="60" x2="184" y2="107" stroke="currentColor" stroke-width="1" opacity=".3"/></svg></div>
@@ -3163,6 +3229,110 @@ section.svc:has(.vid-vis) .wrap {
   </div>
 </section>
 
+<!-- PRICING -->
+<section id="pricing" class="pricing-section" aria-labelledby="pricing-heading">
+  <div class="wrap pr-wrap">
+    <div class="pr-head">
+      <div class="pr-head-left">
+        <div class="eyebrow reveal" style="margin-bottom:14px">pricing</div>
+        <h2 class="reveal d1" id="pricing-heading">Honest rates.<br>No surprises.</h2>
+        <p class="reveal d2">Every quote is exact and agreed before we start. These are starting points — your project gets a custom number based on scope.</p>
+      </div>
+      <div class="pr-toggle-wrap reveal d1">
+        <div class="pr-toggle" role="group" aria-label="Billing type">
+          <button class="pr-toggle-btn on" data-billing="project" onclick="setBilling('project')">Per Project</button>
+          <button class="pr-toggle-btn" data-billing="retainer" onclick="setBilling('retainer')">Monthly</button>
+        </div>
+        <div class="pr-toggle-note">Monthly retainer saves <span>up to 20%</span></div>
+      </div>
+    </div>
+
+    <div class="pr-grid reveal">
+
+      <!-- CREATIVE -->
+      <div class="pr-card">
+        <div class="pr-card-top">
+          <div class="pr-type">Creative</div>
+          <div class="pr-name">Video &amp; Motion</div>
+          <p class="pr-desc">Editing, colour grading, motion graphics, reels, brand films, and animations.</p>
+        </div>
+        <div class="pr-price-wrap">
+          <div class="pr-price" id="price-creative"><sup>$</sup><span data-project="299" data-retainer="599">299</span></div>
+          <div class="pr-price-note" id="note-creative">// starting price per project</div>
+        </div>
+        <ul class="pr-features">
+          <li>Video editing &amp; colour grading</li>
+          <li>Logo &amp; brand animations</li>
+          <li>Reels, Shorts &amp; social content</li>
+          <li>Sound design &amp; audio cleanup</li>
+          <li>Explainer &amp; product videos</li>
+          <li>2 rounds of revisions included</li>
+          <li>Files delivered within 48–72h</li>
+        </ul>
+        <a href="#contact" class="pr-cta pr-cta-ghost">
+          Get a quote
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <!-- WEB -->
+      <div class="pr-card featured">
+        <div class="pr-card-top">
+          <div class="pr-featured-badge">Most Popular</div>
+          <div class="pr-type">Web</div>
+          <div class="pr-name">Design &amp; Dev</div>
+          <p class="pr-desc">Custom websites, landing pages, portfolios, and shops — built fast and built right.</p>
+        </div>
+        <div class="pr-price-wrap">
+          <div class="pr-price" id="price-web"><sup>$</sup><span data-project="499" data-retainer="899">499</span></div>
+          <div class="pr-price-note" id="note-web">// starting price per project</div>
+        </div>
+        <ul class="pr-features">
+          <li>Custom design — no templates</li>
+          <li>Mobile-first, fast-loading</li>
+          <li>Business sites &amp; portfolios</li>
+          <li>Landing pages &amp; Shopify stores</li>
+          <li>SEO setup &amp; performance tuning</li>
+          <li>2 rounds of revisions included</li>
+          <li>14-day post-launch support</li>
+        </ul>
+        <a href="#contact" class="pr-cta pr-cta-fill">
+          Get a quote
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+      <!-- COMBO -->
+      <div class="pr-card">
+        <div class="pr-card-top">
+          <div class="pr-type">Combo</div>
+          <div class="pr-name">Full Studio</div>
+          <p class="pr-desc">Video, motion, and web — everything under one roof. Better value, one point of contact.</p>
+        </div>
+        <div class="pr-price-wrap">
+          <div class="pr-price" id="price-combo"><sup>$</sup><span data-project="699" data-retainer="1199">699</span></div>
+          <div class="pr-price-note" id="note-combo">// starting price per project</div>
+        </div>
+        <ul class="pr-features">
+          <li>Everything in Creative &amp; Web</li>
+          <li>Brand film + matching website</li>
+          <li>Cohesive visual identity</li>
+          <li>Priority turnaround</li>
+          <li>Direct founder access</li>
+          <li>3 rounds of revisions included</li>
+          <li>30-day post-launch support</li>
+        </ul>
+        <a href="#contact" class="pr-cta pr-cta-ghost">
+          Get a quote
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+    </div>
+    <div class="pr-footnote reveal">All prices in USD &nbsp;·&nbsp; Exact quote before work begins &nbsp;·&nbsp; 50% upfront, 50% on delivery &nbsp;·&nbsp; All source files included</div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section id="contact" class="cta" aria-labelledby="cta-heading">
   <div class="cta-glow" aria-hidden="true"></div>
@@ -3208,6 +3378,12 @@ section.svc:has(.vid-vis) .wrap {
             <label class="cf-label" for="cf-msg">Tell us about your project *</label>
             <textarea class="cf-textarea" id="cf-msg" placeholder="A rough idea is enough — what are you trying to achieve?" required></textarea>
           </div>
+          <div class="cf-field" style="flex-direction:row;align-items:flex-start;gap:12px">
+  <input type="checkbox" id="cf-consent" required style="width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--inv);cursor:pointer">
+  <label for="cf-consent" style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.7;cursor:pointer;text-transform:none;letter-spacing:0">
+    I agree to Rendrx storing my details to respond to this enquiry. We never share your data with third parties. <a href="privacy.html" style="color:rgba(255,255,255,.6);text-decoration:underline;text-underline-offset:3px">Privacy policy →</a>
+  </label>
+</div>
           <button class="cf-submit" id="cf-submit" type="submit">
             <span id="cf-btn-label">Send Message</span>
             <svg id="cf-btn-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -3221,9 +3397,9 @@ section.svc:has(.vid-vis) .wrap {
       </div>
       <div class="cta-divider"><div class="cta-divider-line"></div><span>or reach out directly</span><div class="cta-divider-line"></div></div>
       <div class="cta-alt-links">
-        <a href="mailto:hello@rendrx.com" class="cta-alt-link">
+        <a href="mailto:studiorendrx@gmail.com" class="cta-alt-link">
           <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          hello@rendrx.com
+          studiorendrx@gmail.com
         </a>
         <a href="https://wa.me/8801613699448" class="cta-alt-link" target="_blank" rel="noopener noreferrer">
           <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -3272,25 +3448,34 @@ section.svc:has(.vid-vis) .wrap {
       <div class="f-social-col">
         <div class="f-social-label">Follow our work</div>
         <div class="f-social-icons">
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
-          <a href="https://behance.net" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on Behance"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 10c1.38 0 2.5-1.12 2.5-2.5S9.88 5 8.5 5H3v14h6.5c1.93 0 3.5-1.57 3.5-3.5 0-1.37-.79-2.55-1.94-3.14A2.5 2.5 0 0 0 8.5 10z"/><line x1="15" y1="7" x2="21" y2="7"/><path d="M21 14H15a3 3 0 1 0 3 3"/></svg></a>
-          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
-          <a href="mailto:hello@rendrx.com" class="f-soc" aria-label="Email Rendrx"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></a>
+          <a href="https://www.instagram.com/rendrx.studio/" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://x.com/studio_rendrx" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on X">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.736-8.859L1.254 2.25H8.08l4.259 5.631 5.905-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://www.facebook.com/studiorendrx" target="_blank" rel="noopener noreferrer" class="f-soc" aria-label="Rendrx on Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.27h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/></svg>
+          </a>
+          <a href="mailto:studiorendrx@gmail.com" class="f-soc" aria-label="Email Rendrx">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
         </div>
       </div>
     </div>
     <div class="fg">
       <div><div class="fct">Services</div><ul class="fl" role="list"><li><a href="#services">Video Editing</a></li><li><a href="#services">Motion Graphics</a></li><li><a href="#services">Web Design</a></li><li><a href="#services">Brand Films</a></li></ul></div>
       <div><div class="fct">Studio</div><ul class="fl" role="list"><li><a href="#projects">Our 
-        Work</a></li><li><a href="#team">Meet the Team</a></li><li><a href="#pricing">Pricing</a></li><li><a href="tel:+8801712345678">Get in Touch</a></li></ul></div>
-      <div><div class="fct">Legal</div><ul class="fl" role="list"><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Cookie Policy</a></li></ul></div>
-      <div><div class="fct">Contact</div><ul class="fl" role="list"><li><a href="mailto:hello@rendrx.com">hello@rendrx.com</a></li><li><a href="https://wa.me/8801613699448" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="tel:+8801712345678">Book a free call</a></li></ul></div>
+        Work</a></li><li><a href="#team">Meet the Team</a></li><li><a href="#pricing">Pricing</a></li><li><a href="tel:+8801613699448">Get in Touch</a></li></ul></div>
+      <div><div class="fct">Legal</div><ul class="fl" role="list"><li><a href="privacy.html">Privacy Policy</a></li></ul></div>
+      <div><div class="fct">Contact</div><ul class="fl" role="list"><li><a href="mailto:studiorendrx@gmail.com">studiorendrx@gmail.com</a></li><li><a href="https://wa.me/8801613699448" target="_blank" rel="noopener noreferrer">WhatsApp</a></li><li><a href="tel:+8801613699448">Book a free call</a></li></ul></div>
     </div>
     <div class="fbot">
       <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
         <span>© <span id="footer-yr">2025</span> Rendrx Studio. All rights reserved.</span>
-        <a href="admin.html" class="f-admin-link" aria-label="Admin dashboard"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Admin</a>
+        <a href="admin.html" class="f-admin-link" aria-label="Admin" title="Admin">
+  <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+</a>
       </div>
       <div class="fbot-r">
         <span class="fbot-tagline">Craft. Motion. Code.</span>
@@ -3300,6 +3485,12 @@ section.svc:has(.vid-vis) .wrap {
 </footer>
 
 <nav id="side-dots" aria-label="Quick navigation" aria-hidden="true"></nav>
+
+<a id="wa-btn" href="https://wa.me/8801613699448" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" style="position:fixed;bottom:150px;right:26px;z-index:700;width:40px;height:40px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);opacity:0;transform:translateY(12px);transition:opacity .3s,transform .3s var(--sp),box-shadow .3s">
+  <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#fff" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
 
 <a id="fab" href="#contact" aria-label="Start a project">
   <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -3339,14 +3530,14 @@ section.svc:has(.vid-vis) .wrap {
   const TAGS=['Getting things ready…','Loading assets…','Almost there…','One moment…','Ready.'];
   let tagIdx=0;
   const tagTimer=setInterval(()=>{tagIdx=Math.min(tagIdx+1,TAGS.length-1);if(tagline)tagline.textContent=TAGS[tagIdx];},420);
-  const t0=performance.now(),dur=2200,ease=t=>1-Math.pow(1-t,3);
-  function tickProg(now){const p=Math.min((now-t0)/dur,1),v=Math.floor(ease(p)*100);if(fill)fill.style.width=v+'%';if(num)num.textContent=v+'%';if(p<1)requestAnimationFrame(tickProg);else{clearInterval(tagTimer);setTimeout(()=>document.getElementById('loader').classList.add('out'),280);}}
+  const t0=performance.now(),dur=1400,ease=t=>1-Math.pow(1-t,3);
+  function tickProg(now){const p=Math.min((now-t0)/dur,1),v=Math.floor(ease(p)*100);if(fill)fill.style.width=v+'%';if(num)num.textContent=v+'%';if(p<1)requestAnimationFrame(tickProg);else{clearInterval(tagTimer);setTimeout(()=>document.getElementById('loader').classList.add('out'),200);}}
   requestAnimationFrame(tickProg);
   const cv=document.getElementById('tetris-canvas');if(!cv)return;
   const COLS=10,ROWS=18,CS=22;cv.width=COLS*CS;cv.height=ROWS*CS;
   const ctx=cv.getContext('2d');
   const PIECES=[[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[1,0],[1,0],[1,1]],[[0,1],[1,1],[1,0]],[[1,0],[1,1],[0,1]],[[0,1],[0,1],[1,1]]];
-  let board=Array.from({length:ROWS},()=>Array(COLS).fill(0)),piece=null,px=0,py=0,lastT=0;const SPEED=38;
+  let board=Array.from({length:ROWS},()=>Array(COLS).fill(0)),piece=null,px=0,py=0,lastT=0;const SPEED=18;
   function randPiece(){const s=PIECES[Math.floor(Math.random()*PIECES.length)];let sh=s;const rots=Math.floor(Math.random()*4);for(let i=0;i<rots;i++){const r=sh[0].length,c=sh.length;sh=Array.from({length:r},(_,ri)=>Array.from({length:c},(_,ci)=>sh[c-1-ci][ri]));}return sh;}
   function spawn(){piece=randPiece();px=Math.floor((COLS-piece[0].length)/2);py=-piece.length;}
   function fits(sh,x,y){for(let r=0;r<sh.length;r++)for(let c=0;c<sh[r].length;c++){if(!sh[r][c])continue;const nx=x+c,ny=y+r;if(nx<0||nx>=COLS||ny>=ROWS)return false;if(ny>=0&&board[ny][nx])return false;}return true;}
@@ -3356,7 +3547,7 @@ section.svc:has(.vid-vis) .wrap {
   let tetrisStopped=false;
   function loop(now){if(tetrisStopped)return;if(now-lastT>=SPEED){lastT=now;if(piece){if(fits(piece,px,py+1))py++;else lock();}else spawn();}draw();requestAnimationFrame(loop);}
   requestAnimationFrame(loop);
-  setTimeout(()=>{tetrisStopped=true;if(cv)ctx.clearRect(0,0,cv.width,cv.height);},2700);
+  setTimeout(()=>{tetrisStopped=true;if(cv)ctx.clearRect(0,0,cv.width,cv.height);},1600);
 
   
 })();
@@ -3492,7 +3683,7 @@ if(svcNums.length){let _pTick=false;window.addEventListener('scroll',()=>{if(_pT
 
 
 // ── TESTIMONIAL PERF ─────────────────────────────────────
-const tcWrap=document.querySelector('.tc-wrap');
+/*const tcWrap=document.querySelector('.tc-wrap');
 if(tcWrap){new IntersectionObserver(entries=>{document.querySelectorAll('.tci').forEach(c=>{c.style.animationPlayState=entries[0].isIntersecting?'running':'paused';});},{threshold:0}).observe(tcWrap);}
 
 /* Pause marquees when out of view */
@@ -3602,6 +3793,113 @@ document.addEventListener('visibilitychange',()=>{
 if(matchMedia('(prefers-reduced-motion:reduce)').matches){const s=document.createElement('style');s.textContent='*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}';document.head.appendChild(s);}
 const yr=document.getElementById('footer-yr');if(yr)yr.textContent=new Date().getFullYear();
 document.querySelectorAll('img:not([loading])').forEach(img=>img.setAttribute('loading','lazy'));
+
+/* ── PRICING TOGGLE ── */
+function setBilling(type) {
+  document.querySelectorAll('.pr-toggle-btn').forEach(b => b.classList.toggle('on', b.dataset.billing === type));
+  const isRetainer = type === 'retainer';
+  ['creative','web','combo'].forEach(id => {
+    const priceEl = document.querySelector(`#price-${id} span`);
+    const noteEl  = document.getElementById(`note-${id}`);
+    if (!priceEl) return;
+    const target = parseInt(priceEl.dataset[type]);
+    const current = parseInt(priceEl.textContent.replace(/,/g,''));
+    const dur = 500, start = performance.now();
+    const ease = t => 1 - Math.pow(1 - t, 3);
+    (function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      priceEl.textContent = Math.round(current + (target - current) * ease(p));
+      if (p < 1) requestAnimationFrame(tick);
+      else priceEl.textContent = target;
+    })(start);
+    if (noteEl) noteEl.textContent = isRetainer ? '// per month · cancel anytime' : '// starting price per project';
+  });
+}
+
+
+/* ── CUSTOM CURSOR ── */
+(()=>{
+  if('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
+  const dot  = document.getElementById('cur-dot');
+  const ring = document.getElementById('cur-ring');
+  if(!dot || !ring) return;
+
+  let mx=0, my=0, rx=0, ry=0, raf;
+
+  document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  dot.style.left = mx + 'px';
+  dot.style.top  = my + 'px';
+}, { passive: true });
+
+(function lerp() {
+  rx += (mx - rx) * 0.18;
+  ry += (my - ry) * 0.18;
+  ring.style.left = rx + 'px';
+  ring.style.top  = ry + 'px';
+  requestAnimationFrame(lerp);
+})();
+
+  document.addEventListener('mouseenter', () => document.body.classList.remove('cur-hidden'));
+  document.addEventListener('mouseleave', () => document.body.classList.add('cur-hidden'));
+  document.addEventListener('mousedown',  () => document.body.classList.add('cur-clicking'));
+  document.addEventListener('mouseup',    () => document.body.classList.remove('cur-clicking'));
+
+  const hoverEls = 'a, button, .proj-card, .tm-card, .stat, .pf, .pr-card, .faq-q, .svc-tab, .tcard, .iBtn, input, textarea, select, label';
+  document.addEventListener('mouseover', e => {
+    if(e.target.closest(hoverEls)) document.body.classList.add('cur-hovering');
+  });
+  document.addEventListener('mouseout', e => {
+    if(e.target.closest(hoverEls)) document.body.classList.remove('cur-hovering');
+  });
+})();
+
+
+/* ── PAGE TRANSITIONS ── */
+(()=>{
+  const trans = document.getElementById('page-trans');
+  if(!trans) return;
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if(!a) return;
+    const href = a.getAttribute('href');
+    if(!href || href.startsWith('#') || a.target === '_blank') return;
+    if(href.startsWith('http') && !href.includes(location.hostname)) return;
+    e.preventDefault();
+    trans.classList.add('show');
+    setTimeout(()=> window.location = href, 360);
+  });
+})();
+
+
+/* ── FORCE LOADER ON BACK NAVIGATION ── */
+window.addEventListener('pageshow', e => {
+  if (e.persisted) {
+    document.getElementById('loader').classList.remove('out');
+    const fill = document.getElementById('ldf');
+    const num  = document.getElementById('ldn');
+    if (fill) fill.style.width = '0%';
+    if (num)  num.textContent  = '0%';
+
+    const t0 = performance.now(), dur = 1400, ease = t => 1 - Math.pow(1 - t, 3);
+    (function tick(now) {
+      const p = Math.min((now - t0) / dur, 1), v = Math.floor(ease(p) * 100);
+      if (fill) fill.style.width = v + '%';
+      if (num)  num.textContent  = v + '%';
+      if (p < 1) requestAnimationFrame(tick);
+      else setTimeout(() => document.getElementById('loader').classList.add('out'), 200);
+    })(performance.now());
+  }
+});
+
+/* ── WHATSAPP BTN ── */
+const waBtn = document.getElementById('wa-btn');
+window.addEventListener('scroll', ()=>{
+  if(waBtn) waBtn.style.opacity = window.scrollY > 400 ? '1' : '0';
+  if(waBtn) waBtn.style.transform = window.scrollY > 400 ? 'translateY(0)' : 'translateY(12px)';
+},{passive:true});
+
+
 </script>
 </body>
 </html>

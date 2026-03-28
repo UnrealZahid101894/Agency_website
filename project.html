@@ -221,10 +221,22 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);border-bottom:1p
 @media(max-width:960px){.ph-split{grid-template-columns:1fr;gap:40px}.ph-deco-num{display:none}.ph-meta-strip{flex-direction:column}.ph-meta-cell{border-right:none;border-bottom:1px solid var(--border)}.ph-meta-cell:last-child{border-bottom:none}}
 @media(max-width:600px){.ph-live-card{flex-direction:column;align-items:flex-start;padding:24px}.ph-desc-lead{font-size:18px}.proj-cta{padding:72px 0}}
 
+@media(max-width:768px){
+  div[style*="grid-template-columns:repeat(3,1fr)"]{
+    grid-template-columns:1fr !important;
+  }
+}
+
+/* ── PAGE TRANSITIONS ── */
+.page-trans{position:fixed;inset:0;z-index:99998;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease}
+.page-trans.show{opacity:1;pointer-events:all}
+
 
 </style>
 </head>
 <body>
+
+  <div class="page-trans show" id="page-trans"></div>
 
 <div id="prog"></div>
 
@@ -425,48 +437,82 @@ async function init() {
     { label: 'Status', val: `<span class="ph-status-dot" style="background:${sc}"></span>${sl}` },
   ];
 
-  document.getElementById('proj-body').innerHTML = `
-    <div class="wrap">
+  const galleryImgs = p.gallery ? p.gallery.split(',').map(s => s.trim()).filter(Boolean) : [];
 
-      <div class="ph-meta-strip">
-        ${metaCells.map(m => `
-          <div class="ph-meta-cell">
-            <div class="ph-meta-cell-label">${m.label}</div>
-            <div class="ph-meta-cell-val">${m.val}</div>
-          </div>
-        `).join('')}
-      </div>
+document.getElementById('proj-body').innerHTML = `
+  <div class="wrap">
 
-      <div class="ph-desc-wrap">
-        <div class="ph-desc-lead">${leadText}</div>
-        ${bodyParas ? `<div class="ph-desc-body">${bodyParas}</div>` : ''}
-      </div>
-
-      ${tags.length ? `
-        <div class="ph-tags-wrap">
-          <div class="ph-tags-eyebrow">Deliverables &amp; Tags</div>
-          <div class="ph-tags-grid">
-            ${tags.map(t => `<span class="ph-big-tag">${t}</span>`).join('')}
-          </div>
+    <div class="ph-meta-strip">
+      ${metaCells.map(m => `
+        <div class="ph-meta-cell">
+          <div class="ph-meta-cell-label">${m.label}</div>
+          <div class="ph-meta-cell-val">${m.val}</div>
         </div>
-      ` : ''}
-
-      ${p.url ? `
-        <div class="ph-live-card">
-          <div>
-            <h3>See it live</h3>
-            <p>This project is published and ready to explore.</p>
-          </div>
-          <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn btn-fill" style="padding:13px 26px;flex-shrink:0">
-            Visit Project
-            <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          </a>
-        </div>
-      ` : ''}
-
+      `).join('')}
     </div>
-  `;
-  document.getElementById('proj-body').style.display = 'block';
+
+    ${(p.challenge || p.approach || p.outcome) ? `
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:52px;transition:border-color .5s">
+      ${p.challenge ? `
+      <div style="padding:28px 28px 32px;border-right:1px solid var(--border);transition:border-color .5s">
+        <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="opacity:.4">//</span> The Challenge</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.9">${p.challenge}</p>
+      </div>` : ''}
+      ${p.approach ? `
+      <div style="padding:28px 28px 32px;border-right:1px solid var(--border);transition:border-color .5s">
+        <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="opacity:.4">//</span> Our Approach</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.9">${p.approach}</p>
+      </div>` : ''}
+      ${p.outcome ? `
+      <div style="padding:28px 28px 32px;transition:border-color .5s">
+        <div style="font-family:var(--fm);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px"><span style="opacity:.4">//</span> The Outcome</div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.9">${p.outcome}</p>
+      </div>` : ''}
+    </div>` : ''}
+
+    <div class="ph-desc-wrap">
+      <div class="ph-desc-lead">${leadText}</div>
+      ${bodyParas ? `<div class="ph-desc-body">${bodyParas}</div>` : ''}
+    </div>
+
+    ${galleryImgs.length ? `
+    <div style="display:grid;grid-template-columns:repeat(${galleryImgs.length === 1 ? '1' : '2'},1fr);gap:12px;margin-bottom:52px">
+      ${galleryImgs.map((src, i) => `
+        <div style="border-radius:10px;overflow:hidden;border:1px solid var(--border);aspect-ratio:16/9;transition:border-color .5s">
+          <img src="${src}" alt="Project image ${i+1}" style="width:100%;height:100%;object-fit:cover;display:block" loading="lazy">
+        </div>
+      `).join('')}
+    </div>` : ''}
+
+    ${p.testimonial ? `
+    <div style="background:var(--bg2);border:1px solid var(--border2);border-radius:12px;padding:36px 40px;margin-bottom:52px;transition:background .5s,border-color .5s">
+      <div style="font-family:var(--fd);font-size:clamp(16px,2vw,22px);font-style:italic;color:var(--text);line-height:1.7;margin-bottom:20px;letter-spacing:-.02em">"${p.testimonial}"</div>
+      ${p.testimonial_author ? `<div style="font-family:var(--fm);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)">— ${p.testimonial_author}</div>` : ''}
+    </div>` : ''}
+
+    ${tags.length ? `
+    <div class="ph-tags-wrap">
+      <div class="ph-tags-eyebrow">Deliverables &amp; Tags</div>
+      <div class="ph-tags-grid">
+        ${tags.map(t => `<span class="ph-big-tag">${t}</span>`).join('')}
+      </div>
+    </div>` : ''}
+
+    ${p.url ? `
+    <div class="ph-live-card">
+      <div>
+        <h3>See it live</h3>
+        <p>This project is published and ready to explore.</p>
+      </div>
+      <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn btn-fill" style="padding:13px 26px;flex-shrink:0">
+        Visit Project
+        <svg viewBox="0 0 24 24" style="width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>` : ''}
+
+  </div>
+`;
+document.getElementById('proj-body').style.display = 'block';
 
   // ── RELATED ──
   if (p.type) {
@@ -496,6 +542,26 @@ function showNotFound() {
   document.getElementById('proj-hero').style.display = 'none';
   document.getElementById('not-found').style.display = 'flex';
 }
+
+/* ── PAGE TRANSITIONS ── */
+(()=>{
+  const trans = document.getElementById('page-trans');
+  if(!trans) return;
+  // Fade in
+  trans.classList.add('show');
+setTimeout(()=> trans.classList.remove('show'), 80);
+  // Fade out on leave
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if(!a) return;
+    const href = a.getAttribute('href');
+    if(!href || href.startsWith('#') || a.target === '_blank') return;
+    if(href.startsWith('http') && !href.includes(location.hostname)) return;
+    e.preventDefault();
+    trans.classList.add('show');
+    setTimeout(()=> window.location = href, 360);
+  });
+})();
 
 init();
 </script>

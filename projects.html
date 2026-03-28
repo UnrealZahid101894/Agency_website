@@ -158,10 +158,18 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);border-bottom:1p
   letter-spacing: .02em !important;
 }
 
+
+/* ── PAGE TRANSITIONS ── */
+.page-trans{position:fixed;inset:0;z-index:99998;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease}
+.page-trans.show{opacity:1;pointer-events:all}
+
+
 </style>
 </head>
 <body>
 
+  <div class="page-trans show" id="page-trans"></div>
+  
 <div id="prog"></div>
 
 <nav id="nav">
@@ -300,6 +308,45 @@ document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
     });
   });
 })();
+
+/* ── PAGE TRANSITIONS ── */
+(()=>{
+  const trans = document.getElementById('page-trans');
+  if(!trans) return;
+  // Fade in
+  trans.classList.add('show');
+setTimeout(()=> trans.classList.remove('show'), 80);
+  // Fade out on leave
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if(!a) return;
+    const href = a.getAttribute('href');
+    if(!href || href.startsWith('#') || a.target === '_blank') return;
+    if(href.startsWith('http') && !href.includes(location.hostname)) return;
+    e.preventDefault();
+    trans.classList.add('show');
+    setTimeout(()=> window.location = href, 360);
+  });
+})();
+
 </script>
+
+<footer style="border-top:1px solid var(--border);background:var(--bg2);transition:background .5s,border-color .5s;padding:40px 0">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px">
+    <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:10px;font-family:var(--fd);font-size:18px;font-weight:700;letter-spacing:.1em;color:var(--text);text-decoration:none;opacity:.8;transition:opacity .2s">
+        <span class="logo-cutout" aria-hidden="true"></span>Rendrx
+      </a>
+      <span style="font-family:var(--fm);font-size:10px;color:var(--text3);letter-spacing:.06em">// All projects archive</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <a href="index.html#services" style="font-family:var(--fm);font-size:10px;color:var(--text3);text-decoration:none;letter-spacing:.08em;transition:color .2s">Services</a>
+      <a href="index.html#team" style="font-family:var(--fm);font-size:10px;color:var(--text3);text-decoration:none;letter-spacing:.08em;transition:color .2s">Team</a>
+      <a href="index.html#pricing" style="font-family:var(--fm);font-size:10px;color:var(--text3);text-decoration:none;letter-spacing:.08em;transition:color .2s">Pricing</a>
+      <a href="index.html#contact" class="btn btn-ghost" style="padding:9px 20px;font-size:10px">Start a project →</a>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>

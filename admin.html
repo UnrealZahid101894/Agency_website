@@ -360,9 +360,15 @@ input, select, textarea {
   letter-spacing: -.01em;
 }
 
+/* ── PAGE TRANSITIONS ── */
+.page-trans{position:fixed;inset:0;z-index:99998;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .35s ease}
+.page-trans.show{opacity:1;pointer-events:all}
+
 </style>
 </head>
 <body>
+
+  <div class="page-trans" id="page-trans"></div>
 
 <!-- ═══════════════════════════════════════════
      SCREEN 1 — LOGIN
@@ -408,12 +414,12 @@ input, select, textarea {
         </div>
 
         <div class="fg">
-          <label for="inp-user">Username</label>
-          <div class="iw">
-            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <input type="text" id="inp-user" placeholder="admin" autocomplete="username" spellcheck="false">
-          </div>
-        </div>
+  <label for="inp-user">Email</label>
+  <div class="iw">
+    <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+    <input type="email" id="inp-user" placeholder="you@rendrx.com" autocomplete="email" spellcheck="false">
+  </div>
+</div>
 
         <div class="fg">
           <label for="inp-pass">Password</label>
@@ -432,10 +438,6 @@ input, select, textarea {
           <svg id="btn-icon" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
 
-        <div class="hint-card">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Default: <strong style="color:var(--text2);margin:0 3px">admin</strong> / <strong style="color:var(--text2);margin-left:3px">rendrx2025</strong>. Change in Settings after first login.
-        </div>
 
         <button class="back-link" onclick="goToSite()">
           <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -573,34 +575,19 @@ input, select, textarea {
         </div>
       </div>
 
-      <div class="view" id="view-settings">
-        <div class="settings-grid">
-          <div class="settings-card">
-            <h3>Change Password</h3>
-            <p>Update your admin credentials. You'll use the new password on next login.</p>
-            <div class="sf"><label>Current Password</label><input type="password" id="s-cur" placeholder="Current password"></div>
-            <div class="sf"><label>New Password</label><input type="password" id="s-new" placeholder="Min 8 characters"></div>
-            <div class="sf"><label>Confirm New Password</label><input type="password" id="s-conf" placeholder="Confirm"></div>
-            <button class="btn btn-fill" onclick="changePassword()" style="margin-top:4px">
-              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Update Password
-            </button>
-            <div class="pass-ok" id="pass-ok">
-              <svg style="width:11px;height:11px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-              Password updated
-            </div>
-          </div>
-          <div class="settings-card">
-            <h3>Data Management</h3>
-            <p>Import a previously exported JSON backup, or wipe all project data.</p>
-            <div class="sf"><label>Import JSON</label><input type="file" id="import-file" accept=".json" onchange="importData(this)" style="padding:8px 10px;cursor:pointer"></div>
-            <button class="btn btn-ghost" onclick="clearAllProjects()" style="margin-top:8px;border-color:rgba(248,113,113,.3);color:#f87171">
-              <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-              Clear All Projects
-            </button>
-          </div>
-        </div>
-      </div>
+  <div class="view" id="view-settings">
+  <div class="settings-grid">
+    <div class="settings-card">
+      <h3>Data Management</h3>
+      <p>Import a previously exported JSON backup, or wipe all project data.</p>
+      <div class="sf"><label>Import JSON</label><input type="file" id="import-file" accept=".json" onchange="importData(this)" style="padding:8px 10px;cursor:pointer"></div>
+      <button class="btn btn-ghost" onclick="clearAllProjects()" style="margin-top:8px;border-color:rgba(248,113,113,.3);color:#f87171">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Clear All Projects
+      </button>
+    </div>
+  </div>
+</div>
 
     </div>
   </main>
@@ -628,6 +615,14 @@ input, select, textarea {
       <div class="frow"><label>Short Description</label><textarea id="f-desc" placeholder="One or two sentences…"></textarea></div>
       <div class="frow"><label>Preview Image URL</label><input type="text" id="f-img" placeholder="https://…"></div>
       <div class="frow"><label>Project URL</label><input type="text" id="f-url" placeholder="https://…"></div>
+      <div class="frow"><label>The Challenge</label><textarea id="f-challenge" placeholder="What problem did the client have?"></textarea></div>
+<div class="frow"><label>Our Approach</label><textarea id="f-approach" placeholder="How did you solve it?"></textarea></div>
+<div class="frow"><label>The Outcome</label><textarea id="f-outcome" placeholder="What was the result?"></textarea></div>
+<div class="frow"><label>Gallery Images (comma separated URLs)</label><input type="text" id="f-gallery" placeholder="https://…, https://…"></div>
+<div class="frow-2">
+  <div><label>Client Quote</label><textarea id="f-testimonial" placeholder="What did they say?"></textarea></div>
+  <div><label>Quote Author</label><input type="text" id="f-testimonial-author" placeholder="Name, Role"></div>
+</div>
     </div>
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
@@ -646,14 +641,7 @@ const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co','eyJ
 const PKEY = 'rendrx_projects';
 const AKEY = 'rendrx_activity';
 const TKEY = 'rendrx-theme';
-const SKEY = 'rendrx_session';
-const CKEY = 'rendrx_credentials';
 
-/* ── Default credentials ── */
-function getCreds() {
-  try { const c = JSON.parse(localStorage.getItem(CKEY)); if (c?.user && c?.pass) return c; } catch {}
-  return { user: 'admin', pass: 'rendrx2025' };
-}
 
 /* ── Theme ── */
 function applyTheme(t) {
@@ -674,11 +662,11 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-/* ── Boot: decide which screen to show ── */
-function boot() {
+async function boot() {
   document.getElementById('yr').textContent = new Date().getFullYear();
   loadLeftStats();
-  if (localStorage.getItem(SKEY) === '1') {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
     showScreen('screen-dash');
     syncUsername();
     renderOverview();
@@ -686,7 +674,6 @@ function boot() {
     showScreen('screen-login');
   }
 }
-
 /* ── Go to live site ── */
 function goToSite() {
   // Try common filenames — works for both local files and hosted sites
@@ -695,9 +682,10 @@ function goToSite() {
 }
 
 /* ── Left panel live stats ── */
-function loadLeftStats() {
+async function loadLeftStats() {
   try {
-    const p = JSON.parse(localStorage.getItem(PKEY) || '[]');
+    const { data } = await sb.from('projects').select('id, status');
+    const p = data || [];
     document.getElementById('ls-proj').textContent = p.length;
     document.getElementById('ls-done').textContent = p.filter(x => x.status === 'done').length;
   } catch {}
@@ -709,11 +697,11 @@ let loggingIn = false;
 document.getElementById('inp-user').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 document.getElementById('inp-pass').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
 
-function tryLogin() {
+async function tryLogin() {
   if (loggingIn) return;
-  const user = document.getElementById('inp-user').value.trim();
+  const email = document.getElementById('inp-user').value.trim();
   const pass = document.getElementById('inp-pass').value;
-  if (!user || !pass) { showErr('Please enter username and password'); return; }
+  if (!email || !pass) { showErr('Please enter email and password'); return; }
 
   loggingIn = true;
   const btn = document.getElementById('login-btn');
@@ -722,38 +710,35 @@ function tryLogin() {
   if (iconEl) iconEl.outerHTML = '<div class="spinner" id="btn-icon"></div>';
   btn.disabled = true;
 
-  setTimeout(() => {
-    const creds = getCreds();
-    if (user === creds.user && pass === creds.pass) {
-      localStorage.setItem(SKEY, '1');
-      document.getElementById('login-form-panel').style.display = 'none';
-      document.getElementById('success-panel').style.display = 'block';
-      setTimeout(() => {
-        showScreen('screen-dash');
-        syncUsername();
-        renderOverview();
-        // Restore login form for next time
-        document.getElementById('login-form-panel').style.display = 'block';
-        document.getElementById('success-panel').style.display = 'none';
-        document.getElementById('btn-label').textContent = 'Sign in to dashboard';
-        const sp = document.getElementById('btn-icon');
-        if (sp && sp.className === 'spinner') sp.outerHTML = '<svg id="btn-icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-        btn.disabled = false;
-        document.getElementById('inp-user').value = '';
-        document.getElementById('inp-pass').value = '';
-        loggingIn = false;
-      }, 1500);
-    } else {
-      loggingIn = false;
-      btn.disabled = false;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+
+  if (error || !data.session) {
+    loggingIn = false;
+    btn.disabled = false;
+    document.getElementById('btn-label').textContent = 'Sign in to dashboard';
+    const sp = document.getElementById('btn-icon');
+    if (sp && sp.className === 'spinner') sp.outerHTML = '<svg id="btn-icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+    showErr('Incorrect email or password');
+    document.getElementById('inp-pass').value = '';
+    document.getElementById('inp-pass').focus();
+  } else {
+    document.getElementById('login-form-panel').style.display = 'none';
+    document.getElementById('success-panel').style.display = 'block';
+    setTimeout(() => {
+      showScreen('screen-dash');
+      syncUsername();
+      renderOverview();
+      document.getElementById('login-form-panel').style.display = 'block';
+      document.getElementById('success-panel').style.display = 'none';
       document.getElementById('btn-label').textContent = 'Sign in to dashboard';
       const sp = document.getElementById('btn-icon');
       if (sp && sp.className === 'spinner') sp.outerHTML = '<svg id="btn-icon" viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-      showErr('Incorrect username or password');
+      btn.disabled = false;
+      document.getElementById('inp-user').value = '';
       document.getElementById('inp-pass').value = '';
-      document.getElementById('inp-pass').focus();
-    }
-  }, 900);
+      loggingIn = false;
+    }, 1500);
+  }
 }
 
 function showErr(msg) {
@@ -764,18 +749,19 @@ function showErr(msg) {
 }
 
 /* ── Logout ── */
-function doLogout() {
+async function doLogout() {
   if (!confirm('Sign out of the admin panel?')) return;
-  localStorage.removeItem(SKEY);
+  await sb.auth.signOut();
   showScreen('screen-login');
   loadLeftStats();
   showToast('Signed out');
 }
 
 /* ── Sync username display ── */
-function syncUsername() {
+async function syncUsername() {
+  const { data: { user } } = await sb.auth.getUser();
   const el = document.getElementById('sb-uname');
-  if (el) el.textContent = getCreds().user;
+  if (el && user) el.textContent = user.email.split('@')[0];
 }
 
 /* ── Toggle password visibility ── */
@@ -846,6 +832,12 @@ function openModal(project = null) {
   document.getElementById('f-desc').value   = project?.desc   || '';
   document.getElementById('f-img').value    = project?.img    || '';
   document.getElementById('f-url').value    = project?.url    || '';
+  document.getElementById('f-challenge').value = project?.challenge || '';
+document.getElementById('f-approach').value  = project?.approach  || '';
+document.getElementById('f-outcome').value   = project?.outcome   || '';
+document.getElementById('f-gallery').value   = project?.gallery   || '';
+document.getElementById('f-testimonial').value        = project?.testimonial        || '';
+document.getElementById('f-testimonial-author').value = project?.testimonial_author || '';
   document.getElementById('overlay').classList.add('open');
   setTimeout(() => document.getElementById('f-title').focus(), 300);
 }
@@ -860,15 +852,21 @@ async function saveProject() {
   if (!type)  { showToast('Please select a category'); return; }
   const tags = document.getElementById('f-tags').value.split(',').map(t => t.trim()).filter(Boolean);
   const project = {
-    id: editingId || 'p_' + Date.now(), title, type,
-    status: document.getElementById('f-status').value,
-    tags, client: document.getElementById('f-client').value.trim(),
-    year:   document.getElementById('f-year').value.trim() || String(new Date().getFullYear()),
-    description: document.getElementById('f-desc').value.trim(),
-    img:    document.getElementById('f-img').value.trim(),
-    url:    document.getElementById('f-url').value.trim(),
-    updated_at: new Date().toISOString(),
-  };
+  id: editingId || 'p_' + Date.now(), title, type,
+  status: document.getElementById('f-status').value,
+  tags, client: document.getElementById('f-client').value.trim(),
+  year: document.getElementById('f-year').value.trim() || String(new Date().getFullYear()),
+  description: document.getElementById('f-desc').value.trim(),
+  challenge: document.getElementById('f-challenge').value.trim(),
+  approach: document.getElementById('f-approach').value.trim(),
+  outcome: document.getElementById('f-outcome').value.trim(),
+  gallery: document.getElementById('f-gallery').value.trim(),
+  testimonial: document.getElementById('f-testimonial').value.trim(),
+  testimonial_author: document.getElementById('f-testimonial-author').value.trim(),
+  img: document.getElementById('f-img').value.trim(),
+  url: document.getElementById('f-url').value.trim(),
+  updated_at: new Date().toISOString(),
+};
   if (!editingId) project.created_at = new Date().toISOString();
   await sb.from('projects').upsert(project);
   addActivity(editingId ? `Updated <strong>${title}</strong>` : `Added <strong>${title}</strong> (${type})`, editingId ? 'edit' : 'plus');
@@ -1052,19 +1050,6 @@ async function clearAllProjects(){
   showToast('All projects cleared');renderOverview();renderProjectsTable();
 }
 
-/* ── Change password ── */
-async function changePassword(){
-  const cur=document.getElementById('s-cur').value,nw=document.getElementById('s-new').value,conf=document.getElementById('s-conf').value;
-  const creds=getCreds();
-  if(cur!==creds.pass){showToast('Current password is incorrect');return;}
-  if(nw.length<8){showToast('New password must be at least 8 characters');return;}
-  if(nw!==conf){showToast('Passwords do not match');return;}
-  creds.pass=nw;localStorage.setItem(CKEY,JSON.stringify(creds));
-  addActivity('Password changed','edit');
-  ['s-cur','s-new','s-conf'].forEach(id=>document.getElementById(id).value='');
-  const ok=document.getElementById('pass-ok');ok.classList.add('show');setTimeout(()=>ok.classList.remove('show'),3000);
-  showToast('Password updated');
-}
 
 /* ── Toast ── */
 let _tt;
@@ -1103,6 +1088,27 @@ document.querySelectorAll('.sb-item').forEach(function(btn){btn.addEventListener
 
 /* ── Boot ── */
 boot();
+
+/* ── PAGE TRANSITIONS ── */
+(()=>{
+  const trans = document.getElementById('page-trans');
+  if(!trans) return;
+  // Fade in
+  trans.classList.add('show');
+  requestAnimationFrame(()=> requestAnimationFrame(()=> trans.classList.remove('show')));
+  // Fade out on leave
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if(!a) return;
+    const href = a.getAttribute('href');
+    if(!href || href.startsWith('#') || a.target === '_blank') return;
+    if(href.startsWith('http') && !href.includes(location.hostname)) return;
+    e.preventDefault();
+    trans.classList.add('show');
+    setTimeout(()=> window.location = href, 360);
+  });
+})();
+
 </script>
 </body>
 </html>
