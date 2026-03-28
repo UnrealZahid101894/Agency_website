@@ -196,7 +196,7 @@ input::placeholder{color:var(--text3)}
 .view{display:none}
 .view.active{display:block}
 
-.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.stat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
 .scard{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;transition:border-color .2s}
 .scard:hover{border-color:var(--border2)}
 .scard-label{font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
@@ -903,13 +903,37 @@ async function renderOverview() {
     <div class="scard"><div class="scard-label">Total Projects <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div><div class="scard-n">${total}</div><div class="scard-sub">in portfolio</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${Math.min(total/20*100,100)}%"></div></div></div>
     <div class="scard"><div class="scard-label">Completed <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="scard-n">${done}</div><div class="scard-sub">${inProg} in progress</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${total?Math.round(done/total*100):0}%"></div></div><div class="scard-trend trend-up">↑ ${total?Math.round(done/total*100):0}% rate</div></div>
     <div class="scard"><div class="scard-label">By Category</div><div class="scard-n" style="font-size:22px;line-height:1.3">${video} <span style="color:var(--text3);font-size:14px">/</span> ${motion} <span style="color:var(--text3);font-size:14px">/</span> ${web}</div><div class="scard-sub">video / motion / web</div></div>
-    <div class="scard"><div class="scard-label">On Hold</div><div class="scard-n">${onHold}</div><div class="scard-sub">paused projects</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${total?Math.round(onHold/total*100):0}%"></div></div></div>`;
+    <div class="scard"><div class="scard-label">On Hold</div><div class="scard-n">${onHold}</div><div class="scard-sub">paused projects</div><div class="scard-bar"><div class="scard-bar-fill" style="width:${total?Math.round(onHold/total*100):0}%"></div></div></div>
+    <div class="scard"><div class="scard-label">Site Visitors <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="scard-n" id="visitors-count">—</div><div class="scard-sub" id="visitors-sub">loading…</div><div class="scard-bar"><div class="scard-bar-fill" id="visitors-bar" style="width:0%"></div></div></div>`;
   const mx=Math.max(video,motion,web,1);
   document.getElementById('chart-bars').innerHTML=[
     {l:'Video',n:video,c:'rgba(96,165,250,.6)'},{l:'Motion',n:motion,c:'rgba(251,146,60,.6)'},{l:'Web',n:web,c:'rgba(74,222,128,.6)'}
   ].map(b=>`<div class="chart-bar-wrap"><div style="font-size:9px;color:var(--text2);margin-bottom:4px">${b.n}</div><div class="chart-bar" style="height:${Math.max(4,Math.round(b.n/mx*52))}px;background:${b.c}"></div><div class="chart-bar-lbl">${b.l}</div></div>`).join('');
   renderTable(P.slice(0,5),'recent-table');
+
+  // ── LOAD VISITOR COUNT ──────────────────────────────────
+  try {
+    const { count: totalVisitors } = await sb
+      .from('visitors')
+      .select('*', { count: 'exact', head: true });
+
+    const today = new Date().toISOString().slice(0, 10);
+    const { count: todayVisitors } = await sb
+      .from('visitors')
+      .select('*', { count: 'exact', head: true })
+      .gte('visited_at', today + 'T00:00:00.000Z')
+      .lte('visited_at', today + 'T23:59:59.999Z');
+
+    const countEl = document.getElementById('visitors-count');
+    const subEl   = document.getElementById('visitors-sub');
+    const barEl   = document.getElementById('visitors-bar');
+    if (countEl) countEl.textContent = totalVisitors ?? 0;
+    if (subEl)   subEl.textContent   = (todayVisitors ?? 0) + ' today';
+    if (barEl)   barEl.style.width   = Math.min((totalVisitors ?? 0) / 500 * 100, 100) + '%';
+  } catch (_) {}
+  // ── END VISITOR COUNT ───────────────────────────────────
 }
+
 
 /* ── Projects table ── */
 async function renderProjectsTable(){

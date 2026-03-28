@@ -3327,6 +3327,25 @@ section.svc:has(.vid-vis) .wrap {
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
+
+  // ── VISITOR TRACKING ──────────────────────────────────────
+(async () => {
+  try {
+    const _sb = supabase.createClient(
+      'https://tlodulytpnugibtlywen.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ'
+    );
+    await _sb.from('visitors').insert({
+      page: window.location.pathname || '/',
+      referrer: document.referrer || null,
+      ua: navigator.userAgent,
+      visited_at: new Date().toISOString()
+    });
+  } catch (_) {}
+})();
+// ── END VISITOR TRACKING ──────────────────────────────────
+
+
 'use strict';
 
 // ── LOADER + TETRIS ──────────────────────────────────────
