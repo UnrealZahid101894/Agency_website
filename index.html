@@ -3517,22 +3517,26 @@ body.cur-hidden .cur-ring { opacity: 0; }
 
 <script>
 
-  // ── VISITOR TRACKING ──────────────────────────────────────
+// ── VISITOR TRACKING ──
 (async () => {
   try {
+    // Only track once per session — skip if already tracked
+    if (sessionStorage.getItem('_rv')) return;
+    sessionStorage.setItem('_rv', '1');
+
     const _sb = supabase.createClient(
       'https://tlodulytpnugibtlywen.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ'
     );
     await _sb.from('visitors').insert({
       page: window.location.pathname || '/',
-      referrer: document.referrer || null,
+      referred: document.referrer || null,
       ua: navigator.userAgent,
       visited_at: new Date().toISOString()
     });
   } catch (_) {}
 })();
-// ── END VISITOR TRACKING ──────────────────────────────────
+// ── END VISITOR TRACKING ──
 
 
 'use strict';
