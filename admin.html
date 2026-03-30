@@ -547,11 +547,12 @@ input, select, textarea {
 
       <div class="view" id="view-projects">
         <div class="filter-row">
-          <button class="fpill on" data-f="all" onclick="setFilter('all')">All</button>
           <button class="fpill" data-f="video" onclick="setFilter('video')">Video</button>
           <button class="fpill" data-f="motion" onclick="setFilter('motion')">Motion</button>
-         <button class="fpill" data-f="reels" onclick="setFilter('reels')">Reels</button>
-          <button class="fpill" data-f="motion" onclick="setFilter('motion')">Motion</button>
+          <button class="fpill" data-f="reels" onclick="setFilter('reels')">Reels</button>
+          <button class="fpill" data-f="colourgrade" onclick="setFilter('colourgrade')">Colour Grade</button>
+          <button class="fpill" data-f="vfx" onclick="setFilter('vfx')">VFX</button>
+          <button class="fpill" data-f="documentary" onclick="setFilter('documentary')">Documentary</button>
         </div>
         <div class="ptable" id="proj-table"></div>
       </div>
@@ -603,7 +604,7 @@ input, select, textarea {
     <div class="modal-body">
       <div class="frow"><label>Project Title *</label><input type="text" id="f-title" placeholder="e.g. NovaCo Brand Film"></div>
       <div class="frow-2">
-       <div><label>Category *</label><select id="f-type"><option value="">Select…</option><option value="video">Video</option><option value="motion">Motion</option><option value="reels">Reels</option><option value="colourgrade">Colour Grade</option><option value="vfx">VFX</option>
+       <div><label>Category *</label><select id="f-type"><option value="">Select…</option><option value="video">Video</option><option value="motion">Motion</option><option value="reels">Reels</option><option value="colourgrade">Colour Grade</option><option value="vfx">VFX</option><option value="documentary">Documentary</option></select>
       </div>
       <div class="frow"><label>Client Name</label><input type="text" id="f-client" placeholder="e.g. NovaCo"></div>
       <div class="frow-2">
@@ -909,14 +910,14 @@ async function renderOverview() {
 
   // ── LOAD VISITOR COUNT ──────────────────────────────────
   try {
-    const { count: totalVisitors } = await sb
+    const { count: totalVisitors, error: e1 } = await sb
       .from('visitors')
-      .select('*', { count: 'exact', head: true });
+      .select('id', { count: 'exact', head: true });
 
     const today = new Date().toISOString().slice(0, 10);
     const { count: todayVisitors } = await sb
       .from('visitors')
-      .select('*', { count: 'exact', head: true })
+      .select('id', { count: 'exact', head: true })
       .gte('visited_at', today + 'T00:00:00.000Z')
       .lte('visited_at', today + 'T23:59:59.999Z');
 

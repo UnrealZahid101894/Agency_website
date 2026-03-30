@@ -201,16 +201,26 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
   border-right: none;
   cursor: default;
 }
-.tech-mq-item:last-child { border-right: none; }
-.tech-mq-icon {
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: .35;
-  transition: opacity .25s;
-  flex-shrink: 0;
+.tech-mq-pill {
+  font-family: var(--fm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text3);
+  border: 1px solid var(--border2);
+  border-radius: 99px;
+  padding: 6px 16px;
+  white-space: nowrap;
+  transition: color .2s, border-color .2s;
+  display: block;
+}
+.tech-mq-item:hover .tech-mq-pill {
+  color: var(--text2);
+  border-color: var(--text3);
+}
+.tech-mq-item {
+  padding: 0 10px;
 }
 .tech-mq-item:hover .tech-mq-icon { opacity: .75; }
 .tech-mq-icon svg { width: 28px; height: 28px; display: block; }
@@ -255,7 +265,7 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
   width: 100%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   min-width: unset;
   border: none;
   border-top: 1px solid var(--border);
@@ -482,7 +492,7 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 @media(max-width:600px) {
   .svc-tabs-wrap { padding: 0 !important; }
   .svc-tabs {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     min-width: unset;
     width: 100%;
     border-top: 1px solid var(--border);
@@ -1115,7 +1125,7 @@ nav.sc{background:rgba(13,13,13,.92);backdrop-filter:blur(20px);-webkit-backdrop
 .pf{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border:1px solid var(--border2);border-radius:99px;background:transparent;color:var(--text2);cursor:pointer;transition:all .22s var(--sp);font-family:var(--fb)}
 .pf:hover{color:var(--text);border-color:var(--text);transform:translateY(-1px)}
 .pf.on{background:var(--inv);color:var(--inv2);border-color:var(--inv)}
-.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .proj-empty{grid-column:1/-1;padding:80px 20px;text-align:center;border:1px dashed var(--border2);border-radius:12px;color:var(--text3);font-size:13px;letter-spacing:.04em}
 
 /* ── PROJECT CARDS ── */
@@ -2075,6 +2085,202 @@ body.cur-hidden .cur-ring { opacity: 0; }
   * { cursor: auto !important; }
 }
 
+/* ── REELS PHONE MOCKUP ── */
+.reels-phone-vis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-6px);
+}
+.rp-phone {
+  width: 220px;
+  aspect-ratio: 9/19.5;
+  background: #111;
+  border-radius: 36px;
+  border: 2px solid rgba(255,255,255,.18);
+  box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 0 6px rgba(255,255,255,.04), inset 0 0 0 1px rgba(255,255,255,.06);
+  position: relative;
+  overflow: hidden;
+  transition: border-color .5s;
+}
+[data-theme="dark"]  .rp-phone { background: #f0f0f0; border-color: rgba(0,0,0,.15); }
+[data-theme="light"] .rp-phone { background: #0d0d0d; border-color: rgba(255,255,255,.18); }
+[data-theme="dark"]  .rp-scene-bg { background: linear-gradient(160deg,#d0d0d0 0%,#c8c8c8 40%,#b8b8b8 100%); }
+[data-theme="light"] .rp-scene-bg { background: linear-gradient(160deg,#1a1a2e 0%,#16213e 40%,#0f3460 100%); }
+[data-theme="dark"]  .rp-username, [data-theme="dark"] .rp-tag, [data-theme="dark"] .rp-overlay-text, [data-theme="dark"] .rp-song { color: rgba(0,0,0,.75); }
+[data-theme="dark"]  .rp-tag { background: rgba(0,0,0,.1); border-color: rgba(0,0,0,.15); }
+[data-theme="dark"]  .rp-caption-line { background: rgba(0,0,0,.4); }
+[data-theme="dark"]  .rp-sidebar svg { fill: rgba(0,0,0,.65); }
+[data-theme="dark"]  .rp-sidebar span { color: rgba(0,0,0,.5); }
+[data-theme="dark"]  .rp-progress-bar { background: rgba(0,0,0,.15); }
+[data-theme="dark"]  .rp-progress-fill { background: rgba(0,0,0,.6); }
+[data-theme="dark"]  .rp-avatar { border-color: rgba(0,0,0,.3); }
+[data-theme="dark"]  .rp-notch { background: rgba(0,0,0,.3); }
+.rp-notch {
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 60px; height: 10px;
+  background: #000;
+  border-radius: 99px;
+  z-index: 10;
+}
+.rp-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.rp-scene {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
+}
+.rp-scene {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+.rp-scene-bg {
+  position: absolute;
+  inset: 0;
+  animation: rpBgShift 4s ease-in-out infinite alternate;
+}
+[data-theme="dark"]  .rp-scene-bg { background: linear-gradient(160deg,#d0d0d0 0%,#c4c4c4 40%,#b0b0b0 100%); }
+[data-theme="light"] .rp-scene-bg { background: linear-gradient(160deg,#030304 0%,#05060c 40%,#05080c 100%); }
+
+@keyframes rpBgShift {
+  0%   { filter: brightness(1) hue-rotate(0deg); }
+  100% { filter: brightness(1.15) hue-rotate(20deg); }
+}
+.rp-overlay-top {
+  position: absolute;
+  top: 28px; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  z-index: 5;
+}
+.rp-username {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,.9);
+  letter-spacing: .04em;
+  font-family: var(--fb);
+}
+.rp-tag {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,255,255,.6);
+  font-family: var(--fb);
+  background: rgba(255,255,255,.1);
+  padding: 2px 7px;
+  border-radius: 99px;
+  border: 1px solid rgba(255,255,255,.15);
+}
+.rp-overlay-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fd);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  color: rgba(255,255,255,.85);
+  animation: rpTextBlink 4s ease-in-out infinite;
+  z-index: 3;
+}
+@keyframes rpTextBlink { 0%,45%,55%,100%{opacity:1} 49%,51%{opacity:.25} }
+.rp-caption-block {
+  position: absolute;
+  bottom: 32px; left: 12px; right: 52px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.rp-caption-line {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255,255,255,.6);
+  animation: rpCapAnim 3s ease-in-out infinite;
+}
+.rp-cl1 { width: 80%; animation-delay: 0s; }
+.rp-cl2 { width: 55%; animation-delay: .4s; }
+@keyframes rpCapAnim { 0%,100%{opacity:.6} 50%{opacity:.9} }
+.rp-sidebar {
+  position: absolute;
+  right: 8px;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  z-index: 5;
+}
+.rp-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.rp-action svg {
+  width: 20px; height: 20px;
+  fill: rgba(255,255,255,.85);
+  stroke: none;
+}
+.rp-action span {
+  font-size: 8px;
+  color: rgba(255,255,255,.7);
+  font-family: var(--fb);
+  font-weight: 600;
+}
+.rp-progress-bar {
+  position: absolute;
+  bottom: 42px; left: 0; right: 0;
+  height: 2px;
+  background: rgba(255,255,255,.2);
+  z-index: 5;
+}
+.rp-progress-fill {
+  height: 100%;
+  background: rgba(255,255,255,.8);
+  animation: rpProgress 5s linear infinite;
+}
+@keyframes rpProgress { 0%{width:0%} 100%{width:100%} }
+.rp-bottom-bar {
+  position: absolute;
+  bottom: 14px; left: 10px; right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 5;
+}
+.rp-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  border: 1.5px solid rgba(255,255,255,.4);
+  flex-shrink: 0;
+}
+.rp-song {
+  font-size: 9px;
+  color: rgba(255,255,255,.65);
+  font-family: var(--fb);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: rpSongScroll 8s linear infinite;
+}
+@keyframes rpSongScroll { 0%,10%{transform:translateX(0)} 90%,100%{transform:translateX(-30%)} }
+
+@keyframes cwSpin { to { transform: rotate(360deg); } }
+
 </style>
 </head>
 <body>
@@ -2262,6 +2468,22 @@ body.cur-hidden .cur-ring { opacity: 0; }
 @keyframes h3dPulse{0%,100%{opacity:.7}50%{opacity:.2}}
  
 @media(max-width:960px){.hero-3d-col{display:none}}
+
+[data-theme="dark"]  .cg-bar  { background: #dcdcdc; }
+[data-theme="light"] .cg-bar  { background: #1a1a1a; }
+[data-theme="dark"]  .cg-bar-title { color: rgba(0,0,0,.38); }
+[data-theme="light"] .cg-bar-title { color: rgba(255,255,255,.38); }
+[data-theme="dark"]  .cg-body { background: #e8e8e8; }
+[data-theme="light"] .cg-body { background: #111; }
+[data-theme="dark"]  .cg-wheel-inner { background: #e4e4e4; }
+[data-theme="light"] .cg-wheel-inner { background: #111; }
+[data-theme="dark"]  .cg-label { color: rgba(0,0,0,.35); }
+[data-theme="light"] .cg-label { color: rgba(255,255,255,.35); }
+[data-theme="dark"]  .cg-waveform { background: #d8d8d8; }
+[data-theme="light"] .cg-waveform { background: #0d0d0d; }
+[data-theme="dark"]  .cg-wf-label { color: rgba(0,0,0,.3); }
+[data-theme="light"] .cg-wf-label { color: rgba(255,255,255,.25); }
+
 </style>
  
 <section class="hero" id="hero" aria-labelledby="hero-heading">
@@ -2269,15 +2491,29 @@ body.cur-hidden .cur-ring { opacity: 0; }
     <div class="hero-inner">
       <div id="main-content">
         <div class="hero-tag"><span class="eyebrow">Rendrx Studio — Dhaka, Bangladesh</span></div>
-        <h1 class="hero-h1" id="hero-heading">
-          We make<br>your brand<br><span class="hero-swap" id="hw">move.</span>
-        </h1>
-        <p class="hero-sub">A specialist video editing studio helping creators and businesses produce content worth watching — brand films, reels, colour grading, motion graphics, and post-production. Based in Dhaka, delivering worldwide.</p>
+        
+<h1 class="hero-h1" id="hero-heading">
+  We make<br>Brands look<br><span class="hero-swap" id="hw">cinematic.</span>
+</h1>
+        <p class="hero-sub">Professional video editing, colour grading, and motion graphics for brands that want to stand out. Based in Dhaka — delivering worldwide within 48 hours.</p>
         <div class="hero-acts">
           <a href="#projects" class="btn btn-fill btn-lg">See Our Work</a>
           <a href="#contact" class="btn btn-ghost btn-lg">Start a Project →</a>
         </div>
         <p class="hero-note">// Brand Films &nbsp;&nbsp;·&nbsp;&nbsp; Reels &nbsp;&nbsp;·&nbsp;&nbsp; Motion &nbsp;&nbsp;·&nbsp;&nbsp; Colour Grading &nbsp;&nbsp;·&nbsp;&nbsp; Dhaka &amp; Remote</p>
+
+<div style="display:flex;align-items:center;gap:3px;margin-top:28px;opacity:.18">
+  <div style="height:18px;width:12px;background:var(--text);border-radius:1px"></div>
+  <div style="height:18px;width:2px;background:transparent"></div>
+  <div style="height:18px;width:12px;background:var(--text);border-radius:1px"></div>
+  <div style="height:18px;width:2px;background:transparent"></div>
+  <div style="height:18px;width:12px;background:var(--text);border-radius:1px"></div>
+  <div style="height:18px;width:2px;background:transparent"></div>
+  <div style="height:18px;width:12px;background:var(--text);border-radius:1px"></div>
+  <div style="height:18px;width:80px;background:var(--text);border-radius:1px"></div>
+  <div style="height:18px;width:2px;background:transparent"></div>
+  <div style="height:18px;width:12px;background:var(--text);border-radius:1px"></div>
+</div>
       </div>
  
       <div class="hero-3d-col" aria-hidden="true">
@@ -2308,7 +2544,7 @@ body.cur-hidden .cur-ring { opacity: 0; }
 <script>
 /* ── WORD SCRAMBLE ── */
 (function(){
-  var WORDS=['move.','feel.','flow.','land.','glow.'];
+  var WORDS=['cinematic.','magnetic.','iconic.','alive.','sharp.'];
   var SCHARS='!<>-_\\/[]{}—=+*^?#';
   var wordEl=document.getElementById('hw');
   var wIdx=0;
@@ -2501,36 +2737,38 @@ body.cur-hidden .cur-ring { opacity: 0; }
     }
   }
 })(); 
+
+
 </script>
 
 
-<<!-- TECH STACK MARQUEE -->
+<!-- TECH STACK MARQUEE -->
 <div class="tech-mq" aria-label="Tools we use">
   <div class="tech-mq-t">
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Pr</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Ae</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><path d="M8 7h5.5C17.09 7 20 9.91 20 14s-2.91 7-6.5 7H8V7z" fill="var(--bg)"/><path d="M11 10.5v7h2.2c2.1 0 3.8-1.57 3.8-3.5s-1.7-3.5-3.8-3.5H11z" fill="var(--text)"/></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><path d="M19.5 10.2A7 7 0 1 0 19.5 17.8" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="3.5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Au</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="3" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Me</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="var(--text)" stroke-width="1.8" fill="none"/><path d="M14 3C14 3 9 8 9 14s5 11 5 11" stroke="var(--text)" stroke-width="1.8" fill="none"/><path d="M3 14h22" stroke="var(--text)" stroke-width="1.4"/></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="5" y="20" font-family="serif" font-size="12" font-weight="900" fill="var(--bg)">Ps</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="11" font-weight="900" fill="var(--bg)">C4D</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="10" font-weight="900" fill="var(--bg)">Blndr</text></svg></div></div>
-    <!-- duplicate set -->
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Pr</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Ae</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><path d="M8 7h5.5C17.09 7 20 9.91 20 14s-2.91 7-6.5 7H8V7z" fill="var(--bg)"/><path d="M11 10.5v7h2.2c2.1 0 3.8-1.57 3.8-3.5s-1.7-3.5-3.8-3.5H11z" fill="var(--text)"/></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><path d="M19.5 10.2A7 7 0 1 0 19.5 17.8" stroke="var(--bg)" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="3.5" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Au</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="3" y="20" font-family="serif" font-size="13" font-weight="900" fill="var(--bg)">Me</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="11" stroke="var(--text)" stroke-width="1.8" fill="none"/><path d="M14 3C14 3 9 8 9 14s5 11 5 11" stroke="var(--text)" stroke-width="1.8" fill="none"/><path d="M3 14h22" stroke="var(--text)" stroke-width="1.4"/></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="5" y="20" font-family="serif" font-size="12" font-weight="900" fill="var(--bg)">Ps</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="11" font-weight="900" fill="var(--bg)">C4D</text></svg></div></div>
-    <div class="tech-mq-item"><div class="tech-mq-icon"><svg viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="var(--text)"/><text x="4" y="20" font-family="serif" font-size="10" font-weight="900" fill="var(--bg)">Blndr</text></svg></div></div>
+    <!-- Set 1 -->
+    <div class="tech-mq-item"><span class="tech-mq-pill">Premiere Pro</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">After Effects</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">DaVinci Resolve</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Photoshop</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Audition</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Cinema 4D</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Blender</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Media Encoder</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Frame.io</span></div>
+    <div class="tech-mq-item"><span class="tech-mq-pill">Figma</span></div>
+    <!-- Set 2 — identical, no aria -->
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Premiere Pro</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">After Effects</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">DaVinci Resolve</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Photoshop</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Audition</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Cinema 4D</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Blender</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Media Encoder</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Frame.io</span></div>
+    <div class="tech-mq-item" aria-hidden="true"><span class="tech-mq-pill">Figma</span></div>
   </div>
 </div>
-
 <!-- SERVICES SWITCHER -->
 <section id="services" class="svc-switcher" aria-labelledby="svc-switch-heading">
 
@@ -2554,6 +2792,13 @@ body.cur-hidden .cur-ring { opacity: 0; }
       <button class="svc-tab" data-svc="reels" role="tab" aria-selected="false" aria-controls="svc-panel-reels">
         <span class="svc-tab-num">03</span>
         <span class="svc-tab-label">Reels &amp;<br>Short-form</span>
+        <span class="svc-tab-arrow">↗</span>
+        <div class="svc-tab-bar"></div>
+      </button>
+
+      <button class="svc-tab" data-svc="colour" role="tab" aria-selected="false" aria-controls="svc-panel-colour">
+        <span class="svc-tab-num">04</span>
+        <span class="svc-tab-label">Colour<br>Grading</span>
         <span class="svc-tab-arrow">↗</span>
         <div class="svc-tab-bar"></div>
       </button>
@@ -2718,58 +2963,104 @@ body.cur-hidden .cur-ring { opacity: 0; }
             </ul>
             <a href="#contact" class="btn btn-ghost">Get a quote →</a>
           </div>
-          <div class="svc-vis vid-vis" aria-hidden="true">
-            <div class="vs-preview">
-              <div class="vs-tc">00:00:00:18</div>
-              <div class="vs-rec">REC</div>
-              <div class="vs-frame">
-                <div class="vs-frame-inner">
-                  <div class="vs-scene-bg"></div>
-                  <div class="vs-scene-bars">
-                    <div class="vs-bar vs-bar1"></div>
-                    <div class="vs-bar vs-bar2"></div>
-                    <div class="vs-bar vs-bar3"></div>
-                  </div>
-                  <div class="vs-overlay-text">REEL CUT</div>
-                  <div class="vs-safe-outer"></div>
-                  <div class="vs-safe-inner"></div>
+        <div class="svc-vis reels-phone-vis" aria-hidden="true">
+            <div class="rp-phone">
+              <div class="rp-notch"></div>
+              <div class="rp-screen">
+                <div class="rp-overlay-top">
+                  <span class="rp-username">@rendrx.studio</span>
+                  <span class="rp-tag">#BrandFilm</span>
                 </div>
-              </div>
-              <div class="vs-scopes">
-                <div class="vs-scope">
-                  <div class="vs-scope-label">LUM</div>
-                  <div class="vs-scope-graph vs-scope-lum">
-                    <span style="height:55%"></span><span style="height:80%"></span><span style="height:62%"></span><span style="height:90%"></span><span style="height:75%"></span><span style="height:48%"></span><span style="height:88%"></span><span style="height:60%"></span><span style="height:42%"></span><span style="height:70%"></span>
+                <div class="rp-scene">
+                  <div class="rp-scene-bg"></div>
+                  <div class="rp-caption-block">
+                    <div class="rp-caption-line rp-cl1"></div>
+                    <div class="rp-caption-line rp-cl2"></div>
+                  </div>
+                  <div class="rp-overlay-text">REEL CUT</div>
+                </div>
+                <div class="rp-sidebar">
+                  <div class="rp-action">
+                    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    <span>4.2k</span>
+                  </div>
+                  <div class="rp-action">
+                    <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                    <span>318</span>
+                  </div>
+                  <div class="rp-action">
+                    <svg viewBox="0 0 24 24"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+                    <span>Share</span>
                   </div>
                 </div>
-                <div class="vs-scope">
-                  <div class="vs-scope-label">RGB</div>
-                  <div class="vs-scope-graph vs-scope-rgb">
-                    <span class="vs-rgb-r" style="height:70%"></span><span class="vs-rgb-g" style="height:55%"></span><span class="vs-rgb-b" style="height:82%"></span><span class="vs-rgb-r" style="height:45%"></span><span class="vs-rgb-g" style="height:68%"></span><span class="vs-rgb-b" style="height:52%"></span><span class="vs-rgb-r" style="height:78%"></span><span class="vs-rgb-g" style="height:60%"></span><span class="vs-rgb-b" style="height:40%"></span><span class="vs-rgb-r" style="height:65%"></span>
-                  </div>
+                <div class="rp-progress-bar"><div class="rp-progress-fill"></div></div>
+                <div class="rp-bottom-bar">
+                  <div class="rp-avatar"></div>
+                  <span class="rp-song">♪ Trending Audio · 30s edit</span>
                 </div>
-                <div class="vs-preview-meta"><span>1080p</span><span>30fps</span><span>9:16</span></div>
               </div>
             </div>
-            <div class="vs-timeline">
-              <div class="vs-ruler-row">
-                <div class="vs-tl-label-col"></div>
-                <div class="vs-ruler"><span>0s</span><span>5s</span><span>10s</span><span>15s</span><span>20s</span><span>25s</span><span>30s</span></div>
-              </div>
-              <div class="vs-track-row vs-track-primary">
-                <div class="vs-tl-label"><span class="vs-tl-eye">●</span>V1</div>
-                <div class="vs-tl-track">
-                  <div class="vs-clip vs-clip-v" style="left:0%;width:22%"><span class="vs-clip-name">Hook</span><div class="vs-clip-thumb"></div></div>
-                  <div class="vs-clip vs-clip-v" style="left:23%;width:18%"><span class="vs-clip-name">Cut 02</span><div class="vs-clip-thumb"></div></div>
-                  <div class="vs-clip vs-clip-v" style="left:42%;width:25%"><span class="vs-clip-name">Cut 03</span><div class="vs-clip-thumb"></div></div>
-                  <div class="vs-clip vs-clip-v" style="left:68%;width:28%"><span class="vs-clip-name">CTA</span><div class="vs-clip-thumb"></div></div>
-                </div>
-              </div>
-              <div class="vs-track-row">
-                <div class="vs-tl-label"><span class="vs-tl-eye vs-tl-eye-a">●</span>A1</div>
-                <div class="vs-tl-track"><div class="vs-clip vs-clip-a" style="left:0%;width:96%"><div class="vs-waveform"><span style="height:60%"></span><span style="height:90%"></span><span style="height:75%"></span><span style="height:95%"></span><span style="height:80%"></span><span style="height:85%"></span><span style="height:70%"></span><span style="height:92%"></span><span style="height:65%"></span><span style="height:88%"></span><span style="height:72%"></span><span style="height:96%"></span><span style="height:68%"></span><span style="height:82%"></span><span style="height:77%"></span><span style="height:91%"></span><span style="height:58%"></span><span style="height:84%"></span><span style="height:73%"></span><span style="height:89%"></span></div></div></div>
-              </div>
-              <div class="vs-playhead"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLOUR GRADING PANEL -->
+    <div class="svc-panel" id="svc-panel-colour" role="tabpanel" data-panel="colour">
+      <div class="wrap">
+        <div class="svc-inner">
+          <div class="svc-text">
+            <div class="svc-eyebrow"><span class="eyebrow">04 — colour grading</span></div>
+            <h2 class="svc-title">Footage that<br>feels cinematic.</h2>
+            <p class="svc-desc">Colour transforms how your video feels. We grade in DaVinci Resolve — matching your reference look or building something from scratch that sets the mood exactly right.</p>
+            <ul class="svc-list" aria-label="Colour grading services">
+              <li>Primary correction — exposure, white balance, contrast</li>
+              <li>Secondary grading — mood, style, skin tones</li>
+              <li>LUT creation and application</li>
+              <li>Scene-to-scene consistency matching</li>
+              <li>Log/RAW footage (BRAW, R3D, S-Log, V-Log)</li>
+            </ul>
+            <a href="#contact" class="btn btn-ghost">Get a quote →</a>
+          </div>
+          <div class="svc-vis" aria-hidden="true" style="display:flex;align-items:center;justify-content:center">
+            <div class="cg-vis" style="width:100%;border-radius:10px;overflow:hidden;border:1px solid var(--border2);box-shadow:0 32px 80px rgba(0,0,0,.5);font-family:var(--fb);transform:translateY(-6px)">
+  <div class="cg-bar" style="padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">
+    <div style="display:flex;gap:5px"><span style="width:9px;height:9px;border-radius:50%;background:#ff5f57;display:block"></span><span style="width:9px;height:9px;border-radius:50%;background:#ffbd2e;display:block"></span><span style="width:9px;height:9px;border-radius:50%;background:#28c840;display:block"></span></div>
+    <span class="cg-bar-title" style="font-size:10px;letter-spacing:.06em;flex:1;text-align:center">DaVinci Resolve — colour.drp</span>
+  </div>
+  <div class="cg-body" style="padding:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div style="width:80px;height:80px;border-radius:50%;background:conic-gradient(#1a3a5c,#2d6a4f,#744210,#1a3a5c);border:1px solid var(--border2);position:relative;animation:cwSpin 12s linear infinite">
+        <div class="cg-wheel-inner" style="position:absolute;inset:8px;border-radius:50%;border:1px solid var(--border)"></div>
+        <div style="position:absolute;top:50%;left:50%;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.7);transform:translate(-50%,-50%) translate(8px,-6px)"></div>
+      </div>
+      <span class="cg-label" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase">Lift</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div style="width:80px;height:80px;border-radius:50%;background:conic-gradient(#5c1a1a,#5c4a1a,#1a5c2d,#1a2d5c,#5c1a1a);border:1px solid var(--border2);position:relative;animation:cwSpin 18s linear infinite reverse">
+        <div class="cg-wheel-inner" style="position:absolute;inset:8px;border-radius:50%;border:1px solid var(--border)"></div>
+        <div style="position:absolute;top:50%;left:50%;width:6px;height:6px;border-radius:50%;background:rgba(255,200,100,.8);transform:translate(-50%,-50%) translate(-10px,4px)"></div>
+      </div>
+      <span class="cg-label" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase">Gamma</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+      <div style="width:80px;height:80px;border-radius:50%;background:conic-gradient(#2d1a5c,#1a4a5c,#5c3a1a,#2d1a5c);border:1px solid var(--border2);position:relative;animation:cwSpin 9s linear infinite">
+        <div class="cg-wheel-inner" style="position:absolute;inset:8px;border-radius:50%;border:1px solid var(--border)"></div>
+        <div style="position:absolute;top:50%;left:50%;width:6px;height:6px;border-radius:50%;background:rgba(100,180,255,.9);transform:translate(-50%,-50%) translate(6px,10px)"></div>
+      </div>
+      <span class="cg-label" style="font-size:9px;letter-spacing:.1em;text-transform:uppercase">Gain</span>
+    </div>
+  </div>
+  <div class="cg-waveform" style="padding:10px 14px;border-top:1px solid var(--border)">
+    <div class="cg-wf-label" style="font-size:8px;letter-spacing:.1em;margin-bottom:6px">WAVEFORM</div>
+    <div style="height:40px;position:relative;overflow:hidden;border-radius:3px">
+      <svg viewBox="0 0 300 40" preserveAspectRatio="none" style="width:100%;height:100%">
+        <defs><linearGradient id="wfg" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="rgba(255,120,50,.7)"/><stop offset="40%" stop-color="rgba(50,200,100,.5)"/><stop offset="100%" stop-color="rgba(50,100,255,.3)"/></linearGradient></defs>
+        <polyline fill="none" stroke="url(#wfg)" stroke-width="1.5" points="0,35 15,28 30,20 45,25 60,12 75,18 90,8 105,22 120,15 135,30 150,10 165,20 180,5 195,18 210,25 225,14 240,28 255,10 270,22 285,15 300,30"/>
+      </svg>
+    </div>
+  </div>
+</div>
             </div>
           </div>
         </div>
@@ -2794,7 +3085,9 @@ body.cur-hidden .cur-ring { opacity: 0; }
         <button class="pf" data-f="video" aria-pressed="false">Video</button>
         <button class="pf" data-f="motion" aria-pressed="false">Motion</button>
         <button class="pf" data-f="reels" aria-pressed="false">Reels</button>
-        <button class="pf" data-f="motion" aria-pressed="false">Motion</button>
+        <button class="pf" data-f="colourgrade" aria-pressed="false">Colour Grade</button>
+        <button class="pf" data-f="vfx" aria-pressed="false">VFX</button>
+        <button class="pf" data-f="documentary" aria-pressed="false">Documentary</button>
       </div>
     </div>
     <div class="proj-grid" id="pgrid"></div>
@@ -2818,7 +3111,7 @@ body.cur-hidden .cur-ring { opacity: 0; }
 (function() {
   var PKEY = 'rendrx_projects';
   var allProjects = [];
-  var PAGE_LIMIT = 3; // ← change this number to show more/fewer on homepage
+  var PAGE_LIMIT = 6; // ← change this number to show more/fewer on homepage
   const sb = supabase.createClient('https://tlodulytpnugibtlywen.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsb2R1bHl0cG51Z2lidGx5d2VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0OTM5MzAsImV4cCI6MjA5MDA2OTkzMH0.BxhyyEY_Yg8KZe0W3UzZ4rQ4vXd5pjq1JhlzR8h3ifQ');
 
   async function load() {
@@ -2880,7 +3173,7 @@ body.cur-hidden .cur-ring { opacity: 0; }
 
     // Show or hide the "See All Work" footer row
     if (footer) {
-      if (projects.length > PAGE_LIMIT) {
+      if (projects.length >= 1) {
         footer.style.display = 'flex';
         var countEl = document.getElementById('proj-remaining');
         if (countEl) countEl.textContent = projects.length - PAGE_LIMIT;
@@ -2926,12 +3219,12 @@ body.cur-hidden .cur-ring { opacity: 0; }
       <span class="stat-l">Avg Turnaround</span>
     </div>
 
-    <div class="stat" data-target="4" data-suffix="K">
+    <div class="stat" data-target="100" data-suffix="%">
       <div class="stat-icon" aria-hidden="true">
         <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2"/><path d="M8 12l4-4 4 4"/><path d="M12 8v8"/></svg>
       </div>
       <span class="stat-n"><span class="stat-num">0</span><sup>K</sup></span>
-      <span class="stat-l">Max Resolution</span>
+      <span class="stat-l">Revision Satisfaction</span>
     </div>
 
     <div class="stat" data-target="4.7" data-suffix="★" data-decimal="true">
@@ -2983,11 +3276,22 @@ body.cur-hidden .cur-ring { opacity: 0; }
           <div class="tm-portrait">
   <img src="assets/zahid.jpeg" alt="Zahid" onerror="this.style.display='none'">
 </div>
-          <div class="tm-name-text"><div class="tm-role-tag">Web &amp; Development</div><div class="tm-name" id="tm1-name">Zahid<span>.</span></div></div>
+          <div class="tm-role-tag">Motion &amp; Production</div>
+<div class="tm-name" id="tm1-name">Zahid<span>.</span></div>
         </div>
-        <p class="tm-bio">Builds websites that work as well as they look. Focused on sites that load fast, are easy to use, and actually bring in enquiries — not just ones that look good on a screen. Clean code, no shortcuts.</p>
-        <div class="tm-stats" aria-label="Zahid's stats"><div class="tm-stat"><span class="tm-stat-n">3+</span><span class="tm-stat-l">yrs experience</span></div><div class="tm-stat"><span class="tm-stat-n">92</span><span class="tm-stat-l">avg page speed</span></div><div class="tm-stat"><span class="tm-stat-n">10d</span><span class="tm-stat-l">avg delivery</span></div></div>
-        <div class="tm-tools" aria-label="Technologies used"><span class="tm-tool">Next.js</span><span class="tm-tool">React</span><span class="tm-tool">Tailwind</span><span class="tm-tool">Figma</span><span class="tm-tool">Vercel</span><span class="tm-tool">Node.js</span></div>
+        <p class="tm-bio">Handles the production pipeline end-to-end — from organising raw footage to final delivery. Obsessed with clean timelines, tight turnarounds, and making sure every export lands exactly right. The one who makes sure nothing slips through the cracks.</p>
+       <div class="tm-stats" aria-label="Zahid's stats">
+  <div class="tm-stat"><span class="tm-stat-n">3+</span><span class="tm-stat-l">yrs editing</span></div>
+  <div class="tm-stat"><span class="tm-stat-n">48h</span><span class="tm-stat-l">avg turnaround</span></div>
+  <div class="tm-stat"><span class="tm-stat-n">4K</span><span class="tm-stat-l">max output</span></div>
+</div>
+<div class="tm-tools" aria-label="Software used">
+  <span class="tm-tool">Premiere Pro</span>
+  <span class="tm-tool">After Effects</span>
+  <span class="tm-tool">DaVinci</span>
+  <span class="tm-tool">Audition</span>
+  <span class="tm-tool">Frame.io</span>
+</div>
       </div>
       <div class="tm-deco" aria-hidden="true"><svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="28" width="160" height="120" rx="8" stroke="currentColor" stroke-width="1.5"/><line x1="20" y1="52" x2="180" y2="52" stroke="currentColor" stroke-width="1.5"/><circle cx="38" cy="40" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="56" cy="40" r="5" stroke="currentColor" stroke-width="1.5"/><circle cx="74" cy="40" r="5" stroke="currentColor" stroke-width="1.5"/><line x1="40" y1="76" x2="96" y2="76" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="90" x2="140" y2="90" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="104" x2="116" y2="104" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="118" x2="155" y2="118" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><line x1="40" y1="132" x2="80" y2="132" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3"/><rect x="20" y="162" width="160" height="10" rx="2" stroke="currentColor" stroke-width="1"/></svg></div>
     </div>
@@ -3101,7 +3405,7 @@ body.cur-hidden .cur-ring { opacity: 0; }
       </div>
     </div>
 
-   <div class="pr-grid reveal" style="grid-template-columns:1fr 1fr">
+   <div class="pr-grid reveal">
 
       <!-- REELS -->
       <div class="pr-card">
@@ -3128,6 +3432,32 @@ body.cur-hidden .cur-ring { opacity: 0; }
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
       </div>
+
+      <!-- MOTION GRAPHICS -->
+<div class="pr-card">
+  <div class="pr-card-top">
+    <div class="pr-type">Animation</div>
+    <div class="pr-name">Motion Graphics</div>
+    <p class="pr-desc">Logo reveals, title cards, and animated overlays that make your brand look polished and professional.</p>
+  </div>
+  <div class="pr-price-wrap">
+    <div class="pr-price" id="price-motion"><sup>$</sup><span data-project="149" data-retainer="499">149</span></div>
+    <div class="pr-price-note" id="note-motion">// starting price per project</div>
+  </div>
+  <ul class="pr-features">
+    <li>Logo animations and reveals</li>
+    <li>Lower thirds and title cards</li>
+    <li>Text and typography animation</li>
+    <li>Transitions and overlays</li>
+    <li>Exported as MOV with alpha</li>
+    <li>2 rounds of revisions included</li>
+    <li>Delivered within 72h</li>
+  </ul>
+  <a href="#contact" class="pr-cta pr-cta-ghost">
+    Get a quote
+    <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+  </a>
+</div>
 
       <!-- BRAND FILM -->
       <div class="pr-card featured">
@@ -3187,6 +3517,9 @@ body.cur-hidden .cur-ring { opacity: 0; }
 <option value="brandfilm">Brand Film</option>
 <option value="motion">Motion Graphics</option>
 <option value="colourgrade">Colour Grading</option>
+<option value="vfx">VFX / Compositing</option>
+<option value="documentary">Documentary Editing</option>
+<option value="podcast">Podcast / Interview Edit</option>
 <option value="other">Other / Not sure</option>
               </select>
             </div>
@@ -3629,7 +3962,7 @@ document.querySelectorAll('img:not([loading])').forEach(img=>img.setAttribute('l
 function setBilling(type) {
   document.querySelectorAll('.pr-toggle-btn').forEach(b => b.classList.toggle('on', b.dataset.billing === type));
   const isRetainer = type === 'retainer';
-  ['reels','film'].forEach(id => {
+  ['reels', 'motion', 'film'].forEach(id => {
     const priceEl = document.querySelector(`#price-${id} span`);
     const noteEl  = document.getElementById(`note-${id}`);
     if (!priceEl) return;
